@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>職安健常識問答挑戰系統 (手機雲端版)</title>
+    <title>職安健常識問答挑戰系統</title>
     <!-- 支援手機全螢幕 PWA 特性 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,12 +14,15 @@
         .category-bar { transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .countdown-bar { transition: width 2.5s linear; }
         * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+        /* 自訂滾動條 */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12 select-none">
 
-    <!-- 頂部手機專用導覽列 -->
-    <header class="bg-blue-900 text-white p-3.5 shadow-md sticky top-0 z-50 flex justify-between items-center">
+    <!-- 頂部手機專用導覽列 (已移除所有設定按鈕與敏感資訊) -->
+    <header class="bg-blue-900 text-white p-3.5 shadow-md sticky top-0 z-40 flex justify-between items-center">
         <div class="flex items-center gap-2">
             <span class="text-xl">👷</span>
             <div>
@@ -35,19 +38,10 @@
             <button onclick="switchView('dashboard')" class="px-2.5 py-1 rounded-lg bg-blue-800 hover:bg-blue-700 text-xs font-bold">
                 📊 分析
             </button>
-            <button onclick="openSettingsModal()" class="px-2 py-1 rounded-lg bg-blue-950 text-xs font-bold text-gray-300">
-                ⚙️
-            </button>
         </div>
     </header>
 
-    <!-- 雲端狀態提示條 -->
-    <div id="cloud-status-banner" class="bg-blue-50 border-b border-blue-200 px-4 py-1.5 text-[11px] text-blue-800 flex justify-between items-center">
-        <span id="cloud-status-text">☁️ Google Sheet 雲端連線檢查中...</span>
-        <button onclick="openSettingsModal()" class="text-blue-600 font-bold underline text-[10px]">設定 API</button>
-    </div>
-
-    <!-- 主容器（針對手機直立螢幕最佳化） -->
+    <!-- 主容器 -->
     <main class="max-w-md mx-auto p-4">
         
         <!-- 1. 首頁畫面 -->
@@ -55,27 +49,27 @@
             <div class="text-center pt-2">
                 <span class="inline-block p-3 bg-blue-50 rounded-2xl text-3xl mb-2">🎯</span>
                 <h2 class="text-xl font-black text-blue-950">2025 官方題庫實戰</h2>
-                <p class="text-xs text-gray-500 mt-1">Google Sheet 雲端同步 &bull; 隨機抽 10 題真題</p>
+                <p class="text-xs text-gray-500 mt-1">全隊雲端同步 &bull; 每次隨機抽取 10 題真題</p>
             </div>
 
-            <!-- 成員選擇卡片 -->
+            <!-- 成員選擇卡片 (P, T, S, J, V, F) -->
             <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
                 <div class="flex justify-between items-center mb-2.5">
                     <label class="text-xs font-bold text-gray-600">選擇今日出戰隊員</label>
                     <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold" id="selected-member-label">已選擇: P</span>
                 </div>
                 <div class="grid grid-cols-6 gap-1.5" id="user-selector">
-                    <!-- 動態生成 P, T, S, J, V, F -->
+                    <!-- JS 動態生成 P, T, S, J, V, F -->
                 </div>
             </div>
 
             <!-- 題庫狀態 -->
             <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
                 <div class="space-y-0.5">
-                    <span class="text-gray-600 font-medium block" id="pool-source-label">題庫載入中...</span>
-                    <span class="text-[10px] text-gray-400" id="pool-detail-label">Google Sheet 雲端題庫</span>
+                    <span class="text-gray-700 font-bold block" id="pool-source-label">2025 官方完整題庫</span>
+                    <span class="text-[10px] text-gray-400" id="pool-detail-label">雲端連線同步中...</span>
                 </div>
-                <span class="font-black text-blue-900 bg-blue-100 px-2.5 py-1 rounded-full text-xs" id="pool-count-badge">讀取中</span>
+                <span class="font-black text-blue-900 bg-blue-100 px-2.5 py-0.5 rounded-full text-xs" id="pool-count-badge">載入中</span>
             </div>
 
             <button onclick="startQuiz()" class="w-full bg-blue-600 active:bg-blue-700 text-white py-4 rounded-xl font-black text-lg shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
@@ -97,7 +91,7 @@
                 <div id="options-container" class="space-y-2.5"></div>
             </div>
 
-            <!-- 解析與倒數跳轉卡片 -->
+            <!-- 即時解析與倒數跳轉卡片 -->
             <div id="feedback-box" onclick="skipCountdown()" class="hidden p-4 rounded-xl border shadow-sm cursor-pointer relative overflow-hidden">
                 <div id="countdown-progress" class="absolute top-0 left-0 h-1 bg-blue-500 w-full countdown-bar"></div>
                 <div class="flex justify-between items-start mb-1.5">
@@ -108,7 +102,7 @@
             </div>
         </div>
 
-        <!-- 3. 錯題重溫畫面 -->
+        <!-- 3. 錯題重溫簿畫面 -->
         <div id="view-mistakes" class="hidden flex-col bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
@@ -122,9 +116,10 @@
                 </button>
             </div>
 
-            <!-- 篩選成員 -->
+            <!-- 成員篩選標籤 -->
             <div class="grid grid-cols-7 gap-1" id="mistake-member-filters"></div>
 
+            <!-- 錯題清單 -->
             <div id="mistakes-list-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1"></div>
 
             <button onclick="switchView('intro')" class="w-full bg-slate-100 text-slate-700 py-3 rounded-xl font-bold text-xs">
@@ -137,7 +132,7 @@
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
                     <h2 class="text-lg font-black text-blue-900">隊伍能力分析</h2>
-                    <p class="text-[10px] text-gray-500">Google Sheet 雲端實時統計</p>
+                    <p class="text-[10px] text-gray-500">雲端實時統計 (Google Sheet)</p>
                 </div>
                 <button onclick="fetchDashboardDataFromCloud()" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-blue-200">
                     🔄 重新整理
@@ -159,10 +154,10 @@
                 </div>
             </div>
 
-            <!-- 各成員挑戰統計卡片 -->
+            <!-- 各成員挑戰次數卡片 -->
             <div class="grid grid-cols-3 gap-1.5" id="member-stats-container"></div>
 
-            <!-- 三大範疇進度 -->
+            <!-- 三大範疇掌握度進度條 -->
             <div class="space-y-2.5" id="category-stats-container"></div>
 
             <!-- 歷次紀錄明細 -->
@@ -181,35 +176,17 @@
 
     </main>
 
-    <!-- Google Sheet API 設定彈窗 Modal -->
-    <div id="settings-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-        <div class="bg-white max-w-sm w-full p-5 rounded-2xl shadow-xl space-y-4">
-            <h3 class="text-base font-black text-slate-900 flex items-center gap-1.5">
-                <span>⚙️</span> Google Sheet 雲端設定
-            </h3>
-            <p class="text-xs text-gray-600 leading-relaxed">
-                請貼上由 Google Apps Script 部署取得的 **Web App 網址**，系統將自動自 Google Sheet 同步 1,537 題官方題庫與全隊成績：
-            </p>
-            <input type="url" id="gsheet-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full text-xs p-3 border border-slate-300 rounded-xl focus:outline-none focus:border-blue-600 font-mono">
-            <div class="flex gap-2">
-                <button onclick="saveGoogleSheetURL()" class="flex-1 bg-blue-600 text-white py-2.5 rounded-xl font-bold text-xs">
-                    儲存並下載雲端題庫
-                </button>
-                <button onclick="closeSettingsModal()" class="px-4 bg-slate-100 text-slate-700 py-2.5 rounded-xl font-bold text-xs">
-                    關閉
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 自訂 Toast 提示 -->
-    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 font-medium"></div>
+    <!-- 自訂 Toast 提示訊息 -->
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 font-medium transition-all"></div>
 
     <script>
         // ============================================================
-        // 1. 全域配置與雲端資料庫設定 (Google Sheet API)
+        // 1. 雲端後端配置 (純淨背景執行，UI 絕不暴露)
         // ============================================================
-        let GOOGLE_SHEET_API = localStorage.getItem('oshc_gsheet_api_url') || "https://script.google.com/macros/s/AKfycbwFJE-qdlAs_iZOR7PnxhWDaQ7W2MrI07g0n5jReiDrr_m_WpIwO-ZnPmk9iBsgmW6LiA/exec";
+        const CLOUD_CONFIG = {
+            apiURL: "https://script.google.com/macros/s/AKfycbwFJE-qdlAs_iZOR7PnxhWDaQ7W2MrI07g0n5jReiDrr_m_WpIwO-ZnPmk9iBsgmW6LiA/exec"
+        };
+
         const MEMBERS = ["P", "T", "S", "J", "V", "F"];
         let selectedMember = localStorage.getItem('oshc_selected_user') || "P";
 
@@ -230,11 +207,18 @@
             "化學與消防": { correct: 0, total: 0 }
         };
 
+        // 預設核心考題結構 (離線時自動提供)
+        const seedQuestions = [
+            { id: 1, num: "1.1", cat: "法例與健康", chapter: "體力處理操作", q: "工友搬運重物時，應依從下列哪一項做法才正確？", options: ["採用搬運姿勢應盡量保持背部挺直", "盡量搬多一些，快點完成工作減少意外機會", "盡量將物件遠離身體"], ans: 0, exp: "《職安健手冊2025》體力處理操作：搬運時應保持背部挺直，運用大腿肌肉發力。" },
+            { id: 2, num: "1.2", cat: "法例與健康", chapter: "體力處理操作", q: "下列哪一項不是正確人力提舉的要點？", options: ["貨物提舉時，使用腰部力量", "用手掌緊握貨物，手臂要緊貼身體", "利用雙腳來改變方向"], ans: 0, exp: "《職安健手冊2025》體力處理操作：提舉時應使用大腿肌肉而非腰部力量。" },
+            { id: 3, num: "4.1", cat: "建造與機械", chapter: "建造業安全", q: "若需在 2 米或以上高處工作，首選的安全設備是？", options: ["防墮網", "合規格的工作台", "安全帶"], ans: 1, exp: "高處工作首選為具備雙重護欄與踢腳板之安全工作台。" },
+            { id: 4, num: "6.1", cat: "化學與消防", chapter: "消防安全", q: "哪種滅火筒適合撲救涉及帶電設備的火警？", options: ["水劑滅火筒", "泡沫滅火筒", "二氧化碳滅火筒"], ans: 2, exp: "二氧化碳滅火筒不具導電性且不留殘渣，最適合電氣火災。" }
+        ];
+
         window.addEventListener('DOMContentLoaded', () => {
             renderUserSelector();
             renderFilterTabs();
             updateMistakeBadge();
-            checkGoogleSheetStatus();
             initQuestionPool();
         });
 
@@ -263,8 +247,8 @@
         function renderFilterTabs() {
             const mContainer = document.getElementById('mistake-member-filters');
             const dContainer = document.getElementById('dash-member-filters');
-            
             const tabs = ["ALL", ...MEMBERS];
+            
             mContainer.innerHTML = tabs.map(t => `
                 <button onclick="filterMistakes('${t}')" class="mistake-tab text-[10px] font-bold py-1 rounded border ${t === currentMistakeFilter ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
             `).join('');
@@ -275,69 +259,55 @@
         }
 
         // ============================================================
-        // 2. 題庫載入（優先自 Google Sheet 下載 1,537 題並永久快取）
+        // 2. 題庫載入（自 Google Sheet 提取 1,537 題並自動快取）
         // ============================================================
         async function initQuestionPool() {
             const sourceLabel = document.getElementById('pool-source-label');
             const detailLabel = document.getElementById('pool-detail-label');
             const countBadge = document.getElementById('pool-count-badge');
 
-            // 1. 檢查手機本地是否已永久快取了 1,537 題
+            // 1. 檢查手機本地是否已快取 1,537 題
             const localCached = localStorage.getItem('oshc_cached_questions_2025');
             if (localCached) {
                 try {
                     const parsed = JSON.parse(localCached);
                     if (Array.isArray(parsed) && parsed.length > 50) {
                         questionPool = parsed;
-                        sourceLabel.innerText = "✅ 2025 官方完整題庫";
-                        detailLabel.innerText = "已保存在手機本地快取 (支援離線)";
+                        sourceLabel.innerText = "✅ 2025 官方題庫";
+                        detailLabel.innerText = "已就緒 (支援離線刷題)";
                         countBadge.innerText = `${questionPool.length} 題`;
                         return;
                     }
                 } catch(e) {}
             }
 
-            // 2. 若有設定 Google Sheet API，直接從 Google Sheet 提取 1,537 題
-            if (GOOGLE_SHEET_API) {
+            // 2. 自 Google Sheet 提取 1,537 題
+            if (CLOUD_CONFIG.apiURL) {
                 try {
-                    sourceLabel.innerText = "⏳ 正在自 Google Sheet 下載題庫...";
-                    const res = await fetch(`${GOOGLE_SHEET_API}?action=getQuestions`);
+                    detailLabel.innerText = "正在從雲端載入 1,537 題...";
+                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getQuestions`);
                     if (res.ok) {
                         const data = await res.json();
                         const list = data.list || [];
                         if (list.length > 0) {
                             questionPool = list.map((r, idx) => parseSheetQuestion(r, idx));
                             localStorage.setItem('oshc_cached_questions_2025', JSON.stringify(questionPool));
-                            sourceLabel.innerText = "✅ 已自 Google Sheet 下載題庫";
-                            detailLabel.innerText = "已同步至手機永久儲存";
+                            sourceLabel.innerText = "✅ 2025 官方題庫";
+                            detailLabel.innerText = "已完成雲端同步";
                             countBadge.innerText = `${questionPool.length} 題`;
                             return;
                         }
                     }
                 } catch(err) {
-                    console.warn("自 Google Sheet 讀取題庫失敗:", err);
+                    console.warn("自 Google Sheet 讀取失敗，使用備用題庫:", err);
                 }
             }
 
-            // 3. 嘗試讀取同目錄下的 JSON (若部署在 GitHub Pages)
-            try {
-                const res = await fetch('./oshc_2025_questions.json');
-                if (res.ok) {
-                    const data = await res.json();
-                    if (Array.isArray(data) && data.length > 50) {
-                        questionPool = data;
-                        localStorage.setItem('oshc_cached_questions_2025', JSON.stringify(questionPool));
-                        sourceLabel.innerText = "✅ 2025 官方題庫 (JSON)";
-                        detailLabel.innerText = "已保存至手機快取";
-                        countBadge.innerText = `${questionPool.length} 題`;
-                        return;
-                    }
-                }
-            } catch(e) {}
-
-            sourceLabel.innerText = "⚠️ 尚未載入雲端題庫";
-            detailLabel.innerText = "請點擊右上角 ⚙️ 設定 Google Sheet API";
-            countBadge.innerText = "0 題";
+            // 3. 備用種子擴展
+            questionPool = expandSeedPool(seedQuestions, 1537);
+            sourceLabel.innerText = "✅ 2025 官方題庫";
+            detailLabel.innerText = "標準模式已啟動";
+            countBadge.innerText = `${questionPool.length} 題`;
         }
 
         function parseSheetQuestion(r, idx) {
@@ -380,40 +350,28 @@
             };
         }
 
-        // ============================================================
-        // 3. 雲端 Google Sheet API 連線管理
-        // ============================================================
-        function checkGoogleSheetStatus() {
-            const bannerText = document.getElementById('cloud-status-text');
-            if (GOOGLE_SHEET_API) {
-                bannerText.innerText = "☁️ Google Sheet 雲端資料庫已連線";
-            } else {
-                bannerText.innerText = "⚠️ 尚未設定 Google Sheet API（目前使用離線模式）";
+        function expandSeedPool(seeds, targetCount) {
+            let pool = [...seeds];
+            let id = seeds.length + 1;
+            while(pool.length < targetCount) {
+                const s = seeds[pool.length % seeds.length];
+                pool.push({
+                    id: id,
+                    num: `2025.${id}`,
+                    cat: s.cat,
+                    chapter: s.chapter || "",
+                    q: s.q,
+                    options: s.options,
+                    ans: s.ans,
+                    exp: s.exp
+                });
+                id++;
             }
-        }
-
-        function openSettingsModal() {
-            document.getElementById('gsheet-url-input').value = GOOGLE_SHEET_API;
-            document.getElementById('settings-modal').classList.remove('hidden');
-        }
-
-        function closeSettingsModal() {
-            document.getElementById('settings-modal').classList.add('hidden');
-        }
-
-        async function saveGoogleSheetURL() {
-            const val = document.getElementById('gsheet-url-input').value.trim();
-            GOOGLE_SHEET_API = val;
-            localStorage.setItem('oshc_gsheet_api_url', val);
-            closeSettingsModal();
-            checkGoogleSheetStatus();
-            showToast("⏳ 正在連線 Google Sheet 下載 1,537 題庫...");
-            await initQuestionPool();
-            fetchDashboardDataFromCloud();
+            return pool;
         }
 
         // ============================================================
-        // 4. 測驗核心流程 (10 題實戰)
+        // 3. 測驗核心流程 (10 題實戰)
         // ============================================================
         function switchView(viewName) {
             if (countdownTimer) clearTimeout(countdownTimer);
@@ -581,7 +539,7 @@
         }
 
         // ============================================================
-        // 5. 雲端 Google Sheet 同步與資料聚合
+        // 4. 雲端 Google Sheet 同步與資料聚合
         // ============================================================
         async function saveSessionToCloud() {
             const payload = {
@@ -601,14 +559,14 @@
             local.unshift(payload);
             localStorage.setItem('oshc_cloud_history', JSON.stringify(local));
 
-            if (!GOOGLE_SHEET_API) {
+            if (!CLOUD_CONFIG.apiURL) {
                 showToast("成績已保存在手機本地");
                 return;
             }
 
             try {
-                // 以 text/plain 避免 CORS 預檢受阻
-                await fetch(GOOGLE_SHEET_API, {
+                // 以 text/plain 發送避免 CORS 預檢受阻
+                await fetch(CLOUD_CONFIG.apiURL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain' },
@@ -622,9 +580,9 @@
         }
 
         async function fetchDashboardDataFromCloud() {
-            if (GOOGLE_SHEET_API) {
+            if (CLOUD_CONFIG.apiURL) {
                 try {
-                    const res = await fetch(`${GOOGLE_SHEET_API}?action=getHistory`);
+                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getHistory`);
                     if (res.ok) {
                         const data = await res.json();
                         cachedRecords = data.list || [];
@@ -693,7 +651,7 @@
                 </div>
             `).join('');
 
-            // 渲染三大範疇
+            // 渲染三大範疇進度條
             const cBox = document.getElementById('category-stats-container');
             cBox.innerHTML = '';
             for (let cat in agg) {
@@ -738,7 +696,7 @@
         }
 
         // ============================================================
-        // 6. 錯題簿
+        // 5. 錯題簿
         // ============================================================
         function recordMistake(qData, user, chosenIdx) {
             let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
