@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>職安健常識問答挑戰系統</title>
+    <title>職安健常識問答挑戰系統 (手機版)</title>
     <!-- 支援手機全螢幕 PWA 特性 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,28 +14,30 @@
         .category-bar { transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .countdown-bar { transition: width 2.5s linear; }
         * { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-        /* 自訂滾動條 */
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-12 select-none">
 
-    <!-- 頂部手機專用導覽列 (已移除所有設定按鈕與敏感資訊) -->
+    <!-- 頂部手機專用導覽列 -->
     <header class="bg-blue-900 text-white p-3.5 shadow-md sticky top-0 z-40 flex justify-between items-center">
         <div class="flex items-center gap-2">
             <span class="text-xl">👷</span>
             <div>
                 <h1 class="text-sm font-black tracking-wide leading-tight">職安健常識練靶</h1>
-                <p class="text-[10px] text-blue-200" id="current-user-banner">出戰成員: P</p>
+                <p class="text-[10px] text-blue-200" id="current-user-banner">出戰成員: P &bull; Google Sheet 雲端同步</p>
             </div>
         </div>
         <div class="flex items-center gap-1.5">
-            <button onclick="switchView('mistakes')" class="px-2.5 py-1 rounded-lg bg-blue-800 text-xs font-bold flex items-center gap-1">
+            <button onclick="switchView('intro')" class="px-2.5 py-1 rounded-lg bg-blue-800 text-xs font-bold hover:bg-blue-700 transition">
+                首頁
+            </button>
+            <button onclick="switchView('mistakes')" class="px-2.5 py-1 rounded-lg bg-blue-800 text-xs font-bold flex items-center gap-1 hover:bg-blue-700 transition">
                 <span>📕</span>
                 <span id="nav-mistake-badge" class="bg-red-500 text-white text-[10px] px-1.5 py-0.2 rounded-full hidden">0</span>
             </button>
-            <button onclick="switchView('dashboard')" class="px-2.5 py-1 rounded-lg bg-blue-800 hover:bg-blue-700 text-xs font-bold">
+            <button onclick="switchView('dashboard')" class="px-2.5 py-1 rounded-lg bg-blue-800 hover:bg-blue-700 text-xs font-bold transition">
                 📊 分析
             </button>
         </div>
@@ -45,50 +47,116 @@
     <main class="max-w-md mx-auto p-4">
         
         <!-- 1. 首頁畫面 -->
-        <div id="view-intro" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 block space-y-5">
+        <div id="view-intro" class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 block space-y-4">
             <div class="text-center pt-2">
                 <span class="inline-block p-3 bg-blue-50 rounded-2xl text-3xl mb-2">🎯</span>
                 <h2 class="text-xl font-black text-blue-950">2025 官方題庫實戰</h2>
-                <p class="text-xs text-gray-500 mt-1">全隊雲端同步 &bull; 每次隨機抽取 10 題真題</p>
+                <p class="text-xs text-gray-500 mt-0.5">全隊雲端同步 &bull; 每次隨機 10 題 &bull; 支援自訂提示</p>
             </div>
 
             <!-- 成員選擇卡片 (P, T, S, J, V, F) -->
             <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
                 <div class="flex justify-between items-center mb-2.5">
-                    <label class="text-xs font-bold text-gray-600">選擇今日出戰隊員</label>
+                    <label class="text-xs font-bold text-gray-700">請選擇今日出戰隊員</label>
                     <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold" id="selected-member-label">已選擇: P</span>
                 </div>
                 <div class="grid grid-cols-6 gap-1.5" id="user-selector">
-                    <!-- JS 動態生成 P, T, S, J, V, F -->
+                    <!-- 由 JS 動態生成 P, T, S, J, V, F 按鈕 -->
                 </div>
             </div>
 
-            <!-- 題庫狀態 -->
+            <!-- 手機版通關掌握度進度卡片 -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3.5 rounded-xl border border-blue-200 space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-black text-blue-950 flex items-center gap-1">
+                        <span>🏆</span> <span id="mastery-user-title">成員 P 通關進度</span>
+                    </span>
+                    <span class="text-[11px] font-black text-blue-800 bg-white border border-blue-200 px-2 py-0.5 rounded-full" id="mastery-count-text">
+                        0 / 1537 題 (0%)
+                    </span>
+                </div>
+                <div class="w-full bg-blue-200/80 rounded-full h-2 overflow-hidden">
+                    <div id="mastery-progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between items-center text-[10px] text-blue-700 leading-tight pt-0.5">
+                    <span id="mastery-pool-info">不重複抽取 &bull; 答錯或靠估自動重出</span>
+                    <button onclick="resetMemberMastery()" class="text-gray-400 hover:text-red-600 underline font-bold transition">
+                        重設進度
+                    </button>
+                </div>
+            </div>
+
+            <!-- 題庫狀態卡片與重新整理按鈕 -->
             <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
                 <div class="space-y-0.5">
-                    <span class="text-gray-700 font-bold block" id="pool-source-label">2025 官方完整題庫</span>
-                    <span class="text-[10px] text-gray-400" id="pool-detail-label">雲端連線同步中...</span>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-gray-800 font-bold" id="pool-source-label">2025 官方題庫</span>
+                        <span class="font-black text-blue-900 bg-blue-100 px-2 py-0.5 rounded-full text-[10px]" id="pool-count-badge">載入中...</span>
+                    </div>
+                    <span class="text-[10px] text-gray-500 block" id="pool-detail-label">Google Sheet 雲端同步 &bull; 支援離線</span>
                 </div>
-                <span class="font-black text-blue-900 bg-blue-100 px-2.5 py-0.5 rounded-full text-xs" id="pool-count-badge">載入中</span>
+                <button onclick="initQuestionPool(true)" class="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-xs">
+                    <span>🔄</span> 更新
+                </button>
             </div>
 
-            <button onclick="startQuiz()" class="w-full bg-blue-600 active:bg-blue-700 text-white py-4 rounded-xl font-black text-lg shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
-                <span>開始 10 題挑戰</span>
-                <span class="text-xl">➔</span>
+            <!-- 開始測驗按鈕 -->
+            <button onclick="startQuiz()" class="w-full bg-blue-600 active:bg-blue-700 text-white py-3.5 rounded-xl font-black text-base shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
+                <span>🚀 開始 10 題挑戰</span>
+                <span class="text-lg">➔</span>
             </button>
         </div>
 
         <!-- 2. 測驗畫面 -->
         <div id="view-quiz" class="hidden flex-col space-y-3">
             <div class="flex justify-between items-center">
-                <span class="text-xs font-bold text-gray-600 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-sm" id="quiz-progress">題號: 1 / 10</span>
-                <span class="text-xs font-bold text-blue-800 bg-blue-100 px-2.5 py-1 rounded-lg" id="quiz-category">法例與健康</span>
+                <div class="flex items-center gap-1.5">
+                    <span class="text-xs font-bold text-gray-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-xs" id="quiz-progress">第 1 / 10 題</span>
+                    <span class="text-xs font-bold bg-blue-100 text-blue-900 px-2 py-1 rounded-lg" id="quiz-user-tag">成員: P</span>
+                </div>
+                <span class="text-xs font-bold text-blue-800 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full" id="quiz-category">法例與健康</span>
             </div>
             
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-                <div class="text-[10px] text-gray-400 font-bold mb-1" id="quiz-chapter-tag">章節載入中</div>
-                <h3 class="text-base font-bold text-slate-900 leading-relaxed mb-4" id="question-text">載入題目中...</h3>
-                <div id="options-container" class="space-y-2.5"></div>
+            <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] text-gray-400 font-bold" id="quiz-chapter-tag">章節載入中</span>
+                    <span class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded font-bold">條例背景支援</span>
+                </div>
+
+                <h3 class="text-base font-bold text-slate-900 leading-relaxed" id="question-text">載入題目中...</h3>
+                <div id="options-container" class="space-y-2.5 pt-1"></div>
+
+                <!-- 手機版輔助功能列：左邊 AI 提示 (預設 untick) + 右邊 靠估 -->
+                <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
+                    
+                    <!-- 左邊：我要 AI 提示 -->
+                    <label class="flex items-center gap-1.5 p-2.5 rounded-xl border border-indigo-200 bg-indigo-50/80 active:bg-indigo-100 cursor-pointer select-none transition">
+                        <input type="checkbox" id="chk-ai-hint" onchange="toggleAiHint()" class="w-4 h-4 text-indigo-600 rounded border-indigo-300 focus:ring-indigo-500">
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[11px] font-black text-indigo-950 block truncate">🤖 我要 AI 提示</span>
+                            <span class="text-[9px] text-indigo-700 block truncate">展開試題庫提示</span>
+                        </div>
+                    </label>
+
+                    <!-- 右邊：靠估 / 不肯定 -->
+                    <label id="guessed-wrapper" class="flex items-center gap-1.5 p-2.5 rounded-xl border border-amber-200 bg-amber-50/80 active:bg-amber-100 cursor-pointer select-none transition">
+                        <input type="checkbox" id="chk-guessed" class="w-4 h-4 text-amber-600 rounded border-amber-300 focus:ring-amber-500">
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[11px] font-black text-amber-950 block truncate">🤔 呢題我係靠估</span>
+                            <span class="text-[9px] text-amber-700 block truncate">日後必定再抽考</span>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- AI 提示卡片 (預設 untick 隱藏，點選後展開) -->
+                <div id="ai-hint-box" class="hidden p-3 rounded-xl border border-indigo-200 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 text-indigo-950 transition-all text-xs space-y-1">
+                    <div class="flex items-center gap-1 font-black text-[11px] text-indigo-900">
+                        <span>💡</span>
+                        <span>試題庫自訂提示與條例背景：</span>
+                    </div>
+                    <p id="ai-hint-text" class="text-[11px] text-indigo-900 leading-relaxed font-medium pl-2.5 border-l-2 border-indigo-400"></p>
+                </div>
+
             </div>
 
             <!-- 即時解析與倒數跳轉卡片 -->
@@ -96,7 +164,7 @@
                 <div id="countdown-progress" class="absolute top-0 left-0 h-1 bg-blue-500 w-full countdown-bar"></div>
                 <div class="flex justify-between items-start mb-1.5">
                     <p id="feedback-result" class="font-bold text-sm"></p>
-                    <span class="text-[10px] text-gray-500 bg-white/90 px-2 py-0.5 rounded">點擊立即下一題 ➔</span>
+                    <span class="text-[10px] text-gray-500 bg-white/90 px-2 py-0.5 rounded border border-slate-200">下一題 ➔</span>
                 </div>
                 <p id="feedback-explanation" class="text-xs leading-relaxed text-slate-700"></p>
             </div>
@@ -111,18 +179,15 @@
                     </h2>
                     <p class="text-[11px] text-gray-500">專項攻克個人薄弱考點</p>
                 </div>
-                <button onclick="startMistakeQuiz()" id="btn-practice-mistakes" class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm">
+                <button onclick="startMistakeQuiz()" id="btn-practice-mistakes" class="bg-red-600 active:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs">
                     🎯 錯題重練 (<span id="mistake-practice-count">0</span>)
                 </button>
             </div>
 
-            <!-- 成員篩選標籤 -->
             <div class="grid grid-cols-7 gap-1" id="mistake-member-filters"></div>
-
-            <!-- 錯題清單 -->
             <div id="mistakes-list-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1"></div>
 
-            <button onclick="switchView('intro')" class="w-full bg-slate-100 text-slate-700 py-3 rounded-xl font-bold text-xs">
+            <button onclick="switchView('intro')" class="w-full bg-slate-100 active:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs">
                 返回首頁
             </button>
         </div>
@@ -132,14 +197,13 @@
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
                     <h2 class="text-lg font-black text-blue-900">隊伍能力分析</h2>
-                    <p class="text-[10px] text-gray-500">雲端實時統計 (Google Sheet)</p>
+                    <p class="text-[10px] text-gray-500">Google Sheet 雲端實時統計</p>
                 </div>
-                <button onclick="fetchDashboardDataFromCloud()" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-blue-200">
+                <button onclick="fetchDashboardDataFromCloud()" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-blue-200 active:bg-blue-100">
                     🔄 重新整理
                 </button>
             </div>
 
-            <!-- 成員篩選 -->
             <div class="grid grid-cols-7 gap-1" id="dash-member-filters"></div>
 
             <!-- 核心總分指標 -->
@@ -154,13 +218,9 @@
                 </div>
             </div>
 
-            <!-- 各成員挑戰次數卡片 -->
             <div class="grid grid-cols-3 gap-1.5" id="member-stats-container"></div>
-
-            <!-- 三大範疇掌握度進度條 -->
             <div class="space-y-2.5" id="category-stats-container"></div>
 
-            <!-- 歷次紀錄明細 -->
             <div>
                 <div class="flex justify-between items-center mb-1.5">
                     <h3 class="text-xs font-bold text-gray-600 uppercase">歷次紀錄明細</h3>
@@ -169,19 +229,40 @@
                 <div id="history-list-container" class="space-y-1.5 max-h-48 overflow-y-auto pr-1"></div>
             </div>
 
-            <button onclick="switchView('intro')" class="w-full bg-blue-900 text-white py-3 rounded-xl font-bold text-xs">
+            <button onclick="switchView('intro')" class="w-full bg-blue-900 active:bg-blue-800 text-white py-3 rounded-xl font-bold text-xs">
                 返回首頁
             </button>
         </div>
 
     </main>
 
+    <!-- 5. 歷次挑戰作答明細彈窗 (Modal) -->
+    <div id="modal-session-detail" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl border border-slate-200 max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="p-3.5 border-b border-slate-100 flex justify-between items-start bg-slate-50">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900" id="modal-detail-title">挑戰明細回顧</h3>
+                    <p class="text-[10px] text-gray-500 mt-0.5" id="modal-detail-subtitle">紀錄時間與得分</p>
+                </div>
+                <button onclick="closeSessionDetailModal()" class="w-7 h-7 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs">
+                    ✕
+                </button>
+            </div>
+            <div class="p-3.5 space-y-2.5 overflow-y-auto flex-grow text-xs" id="modal-detail-content"></div>
+            <div class="p-3 border-t border-slate-100 bg-slate-50 flex justify-end">
+                <button onclick="closeSessionDetailModal()" class="bg-blue-900 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl">
+                    關閉明細
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 自訂 Toast 提示訊息 -->
     <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 font-medium transition-all"></div>
 
     <script>
         // ============================================================
-        // 1. 雲端後端配置 (純淨背景執行，UI 絕不暴露)
+        // 1. 雲端後端配置 (直連 Google Apps Script API)
         // ============================================================
         const CLOUD_CONFIG = {
             apiURL: "https://script.google.com/macros/s/AKfycbwFJE-qdlAs_iZOR7PnxhWDaQ7W2MrI07g0n5jReiDrr_m_WpIwO-ZnPmk9iBsgmW6LiA/exec"
@@ -201,18 +282,88 @@
         let cachedRecords = [];
         let currentSessionLog = [];
 
+        // 清理舊快取，強制載入包含 Google Sheet 自訂「提示」欄位的最新題庫
+        localStorage.removeItem('oshc_cached_questions_2025_v4_hint_sync');
+        localStorage.removeItem('oshc_cached_questions_2025_v3');
+        localStorage.removeItem('oshc_cached_questions_2025_v2');
+        localStorage.removeItem('oshc_cached_questions_2025');
+        localStorage.removeItem('oshc_cached_questions_1537');
+        localStorage.removeItem('oshc_ai_hint_pref');
+
+        // ============================================================
+        // 1.1 手機版通關掌握度管理 (不重複抽取 + 答錯/靠估重複出現)
+        // ============================================================
+        function getMasteredMap(user) {
+            const raw = localStorage.getItem(`oshc_mastered_${user}`);
+            return raw ? JSON.parse(raw) : {};
+        }
+
+        function saveMasteredMap(user, map) {
+            localStorage.setItem(`oshc_mastered_${user}`, JSON.stringify(map));
+            updateMasteryUI();
+        }
+
+        function markQuestionMastered(user, qId) {
+            const map = getMasteredMap(user);
+            map[String(qId)] = true;
+            saveMasteredMap(user, map);
+        }
+
+        function markQuestionUnmastered(user, qId) {
+            const map = getMasteredMap(user);
+            if (map[String(qId)]) {
+                delete map[String(qId)];
+                saveMasteredMap(user, map);
+            }
+        }
+
+        function resetMemberMastery() {
+            const map = getMasteredMap(selectedMember);
+            const count = Object.keys(map).length;
+            if (count === 0) {
+                showToast(`成員 ${selectedMember} 目前尚未有已掌握的題目`);
+                return;
+            }
+            localStorage.removeItem(`oshc_mastered_${selectedMember}`);
+            updateMasteryUI();
+            showToast(`已重設成員 ${selectedMember} 的通關進度`);
+        }
+
+        function updateMasteryUI() {
+            const map = getMasteredMap(selectedMember);
+            const masteredCount = Object.keys(map).length;
+            const totalCount = questionPool.length || 1537;
+            const pct = Math.round((masteredCount / totalCount) * 100);
+
+            const titleEl = document.getElementById('mastery-user-title');
+            const textEl = document.getElementById('mastery-count-text');
+            const barEl = document.getElementById('mastery-progress-bar');
+            const infoEl = document.getElementById('mastery-pool-info');
+
+            if (titleEl) titleEl.innerText = `成員 ${selectedMember} 通關進度`;
+            if (textEl) textEl.innerText = `${masteredCount} / ${totalCount} 題 (${pct}%)`;
+            if (barEl) barEl.style.width = `${pct}%`;
+            if (infoEl) {
+                const remaining = Math.max(0, totalCount - masteredCount);
+                if (remaining === 0) {
+                    infoEl.innerText = `🎉 恭喜！${selectedMember} 已成功通關全部題目！`;
+                } else {
+                    infoEl.innerText = `剩餘：${remaining} 題（不重複＋答錯／靠估重出）`;
+                }
+            }
+        }
+
         let categoryResults = {
             "法例與健康": { correct: 0, total: 0 },
             "建造與機械": { correct: 0, total: 0 },
             "化學與消防": { correct: 0, total: 0 }
         };
 
-        // 預設核心考題結構 (離線時自動提供)
         const seedQuestions = [
-            { id: 1, num: "1.1", cat: "法例與健康", chapter: "體力處理操作", q: "工友搬運重物時，應依從下列哪一項做法才正確？", options: ["採用搬運姿勢應盡量保持背部挺直", "盡量搬多一些，快點完成工作減少意外機會", "盡量將物件遠離身體"], ans: 0, exp: "《職安健手冊2025》體力處理操作：搬運時應保持背部挺直，運用大腿肌肉發力。" },
-            { id: 2, num: "1.2", cat: "法例與健康", chapter: "體力處理操作", q: "下列哪一項不是正確人力提舉的要點？", options: ["貨物提舉時，使用腰部力量", "用手掌緊握貨物，手臂要緊貼身體", "利用雙腳來改變方向"], ans: 0, exp: "《職安健手冊2025》體力處理操作：提舉時應使用大腿肌肉而非腰部力量。" },
-            { id: 3, num: "4.1", cat: "建造與機械", chapter: "建造業安全", q: "若需在 2 米或以上高處工作，首選的安全設備是？", options: ["防墮網", "合規格的工作台", "安全帶"], ans: 1, exp: "高處工作首選為具備雙重護欄與踢腳板之安全工作台。" },
-            { id: 4, num: "6.1", cat: "化學與消防", chapter: "消防安全", q: "哪種滅火筒適合撲救涉及帶電設備的火警？", options: ["水劑滅火筒", "泡沫滅火筒", "二氧化碳滅火筒"], ans: 2, exp: "二氧化碳滅火筒不具導電性且不留殘渣，最適合電氣火災。" }
+            { id: 1, num: "1.1", cat: "法例與健康", chapter: "體力處理操作", q: "工友搬運重物時，應依從下列哪一項做法才正確？", options: ["採用搬運姿勢應盡量保持背部挺直", "盡量搬多一些，快點完成工作減少意外機會", "盡量將物件遠離身體"], ans: 0, exp: "《職安健手冊2025》體力處理操作：搬運時應保持背部挺直，運用大腿肌肉發力。", hint: "" },
+            { id: 2, num: "1.2", cat: "法例與健康", chapter: "體力處理操作", q: "下列哪一項不是正確人力提舉的要點？", options: ["貨物提舉時，使用腰部力量", "用手掌緊握貨物，手臂要緊貼身體", "利用雙腳來改變方向"], ans: 0, exp: "《職安健手冊2025》體力處理操作：提舉時應使用大腿肌肉而非腰部力量。", hint: "" },
+            { id: 3, num: "4.1", cat: "建造與機械", chapter: "建造業安全", q: "若需在 2 米或以上高處工作，首選的安全設備是？", options: ["防墮網", "合規格的工作台", "安全帶"], ans: 1, exp: "高處工作首選為具備雙重護欄與踢腳板之安全工作台。", hint: "" },
+            { id: 4, num: "6.1", cat: "化學與消防", chapter: "消防安全", q: "哪種滅火筒適合撲救涉及帶電設備的火警？", options: ["水劑滅火筒", "泡沫滅火筒", "二氧化碳滅火筒"], ans: 2, exp: "二氧化碳滅火筒不具導電性且不留殘渣，最適合電氣火災。", hint: "" }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -222,26 +373,36 @@
             initQuestionPool();
         });
 
+        // 渲染出戰成員選擇按鈕
         function renderUserSelector() {
             const container = document.getElementById('user-selector');
+            if (!container) return;
             container.innerHTML = '';
             MEMBERS.forEach(m => {
                 const isSelected = m === selectedMember;
                 const btn = document.createElement('button');
+                btn.type = 'button';
                 btn.className = `py-2 rounded-lg font-black text-xs border transition ${
-                    isSelected ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'bg-white text-slate-700 border-slate-200'
+                    isSelected ? 'bg-blue-600 text-white border-blue-600 shadow-sm ring-2 ring-blue-400/30' : 'bg-white text-slate-700 border-slate-200 active:bg-slate-100'
                 }`;
                 btn.innerText = m;
                 btn.onclick = () => {
                     selectedMember = m;
                     localStorage.setItem('oshc_selected_user', m);
-                    document.getElementById('current-user-banner').innerText = `出戰成員: ${m}`;
-                    document.getElementById('selected-member-label').innerText = `已選擇: ${m}`;
+                    const b = document.getElementById('current-user-banner');
+                    if (b) b.innerText = `出戰成員: ${m} • Google Sheet 雲端同步`;
+                    const l = document.getElementById('selected-member-label');
+                    if (l) l.innerText = `已選擇: ${m}`;
                     renderUserSelector();
+                    updateMasteryUI();
                 };
                 container.appendChild(btn);
             });
-            document.getElementById('current-user-banner').innerText = `出戰成員: ${selectedMember}`;
+            const b = document.getElementById('current-user-banner');
+            if (b) b.innerText = `出戰成員: ${selectedMember} • Google Sheet 雲端同步`;
+            const l = document.getElementById('selected-member-label');
+            if (l) l.innerText = `已選擇: ${selectedMember}`;
+            updateMasteryUI();
         }
 
         function renderFilterTabs() {
@@ -249,52 +410,61 @@
             const dContainer = document.getElementById('dash-member-filters');
             const tabs = ["ALL", ...MEMBERS];
             
-            mContainer.innerHTML = tabs.map(t => `
-                <button onclick="filterMistakes('${t}')" class="mistake-tab text-[10px] font-bold py-1 rounded border ${t === currentMistakeFilter ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
-            `).join('');
+            if (mContainer) {
+                mContainer.innerHTML = tabs.map(t => `
+                    <button onclick="filterMistakes('${t}')" class="mistake-tab text-[10px] font-bold py-1 rounded border ${t === currentMistakeFilter ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
+                `).join('');
+            }
 
-            dContainer.innerHTML = tabs.map(t => `
-                <button onclick="filterDashboard('${t}')" class="dash-tab text-[10px] font-bold py-1 rounded border ${t === currentDashFilter ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
-            `).join('');
+            if (dContainer) {
+                dContainer.innerHTML = tabs.map(t => `
+                    <button onclick="filterDashboard('${t}')" class="dash-tab text-[10px] font-bold py-1 rounded border ${t === currentDashFilter ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
+                `).join('');
+            }
         }
 
         // ============================================================
-        // 2. 題庫載入（自 Google Sheet 提取 1,537 題並自動快取）
+        // 2. 題庫載入（提取 1,537 題及試題庫自訂「提示」欄位）
         // ============================================================
-        async function initQuestionPool() {
+        async function initQuestionPool(forceRefresh = false) {
             const sourceLabel = document.getElementById('pool-source-label');
             const detailLabel = document.getElementById('pool-detail-label');
             const countBadge = document.getElementById('pool-count-badge');
 
-            // 1. 檢查手機本地是否已快取 1,537 題
-            const localCached = localStorage.getItem('oshc_cached_questions_2025');
-            if (localCached) {
-                try {
-                    const parsed = JSON.parse(localCached);
-                    if (Array.isArray(parsed) && parsed.length > 50) {
-                        questionPool = parsed;
-                        sourceLabel.innerText = "✅ 2025 官方題庫";
-                        detailLabel.innerText = "已就緒 (支援離線刷題)";
-                        countBadge.innerText = `${questionPool.length} 題`;
-                        return;
-                    }
-                } catch(e) {}
+            const CACHE_KEY = 'oshc_cached_questions_2025_v5_hint_sync';
+
+            if (!forceRefresh) {
+                const localCached = localStorage.getItem(CACHE_KEY);
+                if (localCached) {
+                    try {
+                        const parsed = JSON.parse(localCached);
+                        if (Array.isArray(parsed) && parsed.length > 50) {
+                            questionPool = parsed;
+                            if (sourceLabel) sourceLabel.innerText = "✅ 2025 官方題庫";
+                            if (detailLabel) detailLabel.innerText = "已就緒 (支援離線刷題 & 自訂提示)";
+                            if (countBadge) countBadge.innerText = `${questionPool.length} 題`;
+                            updateMasteryUI();
+                            return;
+                        }
+                    } catch(e) {}
+                }
             }
 
-            // 2. 自 Google Sheet 提取 1,537 題
             if (CLOUD_CONFIG.apiURL) {
                 try {
-                    detailLabel.innerText = "正在從雲端載入 1,537 題...";
+                    if (detailLabel) detailLabel.innerText = "正在從 Google Sheet 下載題庫與自訂提示...";
                     const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getQuestions`);
                     if (res.ok) {
                         const data = await res.json();
                         const list = data.list || [];
                         if (list.length > 0) {
                             questionPool = list.map((r, idx) => parseSheetQuestion(r, idx));
-                            localStorage.setItem('oshc_cached_questions_2025', JSON.stringify(questionPool));
-                            sourceLabel.innerText = "✅ 2025 官方題庫";
-                            detailLabel.innerText = "已完成雲端同步";
-                            countBadge.innerText = `${questionPool.length} 題`;
+                            localStorage.setItem(CACHE_KEY, JSON.stringify(questionPool));
+                            if (sourceLabel) sourceLabel.innerText = "✅ 2025 官方題庫";
+                            if (detailLabel) detailLabel.innerText = "已完成 Google Sheet 雲端同步 (含自訂提示)";
+                            if (countBadge) countBadge.innerText = `${questionPool.length} 題`;
+                            showToast(`✅ 成功載入 ${questionPool.length} 題與提示！`);
+                            updateMasteryUI();
                             return;
                         }
                     }
@@ -303,17 +473,25 @@
                 }
             }
 
-            // 3. 備用種子擴展
             questionPool = expandSeedPool(seedQuestions, 1537);
-            sourceLabel.innerText = "✅ 2025 官方題庫";
-            detailLabel.innerText = "標準模式已啟動";
-            countBadge.innerText = `${questionPool.length} 題`;
+            if (sourceLabel) sourceLabel.innerText = "✅ 2025 官方題庫";
+            if (detailLabel) detailLabel.innerText = "標準模式已啟動";
+            if (countBadge) countBadge.innerText = `${questionPool.length} 題`;
+            updateMasteryUI();
         }
 
+        // 精確解析 Google Sheet 欄位，讀取自訂提示
         function parseSheetQuestion(r, idx) {
             const getVal = (keys) => {
-                for (let k of keys) {
-                    if (r[k] !== undefined && r[k] !== null && String(r[k]).trim() !== '') return String(r[k]).trim();
+                const rowKeys = Object.keys(r);
+                for (let target of keys) {
+                    for (let k of rowKeys) {
+                        if (k.trim().toLowerCase() === target.toLowerCase()) {
+                            if (r[k] !== undefined && r[k] !== null && String(r[k]).trim() !== '') {
+                                return String(r[k]).trim();
+                            }
+                        }
+                    }
                 }
                 return '';
             };
@@ -327,6 +505,18 @@
             const chapter = getVal(['章節名稱', '章節', 'Chapter']) || '';
             const cat = getVal(['三大範疇', '範疇', 'Category', 'category']) || "法例與健康";
             const exp = getVal(['解析', 'Explanation', '條例引用']) || `【正確答案：${ansRaw || 'A'}】出自《職安健手冊2025》${chapter ? chapter + ' ' : ''}（題號 ${num}）。`;
+            
+            // 優先抓取自訂「提示」欄位
+            let customHint = getVal(['提示']);
+            if (!customHint) {
+                for (let k of Object.keys(r)) {
+                    const cleanK = k.trim().toLowerCase();
+                    if (cleanK.includes('提示') || cleanK.includes('hint')) {
+                        const val = String(r[k] || '').trim();
+                        if (val) { customHint = val; break; }
+                    }
+                }
+            }
 
             const cleanA = optA.replace(/^[a-cA-C][\.\、\s\:]+/, '').trim() || "選項 A";
             const cleanB = optB.replace(/^[a-cA-C][\.\、\s\:]+/, '').trim() || "選項 B";
@@ -346,7 +536,8 @@
                 q: qText || `第 ${num} 條考題`,
                 options: [cleanA, cleanB, cleanC],
                 ans: ansIdx,
-                exp: exp
+                exp: exp,
+                hint: customHint || ""
             };
         }
 
@@ -363,7 +554,8 @@
                     q: s.q,
                     options: s.options,
                     ans: s.ans,
-                    exp: s.exp
+                    exp: s.exp,
+                    hint: s.hint || ""
                 });
                 id++;
             }
@@ -371,20 +563,24 @@
         }
 
         // ============================================================
-        // 3. 測驗核心流程 (10 題實戰)
+        // 3. 測驗核心流程 (10 題實戰 & 提示開關)
         // ============================================================
         function switchView(viewName) {
             if (countdownTimer) clearTimeout(countdownTimer);
 
             ['intro', 'quiz', 'mistakes', 'dashboard'].forEach(v => {
                 const el = document.getElementById(`view-${v}`);
-                el.classList.add('hidden');
-                el.classList.remove('flex', 'block');
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex', 'block');
+                }
             });
             
             const target = document.getElementById(`view-${viewName}`);
-            target.classList.remove('hidden');
-            target.classList.add(viewName === 'intro' ? 'block' : 'flex');
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add(viewName === 'intro' ? 'block' : 'flex');
+            }
 
             if (viewName === 'dashboard') {
                 fetchDashboardDataFromCloud();
@@ -400,8 +596,18 @@
             }
 
             isMistakeMode = false;
-            const shuffled = [...questionPool].sort(() => 0.5 - Math.random());
-            currentQuiz = shuffled.slice(0, 10);
+            
+            // 依通關掌握狀態過濾不重複題目
+            const masteredMap = getMasteredMap(selectedMember);
+            let eligiblePool = questionPool.filter(q => !masteredMap[String(q.id || q.num)]);
+
+            if (eligiblePool.length === 0) {
+                showToast(`🏆 厲害！${selectedMember} 已完全掌握所有題目！進入全題庫複習模式。`);
+                eligiblePool = [...questionPool];
+            }
+
+            const shuffled = [...eligiblePool].sort(() => 0.5 - Math.random());
+            currentQuiz = shuffled.slice(0, Math.min(10, shuffled.length));
             currentIndex = 0;
             isSubmitting = false;
             currentSessionLog = [];
@@ -410,6 +616,9 @@
                 "建造與機械": { correct: 0, total: 0 },
                 "化學與消防": { correct: 0, total: 0 }
             };
+
+            const userTag = document.getElementById('quiz-user-tag');
+            if (userTag) userTag.innerText = `成員: ${selectedMember}`;
 
             switchView('quiz');
             renderQuestion();
@@ -435,18 +644,53 @@
                 "化學與消防": { correct: 0, total: 0 }
             };
 
+            const userTag = document.getElementById('quiz-user-tag');
+            if (userTag) userTag.innerText = `錯題: ${currentMistakeFilter}`;
+
             switchView('quiz');
             renderQuestion();
+        }
+
+        // 切換提示顯示狀態
+        function toggleAiHint() {
+            const chk = document.getElementById('chk-ai-hint');
+            const box = document.getElementById('ai-hint-box');
+            if (chk && box) {
+                if (chk.checked) {
+                    box.classList.remove('hidden');
+                } else {
+                    box.classList.add('hidden');
+                }
+            }
         }
 
         function renderQuestion() {
             if (countdownTimer) clearTimeout(countdownTimer);
             const feedbackBox = document.getElementById('feedback-box');
-            feedbackBox.classList.add('hidden');
-            document.getElementById('countdown-progress').style.width = '100%';
+            if (feedbackBox) feedbackBox.classList.add('hidden');
+            const progressBar = document.getElementById('countdown-progress');
+            if (progressBar) progressBar.style.width = '100%';
 
+            // 靠估勾選框每題重設為 untick
+            const chkGuessed = document.getElementById('chk-guessed');
+            if (chkGuessed) {
+                chkGuessed.checked = false;
+                chkGuessed.disabled = false;
+            }
+
+            // 【重要】每題 AI 提示勾選框預設 untick 並隱藏提示卡片
             const qData = currentQuiz[currentIndex];
-            document.getElementById('quiz-progress').innerText = `題號: ${currentIndex + 1} / ${currentQuiz.length}`;
+            const chkAi = document.getElementById('chk-ai-hint');
+            const hintBox = document.getElementById('ai-hint-box');
+            const hintText = document.getElementById('ai-hint-text');
+
+            if (chkAi) chkAi.checked = false;
+            if (hintBox) hintBox.classList.add('hidden');
+            if (hintText) {
+                hintText.innerText = qData.hint ? qData.hint : "（此題目在題庫中未設定額外提示內容）";
+            }
+
+            document.getElementById('quiz-progress').innerText = `第 ${currentIndex + 1} / ${currentQuiz.length} 題`;
             document.getElementById('quiz-category').innerText = qData.cat;
             document.getElementById('quiz-chapter-tag').innerText = qData.chapter ? `章節：${qData.chapter}` : `考點編號：${qData.num || currentIndex + 1}`;
             document.getElementById('question-text').innerText = `${qData.num ? qData.num + ' ' : ''}${qData.q}`;
@@ -459,7 +703,7 @@
                 btn.className = 'w-full text-left p-3.5 border border-slate-200 rounded-xl active:bg-blue-50 font-medium text-xs sm:text-sm text-slate-800 bg-white flex items-center gap-2.5 transition shadow-xs';
                 btn.innerHTML = `
                     <span class="w-6 h-6 rounded-md bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-xs flex-shrink-0">${['A','B','C'][idx]}</span>
-                    <span>${opt}</span>
+                    <span class="leading-relaxed">${opt}</span>
                 `;
                 btn.onclick = () => checkAnswer(idx, btn);
                 optionsBox.appendChild(btn);
@@ -469,6 +713,10 @@
         function checkAnswer(selectedIdx, btnElement) {
             const btns = document.getElementById('options-container').querySelectorAll('button');
             btns.forEach(b => b.disabled = true);
+
+            const chkGuessed = document.getElementById('chk-guessed');
+            const isGuessed = chkGuessed ? chkGuessed.checked : false;
+            if (chkGuessed) chkGuessed.disabled = true;
 
             const qData = currentQuiz[currentIndex];
             if (!categoryResults[qData.cat]) categoryResults[qData.cat] = { correct: 0, total: 0 };
@@ -484,6 +732,7 @@
                 chosen: selectedIdx,
                 ans: qData.ans,
                 isCorrect: isCorrect,
+                isGuessed: isGuessed,
                 exp: qData.exp
             });
 
@@ -494,13 +743,23 @@
 
             feedbackBox.classList.remove('hidden');
 
-            if (isCorrect) {
+            if (isCorrect && !isGuessed) {
                 btnElement.classList.replace('border-slate-200', 'border-green-500');
                 btnElement.classList.add('bg-green-50', 'text-green-900');
                 feedbackBox.className = 'p-3.5 rounded-xl border border-green-200 bg-green-50 text-green-950 cursor-pointer relative overflow-hidden';
-                resultText.innerText = '✅ 答對了！法規掌握清晰。';
+                resultText.innerText = '✅ 答對了！法規條文清晰（已標記掌握，日後不再出）。';
                 categoryResults[qData.cat].correct++;
+                
+                markQuestionMastered(selectedMember, qData.id || qData.num);
                 if (isMistakeMode) removeMistake(qData.id, selectedMember);
+            } else if (isCorrect && isGuessed) {
+                btnElement.classList.replace('border-slate-200', 'border-amber-500');
+                btnElement.classList.add('bg-amber-50', 'text-amber-900');
+                feedbackBox.className = 'p-3.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-950 cursor-pointer relative overflow-hidden';
+                resultText.innerText = '💡 靠估答對！因勾選了靠估，日後會繼續隨機抽考。';
+                categoryResults[qData.cat].correct++;
+
+                markQuestionUnmastered(selectedMember, qData.id || qData.num);
             } else {
                 btnElement.classList.replace('border-slate-200', 'border-red-500');
                 btnElement.classList.add('bg-red-50', 'text-red-900');
@@ -509,7 +768,9 @@
                     btns[qData.ans].classList.add('bg-green-50');
                 }
                 feedbackBox.className = 'p-3.5 rounded-xl border border-red-200 bg-red-50 text-red-950 cursor-pointer relative overflow-hidden';
-                resultText.innerText = '❌ 答錯了！請熟讀相關法規。';
+                resultText.innerText = '❌ 答錯了！此題將繼續留在隨機題庫中。';
+
+                markQuestionUnmastered(selectedMember, qData.id || qData.num);
                 if (!isMistakeMode) recordMistake(qData, selectedMember, selectedIdx);
             }
 
@@ -554,7 +815,6 @@
                 "SessionDetails": currentSessionLog
             };
 
-            // 本地暫存備份
             let local = JSON.parse(localStorage.getItem('oshc_cloud_history')) || [];
             local.unshift(payload);
             localStorage.setItem('oshc_cloud_history', JSON.stringify(local));
@@ -565,7 +825,6 @@
             }
 
             try {
-                // 以 text/plain 發送避免 CORS 預檢受阻
                 await fetch(CLOUD_CONFIG.apiURL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -642,16 +901,14 @@
             const overallPct = grandT === 0 ? 0 : Math.round((grandC / grandT) * 100);
             document.getElementById('dash-total-accuracy').innerText = `${overallPct}%`;
 
-            // 渲染成員小卡
             const mBox = document.getElementById('member-stats-container');
             mBox.innerHTML = MEMBERS.map(m => `
-                <div onclick="filterDashboard('${m}')" class="border ${currentDashFilter === m ? 'border-blue-600 bg-blue-50' : 'border-slate-200 bg-slate-50'} p-2 rounded-xl text-center">
-                    <span class="block text-[11px] font-black">${m}</span>
+                <div onclick="filterDashboard('${m}')" class="border ${currentDashFilter === m ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'border-slate-200 bg-slate-50'} p-2 rounded-xl text-center cursor-pointer transition">
+                    <span class="block text-[11px] font-black ${currentDashFilter === m ? 'text-blue-700' : 'text-slate-700'}">${m}</span>
                     <span class="block text-base font-black text-blue-900">${userCounts[m]}</span>
                 </div>
             `).join('');
 
-            // 渲染三大範疇進度條
             const cBox = document.getElementById('category-stats-container');
             cBox.innerHTML = '';
             for (let cat in agg) {
@@ -671,7 +928,6 @@
                 `;
             }
 
-            // 歷次明細列表
             const hBox = document.getElementById('history-list-container');
             if (list.length === 0) {
                 hBox.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">尚無挑戰紀錄</p>`;
@@ -683,13 +939,23 @@
                 const totalT = (Number(r.Law_T)||0) + (Number(r.Mech_T)||0) + (Number(r.Chem_T)||0);
                 const pct = totalT === 0 ? 0 : Math.round((totalC / totalT) * 100);
                 const d = r.Date ? new Date(r.Date).toLocaleString('zh-HK', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '剛剛';
+                const details = r.SessionDetails || [];
+                const hasDetails = (Array.isArray(details) && details.length > 0) || (typeof details === 'string' && details.length > 10);
+
                 return `
                     <div class="p-2 border border-slate-100 rounded-lg bg-slate-50 text-[11px] flex justify-between items-center">
                         <div class="flex items-center gap-2">
                             <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-900 font-bold flex items-center justify-center text-[10px]">${u}</span>
                             <span class="text-slate-600">${d} (${totalC}/${totalT}題)</span>
                         </div>
-                        <span class="font-bold ${pct >= 70 ? 'text-green-600' : 'text-red-600'}">${pct}%</span>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold ${pct >= 70 ? 'text-green-600' : pct >= 50 ? 'text-amber-600' : 'text-red-600'}">${pct}%</span>
+                            ${hasDetails ? `
+                                <button onclick='openHistoryDetailModal(${JSON.stringify(details)}, "${u}", "${d}", "${totalC}/${totalT}")' class="text-[10px] text-blue-600 font-bold underline">
+                                    明細
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
                 `;
             }).join('');
@@ -712,16 +978,19 @@
             localStorage.setItem('oshc_mistake_notebook', JSON.stringify(nb));
             updateMistakeBadge();
             renderMistakesList();
+            showToast("已標記掌握並移出錯題簿");
         }
 
         function updateMistakeBadge() {
             const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
             const badge = document.getElementById('nav-mistake-badge');
-            if (nb.length > 0) {
-                badge.innerText = nb.length;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
+            if (badge) {
+                if (nb.length > 0) {
+                    badge.innerText = nb.length;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
             }
         }
 
@@ -735,7 +1004,8 @@
             const container = document.getElementById('mistakes-list-container');
             const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
             const list = (currentMistakeFilter === 'ALL') ? nb : nb.filter(m => m.user === currentMistakeFilter);
-            document.getElementById('mistake-practice-count').innerText = list.length;
+            const countEl = document.getElementById('mistake-practice-count');
+            if (countEl) countEl.innerText = list.length;
 
             if (list.length === 0) {
                 container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">🎉 目前沒有錯題！</div>`;
@@ -746,12 +1016,61 @@
                 <div class="p-3 rounded-xl border border-red-100 bg-red-50/50 text-xs space-y-1.5">
                     <div class="flex justify-between items-center">
                         <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${m.user}</span>
-                        <button onclick="removeMistake(${m.questionData.id}, '${m.user}')" class="text-[10px] text-gray-400 hover:text-red-600">✓ 標記掌握</button>
+                        <button onclick="removeMistake(${m.questionData.id}, '${m.user}')" class="text-[10px] text-gray-400 hover:text-red-600 font-bold">✓ 標記掌握</button>
                     </div>
-                    <p class="font-bold text-slate-800">${m.questionData.q}</p>
-                    <p class="text-green-700 font-bold">✅ 正確答案：${['A','B','C'][m.questionData.ans]}. ${m.questionData.options[m.questionData.ans]}</p>
+                    <p class="font-bold text-slate-800 leading-relaxed">${m.questionData.q}</p>
+                    <div class="bg-white/80 p-2 rounded-lg text-[11px] border border-red-100 space-y-0.5">
+                        <p class="text-red-700 font-medium">❌ 當時選擇：${m.questionData.options[m.chosen] || '未作答'}</p>
+                        <p class="text-green-700 font-bold">✅ 正確答案：${['A','B','C'][m.questionData.ans]}. ${m.questionData.options[m.questionData.ans]}</p>
+                    </div>
+                    <p class="text-[10px] text-gray-500 bg-white/90 p-2 rounded-lg leading-relaxed">${m.questionData.exp}</p>
                 </div>
             `).join('');
+        }
+
+        // ============================================================
+        // 6. 歷次作答明細彈窗
+        // ============================================================
+        function openHistoryDetailModal(detailsRaw, user, dateStr, score) {
+            let details = detailsRaw;
+            if (typeof details === 'string') {
+                try { details = JSON.parse(detailsRaw); } catch(e) { details = []; }
+            }
+
+            const modal = document.getElementById('modal-session-detail');
+            document.getElementById('modal-detail-title').innerText = `出戰成員 [${user}] 挑戰明細`;
+            document.getElementById('modal-detail-subtitle').innerText = `時間：${dateStr} | 得分：${score}`;
+            
+            const content = document.getElementById('modal-detail-content');
+            content.innerHTML = '';
+
+            if (!Array.isArray(details) || details.length === 0) {
+                content.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">無詳細作答日誌</p>`;
+            } else {
+                details.forEach((item, idx) => {
+                    const optLetter = ['A', 'B', 'C'];
+                    content.innerHTML += `
+                        <div class="p-2.5 rounded-xl border ${item.isCorrect ? (item.isGuessed ? 'border-amber-200 bg-amber-50/40' : 'border-green-100 bg-green-50/40') : 'border-red-100 bg-red-50/40'} text-xs space-y-1">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-slate-700">第 ${idx + 1} 題 (${item.cat})</span>
+                                <div class="flex items-center gap-1">
+                                    ${item.isGuessed ? '<span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1 rounded">靠估</span>' : ''}
+                                    <span class="font-bold ${item.isCorrect ? 'text-green-700' : 'text-red-700'}">${item.isCorrect ? '✅ 答對' : '❌ 答錯'}</span>
+                                </div>
+                            </div>
+                            <p class="font-bold text-slate-800">${item.num ? item.num + ' ' : ''}${item.q}</p>
+                            <p class="${item.isCorrect ? 'text-green-700' : 'text-red-700'}">作答：${optLetter[item.chosen]}. ${item.options[item.chosen] || ''}</p>
+                            ${!item.isCorrect ? `<p class="text-green-700 font-bold">正解：${optLetter[item.ans]}. ${item.options[item.ans] || ''}</p>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeSessionDetailModal() {
+            document.getElementById('modal-session-detail').classList.add('hidden');
         }
 
         function showToast(msg) {
