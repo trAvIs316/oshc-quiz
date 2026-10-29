@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 資安加固：Content Security Policy (防範外部惡意腳本注入) -->
+    <!-- 資安加固：Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; img-src 'self' data:;">
     <title>職安健常識問答挑戰系統 (四年全題庫旗艦版)</title>
     <!-- 支援手機全螢幕 PWA 特性 -->
@@ -27,13 +27,16 @@
         <div class="flex items-center gap-2">
             <span class="text-xl">👷</span>
             <div>
-                <h1 class="text-sm font-black tracking-wide leading-tight">職安健四年題庫練靶</h1>
+                <h1 class="text-sm font-black tracking-wide leading-tight">職安健練靶與秘笈</h1>
                 <p class="text-[10px] text-blue-200" id="current-user-banner">出戰成員: P &bull; 雲端同步</p>
             </div>
         </div>
         <div class="flex items-center gap-1">
             <button onclick="switchView('intro')" class="px-2 py-1 rounded-lg bg-blue-800 text-xs font-bold hover:bg-blue-700 transition">
                 首頁
+            </button>
+            <button onclick="switchView('cards')" class="px-2 py-1 rounded-lg bg-indigo-600 text-xs font-black hover:bg-indigo-500 transition shadow-xs">
+                📖 秘笈
             </button>
             <button onclick="switchView('search')" class="px-2 py-1 rounded-lg bg-blue-800 text-xs font-bold hover:bg-blue-700 transition">
                 🔍 查題
@@ -56,7 +59,7 @@
             <div class="text-center pt-1">
                 <span class="inline-block p-2.5 bg-blue-50 rounded-2xl text-2xl mb-1">🎯</span>
                 <h2 class="text-lg font-black text-blue-950">2017 - 2026 四年官方題庫實戰</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">支援單選 / 多選題型 &bull; 跨年份特訓 &bull; 法例詳解</p>
+                <p class="text-[11px] text-gray-500 mt-0.5">單選 / 多選題型 &bull; 課程大綱進度 &bull; 法例詳解</p>
             </div>
 
             <!-- 成員選擇卡片 (P, T, S, J, V, F) -->
@@ -68,15 +71,13 @@
                 <div class="grid grid-cols-6 gap-1.5" id="user-selector"></div>
             </div>
 
-            <!-- 題庫年份選擇器 (覆蓋 4 年題目) -->
+            <!-- 題庫年份選擇器 -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
                 <div class="flex justify-between items-center">
                     <label class="text-xs font-bold text-gray-700">2. 選擇比賽年份題庫</label>
                     <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full" id="year-pool-count-tag">載入中...</span>
                 </div>
-                <div class="grid grid-cols-3 gap-1.5" id="year-selector">
-                    <!-- 由 JS 動態渲染 ALL, 2026, 2025, 2022, 2017 -->
-                </div>
+                <div class="grid grid-cols-3 gap-1.5" id="year-selector"></div>
             </div>
 
             <!-- 訓練範疇與比賽設定 -->
@@ -141,7 +142,54 @@
             </button>
         </div>
 
-        <!-- 2. 測驗畫面 -->
+        <!-- 2. 【學習卡大綱與秘笈庫畫面】 -->
+        <div id="view-cards" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+            <div class="flex justify-between items-start border-b pb-2.5">
+                <div>
+                    <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5">
+                        <span>📖</span> 職安健課程大綱與秘笈庫
+                    </h2>
+                    <p class="text-[10px] text-gray-500 mt-0.5">點擊膠囊展開章節，檢視學習進度與卡片製作狀況</p>
+                </div>
+                <span id="cards-mastery-badge" class="text-[10px] font-black bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded-full whitespace-nowrap">
+                    掌握度: 0/30 卡
+                </span>
+            </div>
+
+            <!-- 第一層：三大範疇主膠囊 -->
+            <div>
+                <label class="text-[11px] font-black text-slate-600 block mb-1.5">三大核心範疇（點選切換大綱）：</label>
+                <div class="grid grid-cols-3 gap-1.5" id="major-capsule-container"></div>
+            </div>
+
+            <!-- 第二層：該範疇內各章節的膠囊進度卡 -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-black text-slate-800" id="current-category-title">章節學習進度</span>
+                    <span class="text-[10px] text-gray-500" id="current-category-summary">已做 / 未做統計</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2" id="chapter-capsule-container"></div>
+            </div>
+
+            <!-- 篩選目前選定章節的學習卡展示區域 -->
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-xs font-black text-slate-800 flex items-center gap-1">
+                        <span>📑</span> <span id="current-cards-view-title">學習卡清單</span>
+                    </h3>
+                    <span class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full font-bold" id="current-cards-view-count">
+                        共 0 張卡
+                    </span>
+                </div>
+                <div id="cards-list-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1"></div>
+            </div>
+
+            <button onclick="switchView('intro')" class="w-full bg-slate-100 active:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs">
+                返回首頁
+            </button>
+        </div>
+
+        <!-- 3. 測驗畫面 -->
         <div id="view-quiz" class="hidden flex-col space-y-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-1.5">
@@ -164,12 +212,10 @@
                 <h3 class="text-base font-bold text-slate-900 leading-relaxed" id="question-text">載入題目中...</h3>
                 <div id="options-container" class="space-y-2 pt-1"></div>
 
-                <!-- 多選題專用確認提交按鈕 -->
                 <button id="btn-submit-multi" onclick="submitMultiChoiceAnswer()" class="hidden w-full bg-indigo-600 active:bg-indigo-700 text-white py-2.5 rounded-xl font-black text-xs shadow-sm transition">
                     ✓ 確認提交多選答案
                 </button>
 
-                <!-- 手機版輔助功能列：左邊 AI 提示 + 右邊 靠估 -->
                 <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
                     <label class="flex items-center gap-1.5 p-2.5 rounded-xl border border-indigo-200 bg-indigo-50/80 active:bg-indigo-100 cursor-pointer select-none transition">
                         <input type="checkbox" id="chk-ai-hint" onchange="toggleAiHint()" class="w-4 h-4 text-indigo-600 rounded border-indigo-300 focus:ring-indigo-500">
@@ -188,7 +234,6 @@
                     </label>
                 </div>
 
-                <!-- AI 提示卡片 -->
                 <div id="ai-hint-box" class="hidden p-3 rounded-xl border border-indigo-200 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 text-indigo-950 transition-all text-xs space-y-1">
                     <div class="flex items-center gap-1 font-black text-[11px] text-indigo-900">
                         <span>💡</span>
@@ -198,7 +243,6 @@
                 </div>
             </div>
 
-            <!-- 即時解析與倒數跳轉卡片 (支援點擊暫停詳讀) -->
             <div id="feedback-box" class="hidden p-4 rounded-xl border shadow-sm relative overflow-hidden">
                 <div id="countdown-progress" class="absolute top-0 left-0 h-1 bg-blue-500 w-full countdown-bar"></div>
                 <div class="flex justify-between items-center mb-2 gap-2">
@@ -216,7 +260,7 @@
             </div>
         </div>
 
-        <!-- 3. 題庫全局查題畫面 (新增功能) -->
+        <!-- 4. 題庫全局查題畫面 -->
         <div id="view-search" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3.5">
             <div class="flex justify-between items-center border-b pb-2.5">
                 <div>
@@ -240,7 +284,7 @@
             </div>
         </div>
 
-        <!-- 4. 錯題重溫簿畫面 -->
+        <!-- 5. 錯題重溫簿畫面 -->
         <div id="view-mistakes" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
@@ -262,7 +306,7 @@
             </button>
         </div>
 
-        <!-- 5. 數據分析儀表板 -->
+        <!-- 6. 數據分析儀表板 -->
         <div id="view-dashboard" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
@@ -276,7 +320,6 @@
 
             <div class="grid grid-cols-7 gap-1" id="dash-member-filters"></div>
 
-            <!-- 核心總分指標 -->
             <div class="grid grid-cols-2 gap-2.5">
                 <div class="border border-slate-200 p-3 rounded-xl text-center bg-slate-50">
                     <p class="text-gray-500 text-[11px]" id="dash-games-title">挑戰總次數</p>
@@ -306,7 +349,7 @@
 
     </main>
 
-    <!-- 6. 歷次挑戰作答明細彈窗 (Modal) -->
+    <!-- 7. 歷次挑戰作答明細彈窗 (Modal) -->
     <div id="modal-session-detail" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl border border-slate-200 max-h-[85vh] flex flex-col overflow-hidden">
             <div class="p-3.5 border-b border-slate-100 flex justify-between items-start bg-slate-50">
@@ -331,9 +374,6 @@
     <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 font-medium transition-all"></div>
 
     <script>
-        // ============================================================
-        // 0. 資安防護工具：嚴格 HTML 轉義 (防止 DOM XSS 跨站腳本攻擊)
-        // ============================================================
         function escapeHTML(str) {
             if (str === null || str === undefined) return '';
             return String(str)
@@ -344,9 +384,6 @@
                 .replace(/'/g, '&#39;');
         }
 
-        // ============================================================
-        // 1. 雲端後端配置與全局狀態
-        // ============================================================
         const CLOUD_CONFIG = {
             apiURL: "https://script.google.com/macros/s/AKfycbwFJE-qdlAs_iZOR7PnxhWDaQ7W2MrI07g0n5jReiDrr_m_WpIwO-ZnPmk9iBsgmW6LiA/exec",
             apiToken: "OSHC_TEAM_2026_SECURE_KEY"
@@ -373,20 +410,164 @@
         let selectedYear = localStorage.getItem('oshc_selected_year') || "ALL";
         let selectedCategory = "ALL";
 
+        // ============================================================
+        // 課程大綱規劃數據 (全盤 30 張卡片體系)
+        // ============================================================
+        const CURRICULUM_PLAN = [
+            // 法例與健康 (11章節，共15張卡)
+            { cat: "法例與健康", ch: "工場整理", planned: 1, title: "5S 工場管理全拆解" },
+            { cat: "法例與健康", ch: "職安健法例及資料", planned: 2, title: "密閉空間工作安全 (Cap. 59AE)" },
+            { cat: "法例與健康", ch: "職安健法例及資料", planned: 2, title: "Cap. 59 vs 509 法例體系與呈報期限 (待製作)" },
+            { cat: "法例與健康", ch: "體力處理操作", planned: 1, title: "體力處理操作與人體工學原則 (待製作)" },
+            { cat: "法例與健康", ch: "安全管理", planned: 1, title: "安全管理制度 14 元素與政策檢討 (待製作)" },
+            { cat: "法例與健康", ch: "個人防護", planned: 1, title: "個人防護裝備規格 (PPE) (待製作)" },
+            { cat: "法例與健康", ch: "職業健康", planned: 3, title: "法定補償職業病與通報天數 (待製作)" },
+            { cat: "法例與健康", ch: "職業健康", planned: 3, title: "噪音管制與聽力保護 (85/90dB) (待製作)" },
+            { cat: "法例與健康", ch: "職業健康", planned: 3, title: "酷熱天氣、中暑與物理危害 (待製作)" },
+            { cat: "法例與健康", ch: "辦公室安全", planned: 1, title: "顯示屏幕設備 (DSE) (待製作)" },
+            { cat: "法例與健康", ch: "飲食業安全", planned: 1, title: "廚房排氣管道、切肉機與防滑 (待製作)" },
+            { cat: "法例與健康", ch: "國家及澳門特別行政區的職安健法例", planned: 2, title: "內地《安全生產法》三同時 (待製作)" },
+            { cat: "法例與健康", ch: "國家及澳門特別行政區的職安健法例", planned: 2, title: "澳門建築安全規章與競賽考點 (待製作)" },
+            { cat: "法例與健康", ch: "職業安全約章", planned: 1, title: "職業安全約章與委員會 (待製作)" },
+            { cat: "法例與健康", ch: "職安局資訊", planned: 1, title: "職安局資助計劃與工作安全行為 (待製作)" },
+
+            // 建造與機械 (6章節，共10張卡)
+            { cat: "建造與機械", ch: "建造業安全", planned: 2, title: "竹棚架與工作平台安全法規" },
+            { cat: "建造與機械", ch: "建造業安全", planned: 2, title: "工作台雙重護欄、底護板與防墮網 (待製作)" },
+            { cat: "建造與機械", ch: "安全吊運", planned: 1, title: "起重機械與吊運安全 (Cap. 59J)" },
+            { cat: "建造與機械", ch: "機械操作安全", planned: 2, title: "機械防護罩與急停裝置 (待製作)" },
+            { cat: "建造與機械", ch: "機械操作安全", planned: 2, title: "叉式起重車與負載中心 (待製作)" },
+            { cat: "建造與機械", ch: "電力安全", planned: 2, title: "特低壓、雙重絕緣與接地防護 (待製作)" },
+            { cat: "建造與機械", ch: "電力安全", planned: 2, title: "漏電斷路器 (RCD 30mA) (待製作)" },
+            { cat: "建造與機械", ch: "燒焊操作安全", planned: 2, title: "氣體焊接與回火防止器 (待製作)" },
+            { cat: "建造與機械", ch: "燒焊操作安全", planned: 2, title: "電弧焊防觸電與護眼濾光號數 (待製作)" },
+            { cat: "建造與機械", ch: "裝修維修工作安全", planned: 1, title: "吊棚狗臂架與梯具三點接觸 (待製作)" },
+
+            // 化學與消防 (2章節，共5張卡)
+            { cat: "化學與消防", ch: "消防安全", planned: 2, title: "滅火原理與滅火筒選用矩陣 (待製作)" },
+            { cat: "化學與消防", ch: "消防安全", planned: 2, title: "易燃液體、噴漆抽風 (5分鐘) 與閃點 (待製作)" },
+            { cat: "化學與消防", ch: "化學品安全", planned: 3, title: "GHS 危害象形圖與 SDS 16 項 (待製作)" },
+            { cat: "化學與消防", ch: "化學品安全", planned: 3, title: "常見毒氣特性 (CO/H2S/Cl2) (待製作)" },
+            { cat: "化學與消防", ch: "化學品安全", planned: 3, title: "化學品儲存隔絕與洩漏應變 (待製作)" }
+        ];
+
+        // 保底示範卡（離線或 Google Sheet 尚未填寫時使用）
+        const FALLBACK_STUDY_CARDS = [
+            {
+                id: "card_5s",
+                category: "法例與健康",
+                chapter: "工場整理",
+                title: "5S 工場管理全拆解",
+                badge: "工場整理",
+                goldenRule: "5S 源自日本，核心邏輯由「物 (整理/存放)」到「制度 (清潔/標準)」再到「人 (修養)」。",
+                cheatSheet: [
+                    { term: "1S 整理 (Seiri)", desc: "把要與不要的東西清楚分別出來，丟棄不要的 (騰出空間)" },
+                    { term: "2S 存放 (Seiton)", desc: "將甚麼東西、多少數量、放在甚麼地方明確規劃 (定置、定量、標示)" },
+                    { term: "3S 清潔 (Seiso)", desc: "清理污垢並保持這種狀態，同時作為日常隱患檢查" },
+                    { term: "4S 標準 (Seiketsu)", desc: "為整理、存放及清潔提供依據並制度化 (規章守則)" },
+                    { term: "5S 修養 (Shitsuke)", desc: "灌輸員工按規定做事，培養保持工場整齊的自律態度" }
+                ],
+                traps: [
+                    "制訂安全規則督促員工保持工場整理，屬於【行政控制 (Administrative Control)】，絕非工程控制！",
+                    "工場整理欠佳最常見的意外是【絆倒及滑倒 (Slips and Trips)】。",
+                    "地面黃色實線為通道邊界；【黃色虛線】為劃出員工出入或轉向交匯位置。"
+                ],
+                rhyme: "整理分要否，存放定位置；清潔查隱患，標準成制度；修養重自律，行政控滑跌。",
+                relatedKeywords: ["5S", "整理", "存放", "清潔", "標準", "修養", "絆倒"]
+            },
+            {
+                id: "card_scaffold",
+                category: "建造與機械",
+                chapter: "建造業安全",
+                title: "竹棚架與工作平台安全法規",
+                badge: "高空與棚架",
+                goldenRule: "高處工作首選具備雙重護欄與踢腳板的安全工作台；竹棚搭拆必須在合資格人士直接監督下進行。",
+                cheatSheet: [
+                    { term: "合資格人士 (CP)", desc: "具備 10 年或以上竹棚架實際工作經驗 (監督搭拆)" },
+                    { term: "曾受訓練工人", desc: "修畢認可課程並具備最少 1 年竹棚架工作經驗" },
+                    { term: "法定表格五 (Form 5)", desc: "首次使用前、大改動後、受天氣影響後，及每隔 14 天定期檢查" },
+                    { term: "竹竿規格", desc: "竹齡必須超逾 3 年；垂直直杆直徑不得少於 75 毫米；兩直杆對接重疊 1.5 至 2 米" },
+                    { term: "工作平台尺寸", desc: "淨闊度最少 400 毫米；頂部護欄 900 至 1150 毫米；底護板 (踢腳板) 最少 200 毫米" },
+                    { term: "連牆器 (拉條)", desc: "離地 100 米以下垂直間距不得超逾 6.3 米；離地 100 米或以上收緊至 4.2 米 (2024新規)" },
+                    { term: "工程師介入界線", desc: "竹棚架高度超逾 15 米，必須由註冊專業工程師 (RPE) 設計及批准" }
+                ],
+                traps: [
+                    "底護板高度是不少於 200mm，非 100mm（100mm 是大橫杆密竹淨間距極限）。",
+                    "吊棚狗臂架必須裝上最少 3 顆拉爆螺絲，且遠離混凝土邊緣至少 3 倍嵌入深度，嚴禁打入磚牆或批盪。"
+                ],
+                rhyme: "人十訓一表五簽，十五米高請 RPE；護欄千一腳板二，百米高拉四米二；狗臂牢打三拉爆，遠離邊緣三倍深。",
+                relatedKeywords: ["竹棚", "工作台", "表格五", "護欄", "底護板", "連牆器", "狗臂架"]
+            },
+            {
+                id: "card_confined_space",
+                category: "法例與健康",
+                chapter: "職安健法例及資料",
+                title: "密閉空間工作安全 (Cap. 59AE)",
+                badge: "密閉空間",
+                goldenRule: "非經合資格人士進行危險評估並獲東主簽發「許可工作證明書」，任何人不得進入密閉空間。",
+                cheatSheet: [
+                    { term: "核准工人入場門檻", desc: "必須年滿 18 歲 + 持有勞工處認可核准工人證書 (只得平安咭不可進入)" },
+                    { term: "合資格人士 (CP)", desc: "由僱主/東主以書面正式委任，負責事前氣體測試與危險評估" },
+                    { term: "法定安全氧氣濃度", desc: "19.5% 至 23% (低於 19.5% 窒息；高於 23% 富氧劇烈燃爆)" },
+                    { term: "可燃氣體爆炸極限", desc: "濃度必須低於爆炸下限的 10% LEL，達標必須即時撤離" },
+                    { term: "許可工作證明書 (PTW)", desc: "列明安全措施，有效時限最長不超逾 24 小時；報告留存最少 1 年" },
+                    { term: "待命人員 (Standby)", desc: "入口處派駐至少 1 名待命人員全程監察，遇險通報救援，嚴禁擅離崗位或盲目入內" },
+                    { term: "救援呼吸裝備唯一標準", desc: "嚴禁使用濾毒罐防毒面罩，法定必須佩戴供氣式呼吸器 (SCBA / Airline)" }
+                ],
+                traps: [
+                    "救人絕對不能戴濾毒罐面罩，必須是供氣式呼吸器，且品牌型號須獲勞工處處長認可！",
+                    "通風必須用吹入新鮮空氣的正壓通風，嚴禁用純氧通風（會引致瞬間爆燃）。"
+                ],
+                rhyme: "十八核准書面委，氧氣十九半到廿三；救人嚴禁用濾罐，供氣呼吸許可證；待命看門最長廿四，報告存檔記一年。",
+                relatedKeywords: ["密閉空間", "核准工人", "氧氣", "供氣式呼吸器", "許可工作證明書", "待命人員"]
+            },
+            {
+                id: "card_crane_lifting",
+                category: "建造與機械",
+                chapter: "安全吊運",
+                title: "起重機械與吊運安全 (Cap. 59J)",
+                badge: "起重吊運",
+                goldenRule: "起重機械與裝置必須分開管理，起重機械管動力結構，起重裝置管吊索卡扣。",
+                cheatSheet: [
+                    { term: "表格一 (Form 1)", desc: "起重機械 (吊機/天秤) 首次使用前或大修後，徹底檢驗及「試力測試」證明書" },
+                    { term: "表格三 (Form 3)", desc: "起重機械定期徹底檢驗 (免試力)，週期最少每 12 個月一次" },
+                    { term: "表格四 (Form 4)", desc: "起重機械每星期例行常規檢查記錄" },
+                    { term: "表格六 (Form 6)", desc: "起重裝置 (吊索、鈎、環、卡扣) 定期檢驗，週期最少每 6 個月一次" },
+                    { term: "鋼絲繩報廢標記", desc: "在任何 8 倍直徑長度範圍內，斷絲數目超過鋼絲總數的 10% 必須報廢" },
+                    { term: "吊鈎開口變形極限", desc: "吊鈎喉口變形超過原廠尺寸的 15% 必須更換；必須配備有效安全防落鎖扣" },
+                    { term: "移動部件淨空間", desc: "起重機械移動或轉動部分與附近障礙物之間，最少保持 600 毫米安全通路" }
+                ],
+                traps: [
+                    "分清楚【起重機械】與【起重裝置】：機械是 12 個月 (表格三)，索具裝置是 6 個月 (表格六)！",
+                    "雙肢吊索夾角愈大張力愈大，標準操作夾角不超逾 90 度，絕對極限不得超逾 120 度。"
+                ],
+                rhyme: "機試力表一簽，十二月表三驗；裝置半年表六管，八倍長斷十廢鋼繩；鈎歪十五即刻換，六百毫米防夾身。",
+                relatedKeywords: ["起重機械", "起重裝置", "表格一", "表格三", "表格六", "鋼絲繩", "吊鈎", "600毫米"]
+            }
+        ];
+
+        // 動態學習卡儲存庫（優先讀取本地快取，再由雲端同步）
+        let studyCardsPool = [];
+        try {
+            const cachedCards = localStorage.getItem('oshc_cached_study_cards');
+            studyCardsPool = cachedCards ? JSON.parse(cachedCards) : FALLBACK_STUDY_CARDS;
+        } catch(e) {
+            studyCardsPool = FALLBACK_STUDY_CARDS;
+        }
+
+        let selectedCurriculumCat = "法例與健康";
+        let selectedCurriculumChapter = "ALL";
+
         let questionPool = [];
         let currentQuiz = [];
         let currentIndex = 0;
         let selectedMultiIndices = new Set();
-
-        // 計時與倒數控制
         let countdownTimer = null;
         let countdownInterval = null;
         let isCountdownPaused = false;
         let remainingCountdownMs = 0;
-
         let questionSpeedTimer = null;
         let speedSecondsLeft = 15;
-
         let isSubmitting = false;
         let isMistakeMode = false;
         let currentMistakeFilter = "ALL";
@@ -401,7 +582,6 @@
             "化學與消防": { correct: 0, total: 0 }
         };
 
-        // 內建 4 年精選種子備用題庫（含 2025 多選題與 2026 詳解示範）
         const seedQuestions = [
             { id: "2026_1.1", year: "2026", num: "1.1", cat: "法例與健康", chapter: "體力處理操作", q: "工友搬運重物時，應依從下列哪一項做法才正確？", options: ["採用搬運姿勢應盡量保持背部挺直", "盡量搬多一些，快點完成工作減少意外機會", "盡量將物件遠離身體"], ans: [0], isMulti: false, exp: "【正確答案：A】出自《職安健手冊2026》體力處理操作（題號 1.1）。", hint: "【答題技巧與思考邏輯】：\n1. 核心人體工學口訣：「背挺直、屈膝、物件貼身」。\n2. 參考法例：Cap. 509A《職業安全及健康規例》附表 3。" },
             { id: "2025_6", year: "2025", num: "6", cat: "法例與健康", chapter: "國家及廣東省安全法規", q: "根據《中華人民共和國突發事件應對法》，下列屬於突發事件的有（ ）。（多選題）", options: ["甲鎮發生的火災", "乙縣發生的火車站恐怖襲擊", "丙市發生的不知名傳染病", "丁省發生的蝗災"], ans: [0, 1, 2, 3], isMulti: true, exp: "【正確答案：A, B, C, D】出自《2025 第十一屆粵港澳安全知識競賽》國家及廣東省安全法規（題號 6）。", hint: "突發事件涵蓋自然災害、事故災難、公共衛生事件及社會安全事件四大類。" },
@@ -414,12 +594,356 @@
             renderYearSelector();
             renderCategorySelector();
             renderFilterTabs();
+            renderCurriculumView();
             updateMistakeBadge();
             initQuestionPool();
         });
 
         // ============================================================
-        // 1.1 成員、年份與範疇選擇器 UI
+        // 雲端學習卡同步與解析函式 (修復補齊)
+        // ============================================================
+        async function syncStudyCardsFromCloud(forceRefresh = false) {
+            if (!CLOUD_CONFIG.apiURL) return;
+            try {
+                const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getStudyCards`);
+                if (res.ok) {
+                    const data = await res.json();
+                    const list = data.list || [];
+                    if (list.length > 0) {
+                        studyCardsPool = list.map(row => parseSheetCard(row));
+                        localStorage.setItem('oshc_cached_study_cards', JSON.stringify(studyCardsPool));
+                        console.log(`✅ 成功同步 ${studyCardsPool.length} 張雲端學習卡！`);
+                        renderCurriculumView();
+                    }
+                }
+            } catch(err) {
+                console.warn("同步雲端學習卡失敗，使用快取或保底卡:", err);
+            }
+        }
+
+        function parseSheetCard(row) {
+            const rawCheat = String(row.cheatSheet || row.對比重點 || '').trim();
+            const cheatSheet = rawCheat.split('\n').filter(line => line.trim()).map(line => {
+                const parts = line.split(/[:：]/);
+                return {
+                    term: parts[0] ? parts[0].trim() : '',
+                    desc: parts[1] ? parts[1].trim() : ''
+                };
+            });
+
+            const rawTraps = String(row.traps || row.常見陷阱 || '').trim();
+            const traps = rawTraps.split('\n').map(t => t.replace(/^[•\-\*]\s*/, '').trim()).filter(t => t);
+
+            const rawKw = String(row.relatedKeywords || row.關聯關鍵字 || '').trim();
+            const keywords = rawKw.split(/[,，]/).map(k => k.trim()).filter(k => k);
+
+            return {
+                id: String(row.id || `card_${Date.now()}`),
+                category: String(row.category || row.三大範疇 || '法例與健康').trim(),
+                chapter: String(row.chapter || row.章節名稱 || '').trim(),
+                badge: String(row.badge || row.章節簡稱 || row.chapter || '考點').trim(),
+                title: String(row.title || row.卡片標題 || '').trim(),
+                goldenRule: String(row.goldenRule || row.核心法則 || '').trim(),
+                cheatSheet: cheatSheet.length > 0 ? cheatSheet : [{ term: '重點', desc: '詳見條例' }],
+                traps: traps.length > 0 ? traps : ['注意反向詞與數字細節'],
+                rhyme: String(row.rhyme || row.背誦口訣 || '').trim(),
+                relatedKeywords: keywords
+            };
+        }
+
+        // ============================================================
+        // 課程大綱與學習卡渲染引擎
+        // ============================================================
+        function getMasteredCardsMap() {
+            try {
+                const raw = localStorage.getItem(`oshc_cards_mastered_${selectedMember}`);
+                return raw ? JSON.parse(raw) : {};
+            } catch(e) { return {}; }
+        }
+
+        function toggleCardMastered(cardId) {
+            const map = getMasteredCardsMap();
+            if (map[cardId]) {
+                delete map[cardId];
+            } else {
+                map[cardId] = true;
+            }
+            localStorage.setItem(`oshc_cards_mastered_${selectedMember}`, JSON.stringify(map));
+            renderCurriculumView();
+            showToast(map[cardId] ? "🎉 已標記掌握此卡！" : "已取消掌握標記");
+        }
+
+        function selectCurriculumMajorCategory(cat) {
+            selectedCurriculumCat = cat;
+            selectedCurriculumChapter = "ALL";
+            renderCurriculumView();
+        }
+
+        function selectCurriculumChapter(ch) {
+            selectedCurriculumChapter = ch;
+            renderCurriculumView();
+        }
+
+        function renderCurriculumView() {
+            const majorContainer = document.getElementById('major-capsule-container');
+            const chapterContainer = document.getElementById('chapter-capsule-container');
+            const cardsContainer = document.getElementById('cards-list-container');
+            const overallBadge = document.getElementById('cards-mastery-badge');
+            const catTitle = document.getElementById('current-category-title');
+            const catSummary = document.getElementById('current-category-summary');
+            const cardsViewTitle = document.getElementById('current-cards-view-title');
+            const cardsViewCount = document.getElementById('current-cards-view-count');
+
+            if (!majorContainer) return;
+
+            const masteredMap = getMasteredCardsMap();
+            const totalPlannedAll = CURRICULUM_PLAN.length;
+            const totalMasteredAll = Object.keys(masteredMap).length;
+            if (overallBadge) overallBadge.innerText = `掌握度: ${totalMasteredAll}/${totalPlannedAll} 卡`;
+
+            // 1. 渲染三大範疇主膠囊
+            const categories = ["法例與健康", "建造與機械", "化學與消防"];
+            majorContainer.innerHTML = categories.map(cat => {
+                const isSelected = (cat === selectedCurriculumCat);
+                const itemsInCat = CURRICULUM_PLAN.filter(c => c.cat === cat);
+                const totalPlannedInCat = itemsInCat.length;
+                let masteredInCat = 0;
+                studyCardsPool.filter(c => c.category === cat).forEach(c => {
+                    if (masteredMap[c.id]) masteredInCat++;
+                });
+
+                return `
+                    <button onclick="selectCurriculumMajorCategory('${cat}')" class="p-2.5 rounded-xl border text-center transition ${
+                        isSelected 
+                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm ring-2 ring-indigo-400/30' 
+                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                    }">
+                        <span class="block text-xs font-black truncate">${cat}</span>
+                        <span class="block text-[10px] mt-0.5 ${isSelected ? 'text-indigo-100 font-bold' : 'text-gray-500'}">
+                            (${masteredInCat}/${totalPlannedInCat})
+                        </span>
+                    </button>
+                `;
+            }).join('');
+
+            // 2. 統計目前大範疇下各章節的進度
+            const itemsInSelectedCat = CURRICULUM_PLAN.filter(c => c.cat === selectedCurriculumCat);
+            const chaptersMap = {};
+            itemsInSelectedCat.forEach(item => {
+                if (!chaptersMap[item.ch]) {
+                    chaptersMap[item.ch] = {
+                        planned: 0,
+                        madeCards: [],
+                        mastered: 0
+                    };
+                }
+                chaptersMap[item.ch].planned++;
+            });
+
+            // 關聯實際已製作的卡片 (使用動態 studyCardsPool)
+            studyCardsPool.filter(c => c.category === selectedCurriculumCat).forEach(c => {
+                if (chaptersMap[c.chapter]) {
+                    chaptersMap[c.chapter].madeCards.push(c);
+                    if (masteredMap[c.id]) chaptersMap[c.chapter].mastered++;
+                }
+            });
+
+            if (catTitle) catTitle.innerText = `${selectedCurriculumCat} • 章節進度大綱`;
+            const madeInCat = studyCardsPool.filter(c => c.category === selectedCurriculumCat).length;
+            if (catSummary) catSummary.innerText = `已製作 ${madeInCat} 張 / 總共 ${itemsInSelectedCat.length} 張`;
+
+            let chapterHtml = `
+                <button onclick="selectCurriculumChapter('ALL')" class="p-2 rounded-xl border text-left transition col-span-2 ${
+                    selectedCurriculumChapter === 'ALL'
+                        ? 'bg-slate-800 text-white border-slate-800'
+                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                }">
+                    <div class="flex justify-between items-center text-xs font-black">
+                        <span>全部章節卡片</span>
+                        <span class="text-[10px] ${selectedCurriculumChapter === 'ALL' ? 'text-slate-300' : 'text-gray-500'}">檢視全部 (${madeInCat}張已備好)</span>
+                    </div>
+                </button>
+            `;
+
+            for (let ch in chaptersMap) {
+                const info = chaptersMap[ch];
+                const isSelected = (selectedCurriculumChapter === ch);
+                const madeCount = info.madeCards.length;
+                const plannedCount = info.planned;
+                const masteredCount = info.mastered;
+                const isAllMade = (madeCount === plannedCount);
+
+                chapterHtml += `
+                    <button onclick="selectCurriculumChapter('${ch}')" class="p-2 rounded-xl border text-left transition ${
+                        isSelected 
+                            ? 'bg-indigo-50 border-indigo-600 ring-1 ring-indigo-600' 
+                            : 'bg-white border-slate-200 hover:bg-slate-100'
+                    }">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-black truncate text-slate-800">${escapeHTML(ch)}</span>
+                            <span class="text-[9px] font-bold px-1.5 py-0.2 rounded ${
+                                isAllMade ? 'bg-green-100 text-green-800' : (madeCount > 0 ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-500')
+                            }">
+                                ${isAllMade ? '已齊備' : `${madeCount}/${plannedCount}張已做`}
+                            </span>
+                        </div>
+                        <div class="flex justify-between items-center mt-1 text-[10px] text-gray-500">
+                            <span>已掌握: <strong class="${masteredCount > 0 ? 'text-green-600 font-bold' : ''}">${masteredCount}/${plannedCount}</strong></span>
+                            <span class="text-[9px] text-indigo-600 font-bold">${isSelected ? '選取中 ●' : '點擊檢視'}</span>
+                        </div>
+                    </button>
+                `;
+            }
+            chapterContainer.innerHTML = chapterHtml;
+
+            if (cardsViewTitle) {
+                cardsViewTitle.innerText = selectedCurriculumChapter === 'ALL' 
+                    ? `${selectedCurriculumCat} 全部學習卡` 
+                    : `【${selectedCurriculumChapter}】學習卡`;
+            }
+
+            const availableCards = studyCardsPool.filter(c => {
+                const catMatch = (c.category === selectedCurriculumCat);
+                const chMatch = (selectedCurriculumChapter === 'ALL' || c.chapter === selectedCurriculumChapter);
+                return catMatch && chMatch;
+            });
+
+            const pendingPlanItems = itemsInSelectedCat.filter(item => {
+                const chMatch = (selectedCurriculumChapter === 'ALL' || item.ch === selectedCurriculumChapter);
+                const hasCard = studyCardsPool.some(c => c.category === item.cat && c.chapter === item.ch && c.title === item.title.replace(' (待製作)', ''));
+                return chMatch && !hasCard;
+            });
+
+            if (cardsViewCount) {
+                cardsViewCount.innerText = `已就緒: ${availableCards.length} 張 • 待做: ${pendingPlanItems.length} 張`;
+            }
+
+            let cardsHtml = '';
+
+            availableCards.forEach(card => {
+                const isMastered = Boolean(masteredMap[card.id]);
+                cardsHtml += `
+                    <div class="border ${isMastered ? 'border-green-300 bg-green-50/20' : 'border-slate-200 bg-white'} rounded-2xl p-4 shadow-sm space-y-3 transition">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="bg-indigo-100 text-indigo-900 font-black text-[10px] px-2 py-0.5 rounded-md">${escapeHTML(card.badge)}</span>
+                                <span class="text-[11px] font-bold text-gray-500">${escapeHTML(card.chapter)}</span>
+                            </div>
+                            <button onclick="toggleCardMastered('${card.id}')" class="text-xs font-black px-2.5 py-1 rounded-lg border transition ${isMastered ? 'bg-green-600 text-white border-green-600' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'}">
+                                ${isMastered ? '✓ 已掌握' : '○ 標記掌握'}
+                            </button>
+                        </div>
+
+                        <h3 class="text-base font-black text-slate-900 leading-snug">${escapeHTML(card.title)}</h3>
+
+                        <div class="bg-indigo-50/70 border-l-4 border-indigo-600 p-2.5 rounded-r-xl text-xs text-indigo-950 font-medium leading-relaxed">
+                            <strong class="text-indigo-900 block mb-0.5">🌟 核心黃金法則：</strong>
+                            ${escapeHTML(card.goldenRule)}
+                        </div>
+
+                        <div class="space-y-1">
+                            <span class="text-[11px] font-black text-slate-700 block">📊 必考重點速查表：</span>
+                            <div class="border border-slate-200 rounded-xl overflow-hidden text-xs">
+                                <table class="w-full border-collapse">
+                                    <tbody>
+                                        ${card.cheatSheet.map((item, idx) => `
+                                            <tr class="${idx % 2 === 0 ? 'bg-slate-50/60' : 'bg-white'} border-b border-slate-100 last:border-none">
+                                                <td class="p-2 font-bold text-slate-800 w-1/3 border-r border-slate-100">${escapeHTML(item.term)}</td>
+                                                <td class="p-2 text-slate-600">${escapeHTML(item.desc)}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 text-xs text-amber-950 space-y-1">
+                            <span class="font-black text-amber-900 block">⚠️ 考官常見陷阱（防伏提醒）：</span>
+                            <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-amber-900">
+                                ${card.traps.map(t => `<li>${escapeHTML(t)}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-2.5 text-center text-xs font-black text-blue-900 leading-relaxed">
+                            💡 30秒背誦口訣：<br>
+                            <span class="text-indigo-900 tracking-wide">${escapeHTML(card.rhyme)}</span>
+                        </div>
+
+                        <button onclick="startQuizForCard('${card.id}')" class="w-full bg-slate-900 active:bg-slate-800 hover:bg-slate-800 text-white py-2 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition shadow-xs">
+                            <span>🎯 實戰測驗此卡考題</span>
+                            <span>➔</span>
+                        </button>
+                    </div>
+                `;
+            });
+
+            if (pendingPlanItems.length > 0) {
+                cardsHtml += `
+                    <div class="border border-dashed border-slate-300 rounded-2xl p-3.5 bg-slate-50/60 text-xs space-y-2">
+                        <div class="flex items-center gap-1.5 text-slate-600 font-black">
+                            <span>⏳</span>
+                            <span>即將解鎖的大綱卡片 (${pendingPlanItems.length} 張)：</span>
+                        </div>
+                        <div class="space-y-1.5">
+                            ${pendingPlanItems.map(p => `
+                                <div class="bg-white p-2 rounded-lg border border-slate-200 flex justify-between items-center text-[11px]">
+                                    <div class="truncate mr-2">
+                                        <span class="font-bold text-slate-700">${escapeHTML(p.ch)}</span>
+                                        <span class="text-gray-400"> • </span>
+                                        <span class="text-slate-600">${escapeHTML(p.title)}</span>
+                                    </div>
+                                    <span class="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-bold flex-shrink-0">待加入</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            cardsContainer.innerHTML = cardsHtml;
+        }
+
+        function startQuizForCard(cardId) {
+            const card = studyCardsPool.find(c => c.id === cardId);
+            if (!card) return;
+
+            if (questionPool.length === 0) {
+                showToast("題庫正在載入中，請稍候...");
+                return;
+            }
+
+            const matched = questionPool.filter(q => {
+                const fullText = `${q.q} ${q.chapter} ${q.cat} ${q.hint}`.toLowerCase();
+                return card.relatedKeywords.some(kw => fullText.includes(kw.toLowerCase()));
+            });
+
+            if (matched.length === 0) {
+                showToast("目前題庫暫未找到此卡對應的真題，請先同步雲端題庫！");
+                return;
+            }
+
+            isMistakeMode = false;
+            const shuffled = [...matched].sort(() => 0.5 - Math.random());
+            currentQuiz = shuffled.slice(0, Math.min(10, shuffled.length));
+            currentIndex = 0;
+            isSubmitting = false;
+            currentSessionLog = [];
+            categoryResults = {
+                "法例與健康": { correct: 0, total: 0 },
+                "建造與機械": { correct: 0, total: 0 },
+                "化學與消防": { correct: 0, total: 0 }
+            };
+
+            const userTag = document.getElementById('quiz-user-tag');
+            if (userTag) userTag.textContent = `專項: ${card.badge}`;
+
+            switchView('quiz');
+            renderQuestion();
+            showToast(`已為您載入「${card.title}」專項 10 題實測！`);
+        }
+
+        // ============================================================
+        // 基礎功能 (成員、年份、測驗、儀表板)
         // ============================================================
         function renderUserSelector() {
             const container = document.getElementById('user-selector');
@@ -438,11 +962,12 @@
                     localStorage.setItem('oshc_selected_user', m);
                     renderUserSelector();
                     updateMasteryUI();
+                    renderCurriculumView();
                 };
                 container.appendChild(btn);
             });
             const b = document.getElementById('current-user-banner');
-            if (b) b.textContent = `出戰成員: ${selectedMember} • 四年題庫雲端同步`;
+            if (b) b.textContent = `出戰成員: ${selectedMember} • 雲端同步`;
             const l = document.getElementById('selected-member-label');
             if (l) l.textContent = `已選擇: ${selectedMember}`;
             updateMasteryUI();
@@ -492,7 +1017,6 @@
             });
         }
 
-        // 取得目前篩選範圍（年份＋範疇）的有效題庫
         function getFilteredQuestionPool() {
             return questionPool.filter(q => {
                 const yearMatch = (selectedYear === "ALL" || String(q.year) === selectedYear);
@@ -501,9 +1025,6 @@
             });
         }
 
-        // ============================================================
-        // 1.2 通關掌握度管理 (支援跨年份獨立識別 ID)
-        // ============================================================
         function getMasteredMap(user) {
             try {
                 const raw = localStorage.getItem(`oshc_mastered_v2_${user}`);
@@ -611,10 +1132,8 @@
             }
         }
 
-        // ============================================================
-        // 2. 四年題庫載入與智能解析器（支援 2025 選項D/E 與多選題、過濾 2026 空白列）
-        // ============================================================
         async function initQuestionPool(forceRefresh = false) {
+            syncStudyCardsFromCloud(forceRefresh);
             const sourceLabel = document.getElementById('pool-source-label');
             const detailLabel = document.getElementById('pool-detail-label');
             const countBadge = document.getElementById('pool-count-badge');
@@ -629,7 +1148,7 @@
                         if (Array.isArray(parsed) && parsed.length > 50) {
                             questionPool = parsed;
                             if (sourceLabel) sourceLabel.textContent = "✅ 四年官方題庫";
-                            if (detailLabel) detailLabel.textContent = "已就緒 (支援離線刷題 & 多選題型)";
+                            if (detailLabel) detailLabel.textContent = "已就緒 (支援離線刷題 & 秘笈連動)";
                             if (countBadge) countBadge.textContent = `共 ${questionPool.length} 題`;
                             updateMasteryUI();
                             return;
@@ -645,7 +1164,6 @@
                     if (res.ok) {
                         const data = await res.json();
                         const rawList = data.list || [];
-                        // 過濾掉 2026 Backup 空白題目列
                         const validRows = rawList.filter(r => {
                             const qVal = r['題目內容'] || r['Question'] || r['題目'] || '';
                             return String(qVal).trim().length > 0;
@@ -678,7 +1196,6 @@
             updateMasteryUI();
         }
 
-        // 精確解析各年份欄位（自動處理 2025 選項D/E 與多選答案）
         function parseSheetQuestion(r, idx) {
             const getVal = (keys) => {
                 const rowKeys = Object.keys(r);
@@ -710,7 +1227,6 @@
 
             let customHint = getVal(['提示', 'Hint', 'hint']);
 
-            // 【針對 2025 第十一屆粵港澳題庫】自動從「提示」欄位還原【選項D】與 E.
             if (!optD && customHint && customHint.includes('【選項D】')) {
                 let dPart = customHint.split('【選項D】')[1] || '';
                 if (dPart.includes('【題型】')) {
@@ -738,7 +1254,6 @@
             if (optD) options.push(cleanOpt(optD, "選項 D"));
             if (optE) options.push(cleanOpt(optE, "選項 E"));
 
-            // 解析單選或多選答案 (例如 "B", "D", "A,B,C,D", "B,D")
             const letterMap = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4 };
             const matchedLetters = String(ansRaw).toUpperCase().match(/[A-E]/g) || ['A'];
             const ansIndices = [...new Set(matchedLetters.map(l => letterMap[l]).filter(i => i !== undefined && i < options.length))].sort((a, b) => a - b);
@@ -765,13 +1280,10 @@
             };
         }
 
-        // ============================================================
-        // 3. 測驗核心流程 (支援單選、多選、15秒搶答計時、暫停詳讀)
-        // ============================================================
         function switchView(viewName) {
             clearAllTimers();
 
-            ['intro', 'quiz', 'search', 'mistakes', 'dashboard'].forEach(v => {
+            ['intro', 'cards', 'quiz', 'search', 'mistakes', 'dashboard'].forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 if (el) {
                     el.classList.add('hidden');
@@ -791,6 +1303,8 @@
                 renderMistakesList();
             } else if (viewName === 'search') {
                 performQuestionSearch();
+            } else if (viewName === 'cards') {
+                renderCurriculumView();
             }
         }
 
@@ -819,7 +1333,6 @@
                 eligiblePool = [...filteredPool];
             }
 
-            // Fisher-Yates 洗牌演算法（比 sort random 更均勻隨機）
             const shuffled = [...eligiblePool];
             for (let i = shuffled.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -870,7 +1383,6 @@
             renderQuestion();
         }
 
-        // 相容舊版單選格式錯題紀錄
         function normalizeLegacyQuestion(q) {
             if (!q) return seedQuestions[0];
             const ansArr = Array.isArray(q.ans) ? q.ans : [Number(q.ans) || 0];
@@ -967,7 +1479,6 @@
                 optionsBox.appendChild(btn);
             });
 
-            // 啟動 15 秒搶答計時器（若有開啟）
             const speedChk = document.getElementById('chk-speed-timer');
             const timerBadge = document.getElementById('quiz-timer-badge');
             if (speedChk && speedChk.checked) {
@@ -979,7 +1490,7 @@
                     timerBadge.textContent = `⏱️ ${speedSecondsLeft}s`;
                     if (speedSecondsLeft <= 0) {
                         clearInterval(questionSpeedTimer);
-                        evaluateAnswer([]); // 超時未作答視為答錯
+                        evaluateAnswer([]);
                     }
                 }, 1000);
             } else if (timerBadge) {
@@ -1050,7 +1561,6 @@
                 exp: qData.exp
             });
 
-            // 標示各選項顏色
             btns.forEach((b, idx) => {
                 b.classList.remove('border-indigo-600', 'bg-indigo-50/70', 'ring-1', 'ring-indigo-600');
                 const isAns = ansArr.includes(idx);
@@ -1089,7 +1599,7 @@
                 resultText.textContent = chosenIndices.length === 0 ? '⏰ 超時未作答！' : '❌ 答錯了！此題已加入錯題簿並保留重考。';
                 markQuestionUnmastered(selectedMember, qData.id);
                 if (!isMistakeMode) recordMistake(qData, selectedMember, chosenIndices);
-                durationMs = 5000; // 答錯給予 5 秒閱讀詳解
+                durationMs = 5000;
             }
 
             const fullExp = qData.hint && qData.year === "2026"
@@ -1150,9 +1660,6 @@
             }
         }
 
-        // ============================================================
-        // 4. 全局題庫關鍵字查題功能 (Search View)
-        // ============================================================
         function performQuestionSearch() {
             const kwInput = document.getElementById('search-keyword-input');
             const yrSelect = document.getElementById('search-year-filter');
@@ -1201,9 +1708,6 @@
             }).join('');
         }
 
-        // ============================================================
-        // 5. 雲端 Google Sheet 同步與資料聚合 (資安加固版)
-        // ============================================================
         async function saveSessionToCloud() {
             const payload = {
                 "token": CLOUD_CONFIG.apiToken,
@@ -1338,7 +1842,6 @@
                 return;
             }
 
-            // 資安加固：使用索引號 openHistoryDetailByIndex(idx) 取代直接把 JSON 塞入 onclick HTML 屬性
             hBox.innerHTML = displayedHistoryList.map((r, idx) => {
                 const u = escapeHTML(String(r.User || r.user || "P").toUpperCase());
                 const totalC = (Number(r.Law_C) || 0) + (Number(r.Mech_C) || 0) + (Number(r.Chem_C) || 0);
@@ -1363,9 +1866,6 @@
             }).join('');
         }
 
-        // ============================================================
-        // 6. 錯題重溫簿 (資安轉義與多選題支援)
-        // ============================================================
         function recordMistake(qData, user, chosenIndices) {
             let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
             nb = nb.filter(m => !(String(m.questionId) === String(qData.id) && m.user === user));
@@ -1447,9 +1947,6 @@
             });
         }
 
-        // ============================================================
-        // 7. 歷次作答明細彈窗 (零 XSS 風險索引讀取版)
-        // ============================================================
         function openHistoryDetailByIndex(idx) {
             const r = displayedHistoryList[idx];
             if (!r) return;
@@ -1461,7 +1958,6 @@
 
             let details = r.SessionDetails || [];
             if (typeof details === 'string') {
-                // 處理後端為防範 Formula Injection 可能加上的前綴單引號
                 const cleanJson = details.startsWith("'") ? details.slice(1) : details;
                 try { details = JSON.parse(cleanJson); } catch (e) { details = []; }
             }
