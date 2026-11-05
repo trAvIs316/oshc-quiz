@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 資安加固：Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; img-src 'self' data:;">
-    <title>職安健常識問答挑戰系統 (2025 精準實戰版)</title>
-    <!-- 支援手機全螢幕 PWA 特性 -->
+    <title>職安健常識問答挑戰系統 (2026 旗艦版)</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="職安健練靶">
@@ -22,32 +20,24 @@
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-14 select-none">
 
-<!-- 頂部手機專用導覽列 -->
+    <!-- 頂部手機專用導覽列 -->
     <header class="bg-slate-900 text-white px-3 py-2.5 shadow-md sticky top-0 z-40 flex justify-between items-center border-b border-slate-800">
         <div class="flex items-center gap-2">
             <span class="text-lg">👷</span>
             <div>
                 <h1 class="text-xs font-black tracking-wide leading-tight">職安健秘笈練靶</h1>
-                <p class="text-[9px] text-slate-400" id="current-user-banner">出戰: P • 2025 專項</p>
+                <p class="text-[9px] text-slate-400" id="current-user-banner">出戰: P • 2026 專項</p>
             </div>
         </div>
         <div class="flex items-center gap-1">
-            <button onclick="switchView('intro')" class="px-2 py-1 rounded-lg bg-slate-800 text-[11px] font-bold hover:bg-slate-700 transition">
-                首頁
-            </button>
-            <button onclick="switchView('cards')" class="px-2.5 py-1 rounded-lg bg-indigo-600 text-[11px] font-black text-white hover:bg-indigo-500 transition shadow-xs">
-                📖 秘笈
-            </button>
-            <button onclick="switchView('search')" class="px-2 py-1 rounded-lg bg-slate-800 text-[11px] font-bold hover:bg-slate-700 transition">
-                🔍
-            </button>
+            <button onclick="switchView('intro')" class="px-2 py-1 rounded-lg bg-slate-800 text-[11px] font-bold hover:bg-slate-700 transition">首頁</button>
+            <button onclick="switchView('cards')" class="px-2.5 py-1 rounded-lg bg-indigo-600 text-[11px] font-black text-white hover:bg-indigo-500 transition shadow-xs">📖 秘笈</button>
+            <button onclick="switchView('search')" class="px-2 py-1 rounded-lg bg-slate-800 text-[11px] font-bold hover:bg-slate-700 transition">🔍</button>
             <button onclick="switchView('mistakes')" class="px-2 py-1 rounded-lg bg-slate-800 text-[11px] font-bold flex items-center gap-0.5 hover:bg-slate-700 transition">
                 <span>📕</span>
                 <span id="nav-mistake-badge" class="bg-red-500 text-white text-[9px] px-1 rounded-full hidden">0</span>
             </button>
-            <button onclick="switchView('dashboard')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-bold transition">
-                📊
-            </button>
+            <button onclick="switchView('dashboard')" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-bold transition">📊</button>
         </div>
     </header>
 
@@ -58,11 +48,11 @@
         <div id="view-intro" class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 block space-y-3.5">
             <div class="text-center pt-1">
                 <span class="inline-block p-2.5 bg-blue-50 rounded-2xl text-2xl mb-1">🎯</span>
-                <h2 class="text-lg font-black text-blue-950">2025 官方指定題庫實戰</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">單選 / 多選題型 &bull; 粵港澳競賽必備 &bull; 核心法例詳解</p>
+                <h2 class="text-lg font-black text-blue-950">2026 官方題庫實戰</h2>
+                <p class="text-[11px] text-gray-500 mt-0.5">最新比賽大綱 &bull; 最新法例詳解 &bull; 核心高頻考點</p>
             </div>
 
-            <!-- 成員選擇卡片 (P, T, S, J, V, F) -->
+            <!-- 成員選擇 -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
                 <div class="flex justify-between items-center mb-2">
                     <label class="text-xs font-bold text-gray-700">1. 選擇出戰隊員</label>
@@ -71,11 +61,11 @@
                 <div class="grid grid-cols-6 gap-1.5" id="user-selector"></div>
             </div>
 
-            <!-- 訓練範疇與比賽設定 -->
+            <!-- 專項範疇與模擬設定 -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
                 <div class="flex justify-between items-center">
-                    <label class="text-xs font-bold text-gray-700">2. 專項範疇與模擬設定</label>
-                    <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full" id="year-pool-count-tag">2025 專屬題庫</span>
+                    <label class="text-xs font-bold text-gray-700">2. 專項範疇與設定</label>
+                    <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full" id="year-pool-count-tag">2026 專屬題庫</span>
                 </div>
                 <div class="grid grid-cols-4 gap-1" id="category-selector"></div>
                 <div class="flex items-center justify-between pt-1 border-t border-slate-200/70 text-xs">
@@ -89,37 +79,33 @@
                     </div>
                     <label class="flex items-center gap-1.5 cursor-pointer">
                         <input type="checkbox" id="chk-speed-timer" class="w-3.5 h-3.5 text-blue-600 rounded">
-                        <span class="text-[11px] font-bold text-slate-700">⏱️ 15秒搶答計時</span>
+                        <span class="text-[11px] font-bold text-slate-700">⏱️ 15秒搶答</span>
                     </label>
                 </div>
             </div>
 
-            <!-- 手機版通關掌握度進度卡片 -->
+            <!-- 通關掌握度進度卡片 -->
             <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-200 space-y-1.5">
                 <div class="flex justify-between items-center">
                     <span class="text-xs font-black text-blue-950 flex items-center gap-1">
                         <span>🏆</span> <span id="mastery-user-title">成員 P 通關進度</span>
                     </span>
-                    <span class="text-[11px] font-black text-blue-800 bg-white border border-blue-200 px-2 py-0.5 rounded-full" id="mastery-count-text">
-                        0 / 0 題 (0%)
-                    </span>
+                    <span class="text-[11px] font-black text-blue-800 bg-white border border-blue-200 px-2 py-0.5 rounded-full" id="mastery-count-text">0 / 0 題 (0%)</span>
                 </div>
                 <div class="w-full bg-blue-200/80 rounded-full h-2 overflow-hidden">
                     <div id="mastery-progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
-                <div class="flex justify-between items-center text-[10px] text-blue-700 leading-tight pt-0.5">
-                    <span id="mastery-pool-info">不重複抽取 &bull; 答錯或靠估自動重出</span>
-                    <button onclick="resetMemberMastery()" class="text-gray-400 hover:text-red-600 underline font-bold transition">
-                        重設此範圍進度
-                    </button>
+                <div class="flex justify-between items-center text-[10px] text-blue-700 pt-0.5">
+                    <span id="mastery-pool-info">不重複抽取 &bull; 答錯/靠估自動重出</span>
+                    <button onclick="resetMemberMastery()" class="text-gray-400 hover:text-red-600 underline font-bold transition">重設範圍進度</button>
                 </div>
             </div>
 
-            <!-- 題庫狀態卡片與重新整理按鈕 -->
+            <!-- 題庫狀態 -->
             <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
                 <div class="space-y-0.5">
                     <div class="flex items-center gap-1.5">
-                        <span class="text-gray-800 font-bold" id="pool-source-label">2025 官方題庫</span>
+                        <span class="text-gray-800 font-bold" id="pool-source-label">2026 官方題庫</span>
                         <span class="font-black text-blue-900 bg-blue-100 px-2 py-0.5 rounded-full text-[10px]" id="pool-count-badge">載入中...</span>
                     </div>
                     <span class="text-[10px] text-gray-500 block" id="pool-detail-label">支援離線快取與雲端同步</span>
@@ -129,58 +115,44 @@
                 </button>
             </div>
 
-            <!-- 開始測驗按鈕 -->
             <button onclick="startQuiz()" class="w-full bg-blue-600 active:bg-blue-700 text-white py-3.5 rounded-xl font-black text-base shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
-                <span id="btn-start-quiz-text">🚀 開始 2025 實戰挑戰</span>
+                <span>🚀 開始 2026 實戰挑戰</span>
                 <span class="text-lg">➔</span>
             </button>
         </div>
 
-        <!-- 2. 【學習卡大綱與秘笈庫畫面】 -->
+        <!-- 2. 學習卡大綱與秘笈庫 -->
         <div id="view-cards" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-start border-b pb-2.5">
                 <div>
-                    <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5">
-                        <span>📖</span> 職安健課程大綱與秘笈庫
-                    </h2>
+                    <h2 class="text-base font-black text-slate-900 flex items-center gap-1.5"><span>📖</span> 職安健課程大綱與秘笈庫</h2>
                     <p class="text-[10px] text-gray-500 mt-0.5">點擊膠囊展開章節，檢視學習進度與卡片製作狀況</p>
                 </div>
-                <span id="cards-mastery-badge" class="text-[10px] font-black bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded-full whitespace-nowrap">
-                    掌握度: 0/30 卡
-                </span>
+                <span id="cards-mastery-badge" class="text-[10px] font-black bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded-full whitespace-nowrap">掌握度: 0/30 卡</span>
             </div>
 
-            <!-- 第一層：三大範疇主膠囊 -->
             <div>
-                <label class="text-[11px] font-black text-slate-600 block mb-1.5">三大核心範疇（點選切換大綱）：</label>
+                <label class="text-[11px] font-black text-slate-600 block mb-1.5">三大核心範疇：</label>
                 <div class="grid grid-cols-3 gap-1.5" id="major-capsule-container"></div>
             </div>
 
-            <!-- 第二層：該範疇內各章節的膠囊進度卡 -->
             <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
                 <div class="flex justify-between items-center">
                     <span class="text-xs font-black text-slate-800" id="current-category-title">章節學習進度</span>
-                    <span class="text-[10px] text-gray-500" id="current-category-summary">已做 / 未做統計</span>
+                    <span class="text-[10px] text-gray-500" id="current-category-summary">統計載入中</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2" id="chapter-capsule-container"></div>
             </div>
 
-            <!-- 篩選目前選定章節的學習卡展示區域 -->
             <div>
                 <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-xs font-black text-slate-800 flex items-center gap-1">
-                        <span>📑</span> <span id="current-cards-view-title">學習卡清單</span>
-                    </h3>
-                    <span class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full font-bold" id="current-cards-view-count">
-                        共 0 張卡
-                    </span>
+                    <h3 class="text-xs font-black text-slate-800 flex items-center gap-1"><span>📑</span> <span id="current-cards-view-title">學習卡清單</span></h3>
+                    <span class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full font-bold" id="current-cards-view-count">共 0 張卡</span>
                 </div>
                 <div id="cards-list-container" class="space-y-4 max-h-[500px] overflow-y-auto pr-1"></div>
             </div>
 
-            <button onclick="switchView('intro')" class="w-full bg-slate-100 active:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs">
-                返回首頁
-            </button>
+            <button onclick="switchView('intro')" class="w-full bg-slate-100 active:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs">返回首頁</button>
         </div>
 
         <!-- 3. 測驗畫面 -->
@@ -198,7 +170,7 @@
                 <div class="flex justify-between items-center gap-2">
                     <span class="text-[10px] text-gray-500 font-bold truncate" id="quiz-chapter-tag">章節載入中</span>
                     <div class="flex items-center gap-1 flex-shrink-0">
-                        <span id="quiz-year-badge" class="text-[10px] text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded font-bold">2025</span>
+                        <span class="text-[10px] text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded font-bold">2026</span>
                         <span id="quiz-type-badge" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded font-bold">單選題</span>
                     </div>
                 </div>
@@ -206,9 +178,7 @@
                 <h3 class="text-base font-bold text-slate-900 leading-relaxed" id="question-text">載入題目中...</h3>
                 <div id="options-container" class="space-y-2 pt-1"></div>
 
-                <button id="btn-submit-multi" onclick="submitMultiChoiceAnswer()" class="hidden w-full bg-indigo-600 active:bg-indigo-700 text-white py-2.5 rounded-xl font-black text-xs shadow-sm transition">
-                    ✓ 確認提交多選答案
-                </button>
+                <button id="btn-submit-multi" onclick="submitMultiChoiceAnswer()" class="hidden w-full bg-indigo-600 active:bg-indigo-700 text-white py-2.5 rounded-xl font-black text-xs shadow-sm transition">✓ 確認提交多選答案</button>
 
                 <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2">
                     <label class="flex items-center gap-1.5 p-2.5 rounded-xl border border-indigo-200 bg-indigo-50/80 active:bg-indigo-100 cursor-pointer select-none transition">
@@ -219,7 +189,7 @@
                         </div>
                     </label>
 
-                    <label id="guessed-wrapper" class="flex items-center gap-1.5 p-2.5 rounded-xl border border-amber-200 bg-amber-50/80 active:bg-amber-100 cursor-pointer select-none transition">
+                    <label class="flex items-center gap-1.5 p-2.5 rounded-xl border border-amber-200 bg-amber-50/80 active:bg-amber-100 cursor-pointer select-none transition">
                         <input type="checkbox" id="chk-guessed" class="w-4 h-4 text-amber-600 rounded border-amber-300 focus:ring-amber-500">
                         <div class="flex-1 min-w-0">
                             <span class="text-[11px] font-black text-amber-950 block truncate">🤔 呢題靠估</span>
@@ -228,10 +198,10 @@
                     </label>
                 </div>
 
-                <div id="ai-hint-box" class="hidden p-3 rounded-xl border border-indigo-200 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 text-indigo-950 transition-all text-xs space-y-1">
+                <div id="ai-hint-box" class="hidden p-3 rounded-xl border border-indigo-200 bg-gradient-to-r from-indigo-50 via-blue-50 to-purple-50 text-indigo-950 text-xs space-y-1">
                     <div class="flex items-center gap-1 font-black text-[11px] text-indigo-900">
                         <span>💡</span>
-                        <span>試題庫答題邏輯與條例依據：</span>
+                        <span>答題邏輯與條例依據：</span>
                     </div>
                     <p id="ai-hint-text" class="text-[11px] text-indigo-900 leading-relaxed font-medium pl-2.5 border-l-2 border-indigo-400 whitespace-pre-line"></p>
                 </div>
@@ -242,12 +212,8 @@
                 <div class="flex justify-between items-center mb-2 gap-2">
                     <p id="feedback-result" class="font-bold text-xs sm:text-sm"></p>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                        <button onclick="togglePauseCountdown(event)" id="btn-pause-countdown" class="text-[10px] text-slate-700 bg-white/90 px-2 py-1 rounded border border-slate-300 font-bold">
-                            ⏸️ 暫停詳讀
-                        </button>
-                        <button onclick="skipCountdown()" class="text-[10px] text-white bg-blue-600 px-2.5 py-1 rounded font-bold shadow-xs">
-                            下一題 ➔
-                        </button>
+                        <button onclick="togglePauseCountdown(event)" id="btn-pause-countdown" class="text-[10px] text-slate-700 bg-white/90 px-2 py-1 rounded border border-slate-300 font-bold">⏸️ 暫停詳讀</button>
+                        <button onclick="skipCountdown()" class="text-[10px] text-white bg-blue-600 px-2.5 py-1 rounded font-bold shadow-xs">下一題 ➔</button>
                     </div>
                 </div>
                 <p id="feedback-explanation" class="text-xs leading-relaxed text-slate-700 whitespace-pre-line"></p>
@@ -258,55 +224,43 @@
         <div id="view-search" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3.5">
             <div class="flex justify-between items-center border-b pb-2.5">
                 <div>
-                    <h2 class="text-base font-black text-blue-950">🔍 2025 題庫查題</h2>
-                    <p class="text-[10px] text-gray-500">輸入關鍵字、法例名稱或罰款金額即時檢索 2025 考題</p>
+                    <h2 class="text-base font-black text-blue-950">🔍 2026 題庫查題</h2>
+                    <p class="text-[10px] text-gray-500">輸入關鍵字、法例條文或數字即時檢索</p>
                 </div>
                 <span id="search-result-count" class="text-[10px] font-bold bg-blue-50 text-blue-800 px-2 py-1 rounded-full">0 筆結果</span>
             </div>
-            <div class="flex gap-1.5">
-                <input type="text" id="search-keyword-input" oninput="performQuestionSearch()" placeholder="例如：滅火筒、40萬、2米、吊船、安全帶..." class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div>
+                <input type="text" id="search-keyword-input" oninput="performQuestionSearch()" placeholder="例如：搬運、滅火筒、40萬、竹棚、合資格人士..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div id="search-results-container" class="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
                 <p class="text-center text-xs text-gray-400 py-8">請在上方輸入關鍵字開始搜尋</p>
             </div>
         </div>
 
-        <!-- 5. 錯題重溫簿畫面 -->
+        <!-- 5. 錯題重溫簿 -->
         <div id="view-mistakes" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
-                    <h2 class="text-lg font-black text-red-900 flex items-center gap-1.5">
-                        <span>📕</span> 錯題重溫簿 (2025)
-                    </h2>
+                    <h2 class="text-lg font-black text-red-900 flex items-center gap-1.5"><span>📕</span> 錯題重溫簿 (2026)</h2>
                     <p class="text-[11px] text-gray-500">專項攻克個人薄弱考點</p>
                 </div>
-                <button onclick="startMistakeQuiz()" id="btn-practice-mistakes" class="bg-red-600 active:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs">
-                    🎯 錯題重練 (<span id="mistake-practice-count">0</span>)
-                </button>
+                <button onclick="startMistakeQuiz()" id="btn-practice-mistakes" class="bg-red-600 active:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs">🎯 錯題重練 (<span id="mistake-practice-count">0</span>)</button>
             </div>
-
             <div class="grid grid-cols-7 gap-1" id="mistake-member-filters"></div>
             <div id="mistakes-list-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1"></div>
-
-            <button onclick="switchView('intro')" class="w-full bg-slate-100 active:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs">
-                返回首頁
-            </button>
+            <button onclick="switchView('intro')" class="w-full bg-slate-100 active:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs">返回首頁</button>
         </div>
 
         <!-- 6. 數據分析儀表板 -->
         <div id="view-dashboard" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
-                    <h2 class="text-lg font-black text-blue-900">隊伍能力分析 (2025)</h2>
+                    <h2 class="text-lg font-black text-blue-900">隊伍能力分析 (2026)</h2>
                     <p class="text-[10px] text-gray-500">Google Sheet 雲端實時統計</p>
                 </div>
-                <button onclick="fetchDashboardDataFromCloud()" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-blue-200 active:bg-blue-100">
-                    🔄 重新整理
-                </button>
+                <button onclick="fetchDashboardDataFromCloud()" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-blue-200 active:bg-blue-100">🔄 重新整理</button>
             </div>
-
             <div class="grid grid-cols-7 gap-1" id="dash-member-filters"></div>
-
             <div class="grid grid-cols-2 gap-2.5">
                 <div class="border border-slate-200 p-3 rounded-xl text-center bg-slate-50">
                     <p class="text-gray-500 text-[11px]" id="dash-games-title">挑戰總次數</p>
@@ -317,10 +271,8 @@
                     <p class="text-2xl font-black text-blue-600 mt-0.5" id="dash-total-accuracy">0%</p>
                 </div>
             </div>
-
             <div class="grid grid-cols-3 gap-1.5" id="member-stats-container"></div>
             <div class="space-y-2.5" id="category-stats-container"></div>
-
             <div>
                 <div class="flex justify-between items-center mb-1.5">
                     <h3 class="text-xs font-bold text-gray-600 uppercase">歷次紀錄明細</h3>
@@ -328,15 +280,12 @@
                 </div>
                 <div id="history-list-container" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
             </div>
-
-            <button onclick="switchView('intro')" class="w-full bg-blue-900 active:bg-blue-800 text-white py-3 rounded-xl font-bold text-xs">
-                返回首頁
-            </button>
+            <button onclick="switchView('intro')" class="w-full bg-blue-900 active:bg-blue-800 text-white py-3 rounded-xl font-bold text-xs">返回首頁</button>
         </div>
 
     </main>
 
-    <!-- 7. 歷次挑戰作答明細彈窗 (Modal) -->
+    <!-- 歷次作答明細彈窗 -->
     <div id="modal-session-detail" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl border border-slate-200 max-h-[85vh] flex flex-col overflow-hidden">
             <div class="p-3.5 border-b border-slate-100 flex justify-between items-start bg-slate-50">
@@ -344,57 +293,36 @@
                     <h3 class="text-sm font-black text-slate-900" id="modal-detail-title">挑戰明細回顧</h3>
                     <p class="text-[10px] text-gray-500 mt-0.5" id="modal-detail-subtitle">紀錄時間與得分</p>
                 </div>
-                <button onclick="closeSessionDetailModal()" class="w-7 h-7 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs">
-                    ✕
-                </button>
+                <button onclick="closeSessionDetailModal()" class="w-7 h-7 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-xs">✕</button>
             </div>
             <div class="p-3.5 space-y-2.5 overflow-y-auto flex-grow text-xs" id="modal-detail-content"></div>
             <div class="p-3 border-t border-slate-100 bg-slate-50 flex justify-end">
-                <button onclick="closeSessionDetailModal()" class="bg-blue-900 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl">
-                    關閉明細
-                </button>
+                <button onclick="closeSessionDetailModal()" class="bg-blue-900 text-white text-xs font-bold px-3.5 py-1.5 rounded-xl">關閉明細</button>
             </div>
         </div>
     </div>
 
-    <!-- 自訂 Toast 提示訊息 -->
+    <!-- 自訂 Toast -->
     <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-full shadow-lg z-50 font-medium transition-all"></div>
 
     <script>
-        function escapeHTML(str) {
-            if (str === null || str === undefined) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#39;');
-        }
-
         const CLOUD_CONFIG = {
             apiURL: "https://script.google.com/macros/s/AKfycbwFJE-qdlAs_iZOR7PnxhWDaQ7W2MrI07g0n5jReiDrr_m_WpIwO-ZnPmk9iBsgmW6LiA/exec",
             apiToken: "OSHC_TEAM_2026_SECURE_KEY"
         };
 
         const MEMBERS = ["P", "T", "S", "J", "V", "F"];
-        const TARGET_YEAR = "2025"; // 鎖定 2025 年官方試題
-        const CATEGORY_OPTIONS = [
-            { id: "ALL", label: "全部範疇" },
-            { id: "法例與健康", label: "法例與健康" },
-            { id: "建造與機械", label: "建造與機械" },
-            { id: "化學與消防", label: "化學與消防" }
-        ];
+        const TARGET_YEAR = "2026";
+        const CATEGORIES = ["法例與健康", "建造與機械", "化學與消防"];
+        const CATEGORY_OPTIONS = [{ id: "ALL", label: "全部範疇" }, ...CATEGORIES.map(c => ({ id: c, label: c }))];
 
         let selectedMember = localStorage.getItem('oshc_selected_user') || "P";
         if (!MEMBERS.includes(selectedMember)) selectedMember = "P";
-
         let selectedCategory = "ALL";
+        let selectedCurriculumCat = "法例與健康";
+        let selectedCurriculumChapter = "ALL";
 
-        // ============================================================
-        // 課程大綱規劃數據 (全盤 30 張卡片體系)
-        // ============================================================
         const CURRICULUM_PLAN = [
-            // 法例與健康 (11章節，共15張卡)
             { cat: "法例與健康", ch: "工場整理", planned: 1, title: "5S 工場管理全拆解" },
             { cat: "法例與健康", ch: "職安健法例及資料", planned: 2, title: "密閉空間工作安全 (Cap. 59AE)" },
             { cat: "法例與健康", ch: "職安健法例及資料", planned: 2, title: "Cap. 59 vs 509 法例體系與呈報期限 (待製作)" },
@@ -410,8 +338,6 @@
             { cat: "法例與健康", ch: "國家及澳門特別行政區的職安健法例", planned: 2, title: "澳門建築安全規章與競賽考點 (待製作)" },
             { cat: "法例與健康", ch: "職業安全約章", planned: 1, title: "職業安全約章與委員會 (待製作)" },
             { cat: "法例與健康", ch: "職安局資訊", planned: 1, title: "職安局資助計劃與工作安全行為 (待製作)" },
-
-            // 建造與機械 (6章節，共10張卡)
             { cat: "建造與機械", ch: "建造業安全", planned: 2, title: "竹棚架與工作平台安全法規" },
             { cat: "建造與機械", ch: "建造業安全", planned: 2, title: "工作台雙重護欄、底護板與防墮網 (待製作)" },
             { cat: "建造與機械", ch: "安全吊運", planned: 1, title: "起重機械與吊運安全 (Cap. 59J)" },
@@ -422,8 +348,6 @@
             { cat: "建造與機械", ch: "燒焊操作安全", planned: 2, title: "氣體焊接與回火防止器 (待製作)" },
             { cat: "建造與機械", ch: "燒焊操作安全", planned: 2, title: "電弧焊防觸電與護眼濾光號數 (待製作)" },
             { cat: "建造與機械", ch: "裝修維修工作安全", planned: 1, title: "吊棚狗臂架與梯具三點接觸 (待製作)" },
-
-            // 化學與消防 (2章節，共5張卡)
             { cat: "化學與消防", ch: "消防安全", planned: 2, title: "滅火原理與滅火筒選用矩陣 (待製作)" },
             { cat: "化學與消防", ch: "消防安全", planned: 2, title: "易燃液體、噴漆抽風 (5分鐘) 與閃點 (待製作)" },
             { cat: "化學與消防", ch: "化學品安全", planned: 3, title: "GHS 危害象形圖與 SDS 16 項 (待製作)" },
@@ -431,7 +355,6 @@
             { cat: "化學與消防", ch: "化學品安全", planned: 3, title: "化學品儲存隔絕與洩漏應變 (待製作)" }
         ];
 
-        // 保底示範卡
         const FALLBACK_STUDY_CARDS = [
             {
                 id: "card_5s",
@@ -526,7 +449,6 @@
             }
         ];
 
-        // 動態學習卡儲存庫
         let studyCardsPool = [];
         try {
             const cachedCards = localStorage.getItem('oshc_cached_study_cards');
@@ -535,14 +457,10 @@
             studyCardsPool = FALLBACK_STUDY_CARDS;
         }
 
-        let selectedCurriculumCat = "法例與健康";
-        let selectedCurriculumChapter = "ALL";
-
         let questionPool = [];
         let currentQuiz = [];
         let currentIndex = 0;
         let selectedMultiIndices = new Set();
-        let countdownTimer = null;
         let countdownInterval = null;
         let isCountdownPaused = false;
         let remainingCountdownMs = 0;
@@ -562,35 +480,40 @@
             "化學與消防": { correct: 0, total: 0 }
         };
 
-        // 僅保留 2025 種子試題作為保底
         const seedQuestions = [
             { 
-                id: "2025_6", 
-                year: "2025", 
-                num: "6", 
+                id: "2026_1.1", 
+                year: TARGET_YEAR, 
+                num: "1.1", 
                 cat: "法例與健康", 
-                chapter: "國家及廣東省安全法規", 
-                q: "根據《中華人民共和國突發事件應對法》，下列屬於突發事件的有（ ）。（多選題）", 
-                options: ["甲鎮發生的火災", "乙縣發生的火車站恐怖襲擊", "丙市發生的不知名傳染病", "丁省發生的蝗災"], 
-                ans: [0, 1, 2, 3], 
-                isMulti: true, 
-                exp: "【正確答案：A, B, C, D】出自《2025 第十一屆粵港澳安全知識競賽》國家及廣東省安全法規（題號 6）。", 
-                hint: "突發事件涵蓋自然災害、事故災難、公共衛生事件及社會安全事件四大類。" 
+                chapter: "體力處理操作", 
+                q: "工友搬運重物時，應依從下列哪一項做法才正確？", 
+                options: ["採用搬運姿勢應盡量保持背部挺直", "盡量搬多一些，快點完成工作減少意外機會", "盡量將物件遠離身體"], 
+                ans: [0], 
+                isMulti: false, 
+                exp: "【正確答案：A】出自《職安健手冊2026》體力處理操作（題號 1.1）。", 
+                hint: "核心人體工學口訣：「背挺直、屈膝、物件貼身」。參考法例：Cap. 509A 附表 3。" 
             },
             {
-                id: "2025_12",
-                year: "2025",
-                num: "12",
+                id: "2026_4.1",
+                year: TARGET_YEAR,
+                num: "4.1",
                 cat: "建造與機械",
                 chapter: "建造業安全",
-                q: "進行高處作業時，所使用的雙重護欄標準，頂部護欄高度應維持在多少範圍內？",
-                options: ["600 至 800 毫米", "900 至 1150 毫米", "1200 至 1400 毫米"],
+                q: "若需在 2 米或以上高處工作，首選的安全設備是？",
+                options: ["防墮網", "合規格的工作台", "安全帶"],
                 ans: [1],
                 isMulti: false,
-                exp: "【正確答案：B】工作平台頂部護欄高度法定為 900 至 1150 毫米，中間護欄為 450 至 600 毫米。",
-                hint: "考點關鍵數字：頂部 900-1150mm，底護板（踢腳板）不少於 200mm。"
+                exp: "【正確答案：B】高處工作首選為具備雙重護欄與踢腳板之安全工作台。",
+                hint: "工程控制（工作台）優先於個人防護裝備（安全帶）。"
             }
         ];
+
+        function escapeHTML(str) {
+            return str == null ? '' : String(str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
 
         window.addEventListener('DOMContentLoaded', () => {
             renderUserSelector();
@@ -601,9 +524,6 @@
             initQuestionPool();
         });
 
-        // ============================================================
-        // 雲端學習卡同步與解析函式
-        // ============================================================
         async function syncStudyCardsFromCloud(forceRefresh = false) {
             if (!CLOUD_CONFIG.apiURL) return;
             try {
@@ -612,32 +532,25 @@
                     const data = await res.json();
                     const list = data.list || [];
                     if (list.length > 0) {
-                        studyCardsPool = list.map(row => parseSheetCard(row));
+                        studyCardsPool = list.map(parseSheetCard);
                         localStorage.setItem('oshc_cached_study_cards', JSON.stringify(studyCardsPool));
-                        console.log(`✅ 成功同步 ${studyCardsPool.length} 張雲端學習卡！`);
                         renderCurriculumView();
                     }
                 }
             } catch(err) {
-                console.warn("同步雲端學習卡失敗，使用快取或保底卡:", err);
+                console.warn("同步學習卡失敗，使用快取或保底卡:", err);
             }
         }
 
         function parseSheetCard(row) {
             const rawCheat = String(row.cheatSheet || row.對比重點 || '').trim();
-            const cheatSheet = rawCheat.split('\n').filter(line => line.trim()).map(line => {
-                const parts = line.split(/[:：]/);
-                return {
-                    term: parts[0] ? parts[0].trim() : '',
-                    desc: parts[1] ? parts[1].trim() : ''
-                };
+            const cheatSheet = rawCheat.split('\n').filter(Boolean).map(line => {
+                const p = line.split(/[:：]/);
+                return { term: p[0]?.trim() || '', desc: p[1]?.trim() || '' };
             });
 
-            const rawTraps = String(row.traps || row.常見陷阱 || '').trim();
-            const traps = rawTraps.split('\n').map(t => t.replace(/^[•\-\*]\s*/, '').trim()).filter(t => t);
-
-            const rawKw = String(row.relatedKeywords || row.關聯關鍵字 || '').trim();
-            const keywords = rawKw.split(/[,，]/).map(k => k.trim()).filter(k => k);
+            const traps = String(row.traps || row.常見陷阱 || '').split('\n').map(t => t.replace(/^[•\-\*]\s*/, '').trim()).filter(Boolean);
+            const keywords = String(row.relatedKeywords || row.關聯關鍵字 || '').split(/[,，]/).map(k => k.trim()).filter(Boolean);
 
             return {
                 id: String(row.id || `card_${Date.now()}`),
@@ -646,30 +559,21 @@
                 badge: String(row.badge || row.章節簡稱 || row.chapter || '考點').trim(),
                 title: String(row.title || row.卡片標題 || '').trim(),
                 goldenRule: String(row.goldenRule || row.核心法則 || '').trim(),
-                cheatSheet: cheatSheet.length > 0 ? cheatSheet : [{ term: '重點', desc: '詳見條例' }],
-                traps: traps.length > 0 ? traps : ['注意反向詞與數字細節'],
+                cheatSheet: cheatSheet.length ? cheatSheet : [{ term: '重點', desc: '詳見條例' }],
+                traps: traps.length ? traps : ['注意反向詞與數字細節'],
                 rhyme: String(row.rhyme || row.背誦口訣 || '').trim(),
                 relatedKeywords: keywords
             };
         }
 
-        // ============================================================
-        // 課程大綱與學習卡渲染引擎
-        // ============================================================
         function getMasteredCardsMap() {
-            try {
-                const raw = localStorage.getItem(`oshc_cards_mastered_${selectedMember}`);
-                return raw ? JSON.parse(raw) : {};
-            } catch(e) { return {}; }
+            try { return JSON.parse(localStorage.getItem(`oshc_cards_mastered_${selectedMember}`)) || {}; }
+            catch(e) { return {}; }
         }
 
         function toggleCardMastered(cardId) {
             const map = getMasteredCardsMap();
-            if (map[cardId]) {
-                delete map[cardId];
-            } else {
-                map[cardId] = true;
-            }
+            map[cardId] ? delete map[cardId] : map[cardId] = true;
             localStorage.setItem(`oshc_cards_mastered_${selectedMember}`, JSON.stringify(map));
             renderCurriculumView();
             showToast(map[cardId] ? "🎉 已標記掌握此卡！" : "已取消掌握標記");
@@ -690,25 +594,16 @@
             const majorContainer = document.getElementById('major-capsule-container');
             const chapterContainer = document.getElementById('chapter-capsule-container');
             const cardsContainer = document.getElementById('cards-list-container');
-            const overallBadge = document.getElementById('cards-mastery-badge');
-            const catTitle = document.getElementById('current-category-title');
-            const catSummary = document.getElementById('current-category-summary');
-            const cardsViewTitle = document.getElementById('current-cards-view-title');
-            const cardsViewCount = document.getElementById('current-cards-view-count');
-
             if (!majorContainer) return;
 
             const masteredMap = getMasteredCardsMap();
             const totalPlannedAll = CURRICULUM_PLAN.length;
             const totalMasteredAll = Object.keys(masteredMap).length;
-            if (overallBadge) overallBadge.innerText = `掌握: ${totalMasteredAll}/${totalPlannedAll}`;
+            document.getElementById('cards-mastery-badge').innerText = `掌握: ${totalMasteredAll}/${totalPlannedAll}`;
 
-            // 三大範疇大膠囊
-            const categories = ["法例與健康", "建造與機械", "化學與消防"];
-            majorContainer.innerHTML = categories.map(cat => {
+            majorContainer.innerHTML = CATEGORIES.map(cat => {
                 const isSelected = (cat === selectedCurriculumCat);
                 const itemsInCat = CURRICULUM_PLAN.filter(c => c.cat === cat);
-                const totalPlannedInCat = itemsInCat.length;
                 let masteredInCat = 0;
                 studyCardsPool.filter(c => c.category === cat).forEach(c => {
                     if (masteredMap[c.id]) masteredInCat++;
@@ -716,25 +611,18 @@
 
                 return `
                     <button onclick="selectCurriculumMajorCategory('${cat}')" class="py-2 px-1 rounded-xl border text-center transition ${
-                        isSelected 
-                            ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm ring-2 ring-indigo-400/30' 
-                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                        isSelected ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm ring-2 ring-indigo-400/30' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                     }">
                         <span class="block text-[11px] font-black truncate">${cat}</span>
-                        <span class="block text-[10px] mt-0.5 font-bold ${isSelected ? 'text-indigo-100' : 'text-slate-400'}">
-                            ${masteredInCat}/${totalPlannedInCat} 卡
-                        </span>
+                        <span class="block text-[10px] mt-0.5 font-bold ${isSelected ? 'text-indigo-100' : 'text-slate-400'}">${masteredInCat}/${itemsInCat.length} 卡</span>
                     </button>
                 `;
             }).join('');
 
-            // 統計目前大範疇下各章節進度
             const itemsInSelectedCat = CURRICULUM_PLAN.filter(c => c.cat === selectedCurriculumCat);
             const chaptersMap = {};
             itemsInSelectedCat.forEach(item => {
-                if (!chaptersMap[item.ch]) {
-                    chaptersMap[item.ch] = { planned: 0, madeCards: [], mastered: 0 };
-                }
+                if (!chaptersMap[item.ch]) chaptersMap[item.ch] = { planned: 0, madeCards: [], mastered: 0 };
                 chaptersMap[item.ch].planned++;
             });
 
@@ -745,52 +633,39 @@
                 }
             });
 
-            if (catTitle) catTitle.innerText = `${selectedCurriculumCat}`;
+            document.getElementById('current-category-title').innerText = selectedCurriculumCat;
             const madeInCat = studyCardsPool.filter(c => c.category === selectedCurriculumCat).length;
-            if (catSummary) catSummary.innerText = `${madeInCat}/${itemsInSelectedCat.length} 張已就緒`;
+            document.getElementById('current-category-summary').innerText = `${madeInCat}/${itemsInSelectedCat.length} 張已就緒`;
 
             let chapterHtml = `
                 <div class="col-span-2 flex items-center justify-between p-2 rounded-lg border text-xs cursor-pointer transition ${
-                    selectedCurriculumChapter === 'ALL'
-                        ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
-                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                    selectedCurriculumChapter === 'ALL' ? 'bg-slate-900 text-white border-slate-900 shadow-xs' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                 }" onclick="selectCurriculumChapter('ALL')">
-                    <span class="font-black flex items-center gap-1.5">
-                        <span>📑</span> 檢視全部章節 (${madeInCat} 張)
-                    </span>
-                    <span class="text-[10px] font-bold ${selectedCurriculumChapter === 'ALL' ? 'text-indigo-300' : 'text-slate-400'}">
-                        全部展開 ➔
-                    </span>
+                    <span class="font-black flex items-center gap-1.5"><span>📑</span> 檢視全部章節 (${madeInCat} 張)</span>
+                    <span class="text-[10px] font-bold ${selectedCurriculumChapter === 'ALL' ? 'text-indigo-300' : 'text-slate-400'}">全部展開 ➔</span>
                 </div>
             `;
 
             for (let ch in chaptersMap) {
                 const info = chaptersMap[ch];
                 const isSelected = (selectedCurriculumChapter === ch);
-                const madeCount = info.madeCards.length;
-                const plannedCount = info.planned;
-                const masteredCount = info.mastered;
-                const isAllMade = (madeCount >= plannedCount);
-                const isAllMastered = (masteredCount >= plannedCount && plannedCount > 0);
+                const isAllMastered = (info.mastered >= info.planned && info.planned > 0);
+                const isAllMade = (info.madeCards.length >= info.planned);
 
                 chapterHtml += `
                     <div onclick="selectCurriculumChapter('${ch}')" class="p-2.5 rounded-xl border transition cursor-pointer flex flex-col justify-between ${
-                        isSelected 
-                            ? 'bg-indigo-50/90 border-indigo-600 ring-1.5 ring-indigo-500 shadow-xs' 
-                            : 'bg-white border-slate-200 hover:border-slate-300'
+                        isSelected ? 'bg-indigo-50/90 border-indigo-600 ring-1.5 ring-indigo-500 shadow-xs' : 'bg-white border-slate-200 hover:border-slate-300'
                     }">
                         <div class="flex justify-between items-start gap-1">
-                            <span class="text-xs font-black text-slate-800 leading-tight break-words flex-1">
-                                ${escapeHTML(ch)}
-                            </span>
+                            <span class="text-xs font-black text-slate-800 leading-tight break-words flex-1">${escapeHTML(ch)}</span>
                             <span class="text-[9px] font-black px-1.5 py-0.5 rounded flex-shrink-0 ${
                                 isAllMastered ? 'bg-green-600 text-white' : (isAllMade ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-600')
                             }">
-                                ${isAllMastered ? '★通關' : (isAllMade ? '已齊備' : `${madeCount}/${plannedCount}`)}
+                                ${isAllMastered ? '★通關' : (isAllMade ? '已齊備' : `${info.madeCards.length}/${info.planned}`)}
                             </span>
                         </div>
                         <div class="flex justify-between items-center mt-2 pt-1 border-t border-slate-100 text-[10px]">
-                            <span class="text-slate-500 font-medium">掌握: <strong class="${masteredCount > 0 ? 'text-green-600 font-black' : 'text-slate-700'}">${masteredCount}/${plannedCount}</strong></span>
+                            <span class="text-slate-500 font-medium">掌握: <strong class="${info.mastered > 0 ? 'text-green-600 font-black' : 'text-slate-700'}">${info.mastered}/${info.planned}</strong></span>
                             <span class="text-[9px] font-bold ${isSelected ? 'text-indigo-600 font-black' : 'text-slate-400'}">${isSelected ? '選取中 ●' : '查看'}</span>
                         </div>
                     </div>
@@ -798,33 +673,16 @@
             }
             chapterContainer.innerHTML = chapterHtml;
 
-            if (cardsViewTitle) {
-                cardsViewTitle.innerText = selectedCurriculumChapter === 'ALL' 
-                    ? `${selectedCurriculumCat}` 
-                    : `${selectedCurriculumChapter}`;
-            }
+            document.getElementById('current-cards-view-title').innerText = selectedCurriculumChapter === 'ALL' ? selectedCurriculumCat : selectedCurriculumChapter;
 
-            const availableCards = studyCardsPool.filter(c => {
-                const catMatch = (c.category === selectedCurriculumCat);
-                const chMatch = (selectedCurriculumChapter === 'ALL' || c.chapter === selectedCurriculumChapter);
-                return catMatch && chMatch;
-            });
+            const availableCards = studyCardsPool.filter(c => (c.category === selectedCurriculumCat) && (selectedCurriculumChapter === 'ALL' || c.chapter === selectedCurriculumChapter));
+            const pendingPlanItems = itemsInSelectedCat.filter(item => (selectedCurriculumChapter === 'ALL' || item.ch === selectedCurriculumChapter) && !studyCardsPool.some(c => c.category === item.cat && c.chapter === item.ch && c.title === item.title.replace(' (待製作)', '')));
 
-            const pendingPlanItems = itemsInSelectedCat.filter(item => {
-                const chMatch = (selectedCurriculumChapter === 'ALL' || item.ch === selectedCurriculumChapter);
-                const hasCard = studyCardsPool.some(c => c.category === item.cat && c.chapter === item.ch && c.title === item.title.replace(' (待製作)', ''));
-                return chMatch && !hasCard;
-            });
+            document.getElementById('current-cards-view-count').innerText = `${availableCards.length} 張已就緒`;
 
-            if (cardsViewCount) {
-                cardsViewCount.innerText = `${availableCards.length} 張已就緒`;
-            }
-
-            let cardsHtml = '';
-
-            availableCards.forEach(card => {
+            let cardsHtml = availableCards.map(card => {
                 const isMastered = Boolean(masteredMap[card.id]);
-                cardsHtml += `
+                return `
                     <div class="border ${isMastered ? 'border-green-300 bg-green-50/20' : 'border-slate-200 bg-white'} rounded-2xl p-3.5 shadow-sm space-y-2.5 transition">
                         <div class="flex justify-between items-center">
                             <span class="bg-indigo-100 text-indigo-900 font-black text-[10px] px-2 py-0.5 rounded-md">${escapeHTML(card.badge)}</span>
@@ -832,14 +690,11 @@
                                 ${isMastered ? '✓ 已掌握' : '○ 標記掌握'}
                             </button>
                         </div>
-
                         <h3 class="text-sm sm:text-base font-black text-slate-900 leading-snug">${escapeHTML(card.title)}</h3>
-
                         <div class="bg-indigo-50/70 border-l-3 border-indigo-600 p-2.5 rounded-r-lg text-xs text-indigo-950 font-medium leading-relaxed">
                             <strong class="text-indigo-900 block mb-0.5">🌟 核心法則：</strong>
                             ${escapeHTML(card.goldenRule)}
                         </div>
-
                         <div class="space-y-1">
                             <span class="text-[11px] font-black text-slate-700 block">📊 重點速查表：</span>
                             <div class="border border-slate-200 rounded-xl overflow-hidden text-xs">
@@ -855,26 +710,19 @@
                                 </table>
                             </div>
                         </div>
-
                         <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 text-xs text-amber-950 space-y-1">
                             <span class="font-black text-amber-900 block">⚠️ 考官陷阱防伏提醒：</span>
-                            <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-amber-900">
-                                ${card.traps.map(t => `<li>${escapeHTML(t)}</li>`).join('')}
-                            </ul>
+                            <ul class="list-disc pl-4 space-y-0.5 text-[11px] text-amber-900">${card.traps.map(t => `<li>${escapeHTML(t)}</li>`).join('')}</ul>
                         </div>
-
                         <div class="bg-blue-50 border border-blue-200 rounded-xl p-2.5 text-center text-xs font-black text-blue-900 leading-relaxed">
-                            💡 30秒背誦口訣：<br>
-                            <span class="text-indigo-900 tracking-wide">${escapeHTML(card.rhyme)}</span>
+                            💡 30秒背誦口訣：<br><span class="text-indigo-900 tracking-wide">${escapeHTML(card.rhyme)}</span>
                         </div>
-
                         <button onclick="startQuizForCard('${card.id}')" class="w-full bg-slate-900 active:bg-slate-800 hover:bg-slate-800 text-white py-2 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition shadow-xs">
-                            <span>🎯 實戰測驗此卡考題</span>
-                            <span>➔</span>
+                            <span>🎯 實戰測驗此卡考題</span>➔
                         </button>
                     </div>
                 `;
-            });
+            }).join('');
 
             if (pendingPlanItems.length > 0) {
                 cardsHtml += `
@@ -891,135 +739,78 @@
                     </div>
                 `;
             }
-
             cardsContainer.innerHTML = cardsHtml;
         }
 
         function startQuizForCard(cardId) {
             const card = studyCardsPool.find(c => c.id === cardId);
             if (!card) return;
-
-            if (questionPool.length === 0) {
-                showToast("題庫正在載入中，請稍候...");
-                return;
-            }
+            if (questionPool.length === 0) return showToast("題庫載入中，請稍候...");
 
             const matched = questionPool.filter(q => {
                 const fullText = `${q.q} ${q.chapter} ${q.cat} ${q.hint}`.toLowerCase();
                 return card.relatedKeywords.some(kw => fullText.includes(kw.toLowerCase()));
             });
 
-            if (matched.length === 0) {
-                showToast("目前 2025 題庫暫未找到此卡對應的真題，請先同步雲端題庫！");
-                return;
-            }
+            if (matched.length === 0) return showToast("目前 2026 題庫暫未找到此卡對應的真題！");
 
             isMistakeMode = false;
-            const shuffled = [...matched].sort(() => 0.5 - Math.random());
-            currentQuiz = shuffled.slice(0, Math.min(10, shuffled.length));
-            currentIndex = 0;
-            isSubmitting = false;
-            currentSessionLog = [];
-            categoryResults = {
-                "法例與健康": { correct: 0, total: 0 },
-                "建造與機械": { correct: 0, total: 0 },
-                "化學與消防": { correct: 0, total: 0 }
-            };
-
-            const userTag = document.getElementById('quiz-user-tag');
-            if (userTag) userTag.textContent = `專項: ${card.badge}`;
-
+            currentQuiz = [...matched].sort(() => 0.5 - Math.random()).slice(0, 10);
+            resetQuizState(`專項: ${card.badge}`);
             switchView('quiz');
             renderQuestion();
-            showToast(`已為您載入「${card.title}」專項 10 題實測！`);
+            showToast(`已載入「${card.title}」專項 10 題實測！`);
         }
 
-        // ============================================================
-        // 基礎功能 (成員、測驗、儀表板)
-        // ============================================================
         function renderUserSelector() {
             const container = document.getElementById('user-selector');
             if (!container) return;
-            container.innerHTML = '';
-            MEMBERS.forEach(m => {
-                const isSelected = (m === selectedMember);
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = `py-2 rounded-lg font-black text-xs border transition ${
-                    isSelected ? 'bg-blue-600 text-white border-blue-600 shadow-sm ring-2 ring-blue-400/30' : 'bg-white text-slate-700 border-slate-200 active:bg-slate-100'
-                }`;
-                btn.textContent = m;
-                btn.onclick = () => {
-                    selectedMember = m;
-                    localStorage.setItem('oshc_selected_user', m);
-                    renderUserSelector();
-                    updateMasteryUI();
-                    renderCurriculumView();
-                };
-                container.appendChild(btn);
-            });
-            const b = document.getElementById('current-user-banner');
-            if (b) b.textContent = `出戰成員: ${selectedMember} • 2025 專項`;
-            const l = document.getElementById('selected-member-label');
-            if (l) l.textContent = `已選擇: ${selectedMember}`;
+            container.innerHTML = MEMBERS.map(m => `
+                <button type="button" onclick="selectMember('${m}')" class="py-2 rounded-lg font-black text-xs border transition ${
+                    m === selectedMember ? 'bg-blue-600 text-white border-blue-600 shadow-sm ring-2 ring-blue-400/30' : 'bg-white text-slate-700 border-slate-200 active:bg-slate-100'
+                }">${m}</button>
+            `).join('');
+
+            document.getElementById('current-user-banner').textContent = `出戰成員: ${selectedMember} • 2026 專項`;
+            document.getElementById('selected-member-label').textContent = `已選擇: ${selectedMember}`;
             updateMasteryUI();
+        }
+
+        function selectMember(m) {
+            selectedMember = m;
+            localStorage.setItem('oshc_selected_user', m);
+            renderUserSelector();
+            renderCurriculumView();
         }
 
         function renderCategorySelector() {
             const container = document.getElementById('category-selector');
             if (!container) return;
-            container.innerHTML = '';
-            CATEGORY_OPTIONS.forEach(cat => {
-                const isSelected = (cat.id === selectedCategory);
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = `py-1.5 px-1 rounded-lg font-bold text-[11px] border transition truncate ${
-                    isSelected ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-slate-600 border-slate-200'
-                }`;
-                btn.textContent = cat.label;
-                btn.onclick = () => {
-                    selectedCategory = cat.id;
-                    renderCategorySelector();
-                    updateMasteryUI();
-                };
-                container.appendChild(btn);
-            });
+            container.innerHTML = CATEGORY_OPTIONS.map(cat => `
+                <button type="button" onclick="selectCategory('${cat.id}')" class="py-1.5 px-1 rounded-lg font-bold text-[11px] border transition truncate ${
+                    cat.id === selectedCategory ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-slate-600 border-slate-200'
+                }">${cat.label}</button>
+            `).join('');
         }
 
-        function getFilteredQuestionPool() {
-            return questionPool.filter(q => {
-                const yearMatch = (String(q.year) === TARGET_YEAR);
-                const catMatch = (selectedCategory === "ALL" || q.cat === selectedCategory);
-                return yearMatch && catMatch;
-            });
-        }
-
-        function getMasteredMap(user) {
-            try {
-                const raw = localStorage.getItem(`oshc_mastered_2025_${user}`);
-                return raw ? JSON.parse(raw) : {};
-            } catch (e) {
-                return {};
-            }
-        }
-
-        function saveMasteredMap(user, map) {
-            localStorage.setItem(`oshc_mastered_2025_${user}`, JSON.stringify(map));
+        function selectCategory(catId) {
+            selectedCategory = catId;
+            renderCategorySelector();
             updateMasteryUI();
         }
 
-        function markQuestionMastered(user, qId) {
-            const map = getMasteredMap(user);
-            map[String(qId)] = true;
-            saveMasteredMap(user, map);
+        function getFilteredQuestionPool() {
+            return questionPool.filter(q => (selectedCategory === "ALL" || q.cat === selectedCategory));
         }
 
-        function markQuestionUnmastered(user, qId) {
-            const map = getMasteredMap(user);
-            if (map[String(qId)]) {
-                delete map[String(qId)];
-                saveMasteredMap(user, map);
-            }
+        function getMasteredMap(user) {
+            try { return JSON.parse(localStorage.getItem(`oshc_mastered_2026_${user}`)) || {}; }
+            catch (e) { return {}; }
+        }
+
+        function saveMasteredMap(user, map) {
+            localStorage.setItem(`oshc_mastered_2026_${user}`, JSON.stringify(map));
+            updateMasteryUI();
         }
 
         function resetMemberMastery() {
@@ -1027,17 +818,11 @@
             const map = getMasteredMap(selectedMember);
             let removedCount = 0;
             filtered.forEach(q => {
-                if (map[String(q.id)]) {
-                    delete map[String(q.id)];
-                    removedCount++;
-                }
+                if (map[String(q.id)]) { delete map[String(q.id)]; removedCount++; }
             });
-            if (removedCount === 0) {
-                showToast(`成員 ${selectedMember} 在 2025 題庫尚未有已掌握題目`);
-                return;
-            }
+            if (removedCount === 0) return showToast(`成員 ${selectedMember} 在目前範圍尚未有掌握題數`);
             saveMasteredMap(selectedMember, map);
-            showToast(`已重設成員 ${selectedMember} 於 2025 題庫的 ${removedCount} 題進度`);
+            showToast(`已重設成員 ${selectedMember} 於此範圍的 ${removedCount} 題進度`);
         }
 
         function updateMasteryUI() {
@@ -1045,58 +830,33 @@
             const map = getMasteredMap(selectedMember);
             const totalCount = filteredPool.length;
             let masteredCount = 0;
-            filteredPool.forEach(q => {
-                if (map[String(q.id)]) masteredCount++;
-            });
+            filteredPool.forEach(q => { if (map[String(q.id)]) masteredCount++; });
 
             const pct = totalCount === 0 ? 0 : Math.round((masteredCount / totalCount) * 100);
+            document.getElementById('mastery-user-title').textContent = `${selectedMember} 通關進度 (2026 專屬)`;
+            document.getElementById('mastery-count-text').textContent = `${masteredCount} / ${totalCount} 題 (${pct}%)`;
+            document.getElementById('mastery-progress-bar').style.width = `${pct}%`;
+            document.getElementById('year-pool-count-tag').textContent = `2026 題庫共 ${totalCount} 題`;
 
-            const titleEl = document.getElementById('mastery-user-title');
-            const textEl = document.getElementById('mastery-count-text');
-            const barEl = document.getElementById('mastery-progress-bar');
-            const infoEl = document.getElementById('mastery-pool-info');
-            const yearTagEl = document.getElementById('year-pool-count-tag');
-
-            if (titleEl) titleEl.textContent = `${selectedMember} 通關進度 (2025 專屬)`;
-            if (textEl) textEl.textContent = `${masteredCount} / ${totalCount} 題 (${pct}%)`;
-            if (barEl) barEl.style.width = `${pct}%`;
-            if (yearTagEl) yearTagEl.textContent = `2025 題庫共 ${totalCount} 題`;
-
-            if (infoEl) {
-                const remaining = Math.max(0, totalCount - masteredCount);
-                if (totalCount > 0 && remaining === 0) {
-                    infoEl.textContent = `🎉 恭喜！${selectedMember} 已完全通關 2025 題庫全部題目！`;
-                } else {
-                    infoEl.textContent = `未掌握剩餘：${remaining} 題（答錯／靠估自動重出）`;
-                }
-            }
+            const remaining = Math.max(0, totalCount - masteredCount);
+            document.getElementById('mastery-pool-info').textContent = (totalCount > 0 && remaining === 0)
+                ? `🎉 恭喜！${selectedMember} 已完全通關 2026 題庫全部題目！`
+                : `未掌握剩餘：${remaining} 題（答錯／靠估自動重出）`;
         }
 
         function renderFilterTabs() {
+            const tabs = ["ALL", ...MEMBERS];
             const mContainer = document.getElementById('mistake-member-filters');
             const dContainer = document.getElementById('dash-member-filters');
-            const tabs = ["ALL", ...MEMBERS];
-            
             if (mContainer) {
-                mContainer.innerHTML = '';
-                tabs.forEach(t => {
-                    const btn = document.createElement('button');
-                    btn.className = `text-[10px] font-bold py-1 rounded border ${t === currentMistakeFilter ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200'}`;
-                    btn.textContent = (t === 'ALL') ? '全部' : t;
-                    btn.onclick = () => filterMistakes(t);
-                    mContainer.appendChild(btn);
-                });
+                mContainer.innerHTML = tabs.map(t => `
+                    <button onclick="filterMistakes('${t}')" class="text-[10px] font-bold py-1 rounded border ${t === currentMistakeFilter ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
+                `).join('');
             }
-
             if (dContainer) {
-                dContainer.innerHTML = '';
-                tabs.forEach(t => {
-                    const btn = document.createElement('button');
-                    btn.className = `text-[10px] font-bold py-1 rounded border ${t === currentDashFilter ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-slate-600 border-slate-200'}`;
-                    btn.textContent = (t === 'ALL') ? '全部' : t;
-                    btn.onclick = () => filterDashboard(t);
-                    dContainer.appendChild(btn);
-                });
+                dContainer.innerHTML = tabs.map(t => `
+                    <button onclick="filterDashboard('${t}')" class="text-[10px] font-bold py-1 rounded border ${t === currentDashFilter ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
+                `).join('');
             }
         }
 
@@ -1105,8 +865,7 @@
             const sourceLabel = document.getElementById('pool-source-label');
             const detailLabel = document.getElementById('pool-detail-label');
             const countBadge = document.getElementById('pool-count-badge');
-
-            const CACHE_KEY = 'oshc_cached_questions_2025_v1';
+            const CACHE_KEY = 'oshc_cached_questions_2026_v1';
 
             if (!forceRefresh) {
                 const localCached = localStorage.getItem(CACHE_KEY);
@@ -1114,10 +873,10 @@
                     try {
                         const parsed = JSON.parse(localCached);
                         if (Array.isArray(parsed) && parsed.length > 0) {
-                            questionPool = parsed.filter(q => String(q.year) === TARGET_YEAR);
-                            if (sourceLabel) sourceLabel.textContent = "✅ 2025 官方題庫";
-                            if (detailLabel) detailLabel.textContent = "已就緒 (支援離線刷題 & 秘笈連動)";
-                            if (countBadge) countBadge.textContent = `共 ${questionPool.length} 題`;
+                            questionPool = parsed;
+                            sourceLabel.textContent = "✅ 2026 官方題庫";
+                            detailLabel.textContent = "已就緒 (支援離線刷題 & 秘笈連動)";
+                            countBadge.textContent = `共 ${questionPool.length} 題`;
                             updateMasteryUI();
                             return;
                         }
@@ -1127,137 +886,88 @@
 
             if (CLOUD_CONFIG.apiURL) {
                 try {
-                    if (detailLabel) detailLabel.textContent = "正在從 Google Sheet 同步 2025 官方題庫...";
-                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getQuestions&year=2025`);
+                    detailLabel.textContent = "正在從 Google Sheet 同步 2026 官方題庫...";
+                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getQuestions&year=2026`);
                     if (res.ok) {
                         const data = await res.json();
-                        const rawList = data.list || [];
-                        const validRows = rawList.filter(r => {
-                            const qVal = r['題目內容'] || r['Question'] || r['題目'] || '';
-                            const yrVal = String(r['年份'] || r['Year'] || r['year'] || '2025').trim();
-                            return String(qVal).trim().length > 0 && (yrVal === '2025' || yrVal === '');
-                        });
-
+                        const validRows = (data.list || []).filter(r => String(r['題目內容'] || r['Question'] || r['題目'] || '').trim().length > 0);
                         if (validRows.length > 0) {
-                            questionPool = validRows.map((r, idx) => parseSheetQuestion(r, idx));
-                            try {
-                                localStorage.setItem(CACHE_KEY, JSON.stringify(questionPool));
-                            } catch (quotaErr) {
-                                console.warn("LocalStorage 容量已滿，僅保留於記憶體:", quotaErr);
-                            }
-                            if (sourceLabel) sourceLabel.textContent = "✅ 2025 官方題庫";
-                            if (detailLabel) detailLabel.textContent = "已完成 Google Sheet 雲端同步";
-                            if (countBadge) countBadge.textContent = `共 ${questionPool.length} 題`;
-                            showToast(`✅ 成功載入 2025 年共 ${questionPool.length} 題考題！`);
+                            questionPool = validRows.map(parseSheetQuestion);
+                            try { localStorage.setItem(CACHE_KEY, JSON.stringify(questionPool)); } catch (quotaErr) {}
+                            sourceLabel.textContent = "✅ 2026 官方題庫";
+                            detailLabel.textContent = "已完成 Google Sheet 雲端同步";
+                            countBadge.textContent = `共 ${questionPool.length} 題`;
+                            showToast(`✅ 成功載入 2026 年共 ${questionPool.length} 題考題！`);
                             updateMasteryUI();
                             return;
                         }
                     }
                 } catch (err) {
-                    console.warn("自 Google Sheet 讀取失敗，使用內建示範題庫:", err);
+                    console.warn("自雲端同步失敗，使用示範題庫:", err);
                 }
             }
 
             questionPool = [...seedQuestions];
-            if (sourceLabel) sourceLabel.textContent = "⚠️ 2025 示範題庫";
-            if (detailLabel) detailLabel.textContent = "無法連線至雲端，目前使用內建 2025 考題";
-            if (countBadge) countBadge.textContent = `${questionPool.length} 題`;
+            sourceLabel.textContent = "⚠️ 2026 示範題庫";
+            detailLabel.textContent = "無法連線至雲端，目前使用內建 2026 考題";
+            countBadge.textContent = `${questionPool.length} 題`;
             updateMasteryUI();
         }
 
         function parseSheetQuestion(r, idx) {
             const getVal = (keys) => {
-                const rowKeys = Object.keys(r);
                 for (let target of keys) {
-                    for (let k of rowKeys) {
-                        if (k.trim().toLowerCase() === target.toLowerCase()) {
-                            if (r[k] !== undefined && r[k] !== null && String(r[k]).trim() !== '') {
-                                return String(r[k]).trim();
-                            }
+                    for (let k of Object.keys(r)) {
+                        if (k.trim().toLowerCase() === target.toLowerCase() && r[k] != null && String(r[k]).trim() !== '') {
+                            return String(r[k]).trim();
                         }
                     }
                 }
                 return '';
             };
 
-            const year = "2025";
-            const qText = getVal(['題目內容', 'Question', 'question', '題目', 'q']);
-            const optA = getVal(['選項A', 'OptionA', 'optionA', 'A', 'a']);
-            const optB = getVal(['選項B', 'OptionB', 'optionB', 'B', 'b']);
-            const optC = getVal(['選項C', 'OptionC', 'optionC', 'C', 'c']);
-            let optD = getVal(['選項D', 'OptionD', 'optionD', 'D', 'd']);
-            let optE = getVal(['選項E', 'OptionE', 'optionE', 'E', 'e']);
-
-            const ansRaw = getVal(['正確答案', 'Answer', 'answer', '答案', 'ans']);
-            const num = getVal(['題號', 'Num', 'num']) || `${idx + 1}`;
-            const chapter = getVal(['章節名稱', '章節', 'Chapter']) || '';
-            const rawCat = getVal(['三大範疇', '範疇', 'Category', 'category']) || "法例與健康";
-            const cat = ["法例與健康", "建造與機械", "化學與消防"].includes(rawCat) ? rawCat : "法例與健康";
-
-            let customHint = getVal(['提示', 'Hint', 'hint']);
-
-            if (!optD && customHint && customHint.includes('【選項D】')) {
-                let dPart = customHint.split('【選項D】')[1] || '';
-                if (dPart.includes('【題型】')) {
-                    dPart = dPart.split('【題型】')[0].trim();
-                }
-                if (/\s+E[\.\、]/.test(dPart)) {
-                    const parts = dPart.split(/\s+E[\.\、]/);
-                    optD = parts[0].trim();
-                    optE = parts[1].trim();
-                } else {
-                    optD = dPart.trim();
-                }
-            }
-
-            const cleanOpt = (txt, fallback) => {
-                if (!txt) return fallback;
-                return txt.replace(/^[a-eA-E][\.\、\s\:]+/, '').trim() || fallback;
-            };
-
-            const options = [
-                cleanOpt(optA, "選項 A"),
-                cleanOpt(optB, "選項 B"),
-                cleanOpt(optC, "選項 C")
-            ];
+            const qText = getVal(['題目內容', 'Question', '題目', 'q']);
+            const cleanOpt = (txt, fallback) => txt ? txt.replace(/^[a-eA-E][\.\、\s\:]+/, '').trim() || fallback : fallback;
+            const options = [cleanOpt(getVal(['選項A', 'A']), "選項 A"), cleanOpt(getVal(['選項B', 'B']), "選項 B"), cleanOpt(getVal(['選項C', 'C']), "選項 C")];
+            
+            const optD = getVal(['選項D', 'D']);
+            const optE = getVal(['選項E', 'E']);
             if (optD) options.push(cleanOpt(optD, "選項 D"));
             if (optE) options.push(cleanOpt(optE, "選項 E"));
 
             const letterMap = { 'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4 };
+            const ansRaw = getVal(['正確答案', 'Answer', '答案', 'ans']);
             const matchedLetters = String(ansRaw).toUpperCase().match(/[A-E]/g) || ['A'];
-            const ansIndices = [...new Set(matchedLetters.map(l => letterMap[l]).filter(i => i !== undefined && i < options.length))].sort((a, b) => a - b);
+            const ansIndices = [...new Set(matchedLetters.map(l => letterMap[l]).filter(i => i != null && i < options.length))].sort((a, b) => a - b);
             if (ansIndices.length === 0) ansIndices.push(0);
 
-            const isMulti = ansIndices.length > 1 || qText.includes('多選題') || qText.includes('多 選') || (customHint && customHint.includes('多選題'));
+            const num = getVal(['題號', 'Num']) || `${idx + 1}`;
+            const chapter = getVal(['章節名稱', '章節', 'Chapter']) || '';
+            const rawCat = getVal(['三大範疇', '範疇', 'Category']);
+            const cat = CATEGORIES.includes(rawCat) ? rawCat : "法例與健康";
+            const customHint = getVal(['提示', 'Hint']);
             const ansLettersStr = ansIndices.map(i => ['A', 'B', 'C', 'D', 'E'][i]).join(', ');
 
-            const exp = getVal(['解析', 'Explanation', '條例引用']) ||
-                `【正確答案：${ansLettersStr}】出自《2025 職安健問答比賽手冊》${chapter ? chapter + ' ' : ''}（題號 ${num}）。`;
-
             return {
-                id: `2025_${num}_${idx}`,
-                year: "2025",
+                id: `2026_${num}_${idx}`,
+                year: TARGET_YEAR,
                 num: String(num),
                 cat: cat,
                 chapter: chapter,
                 q: qText,
                 options: options,
                 ans: ansIndices,
-                isMulti: isMulti,
-                exp: exp,
+                isMulti: ansIndices.length > 1 || qText.includes('多選題') || (customHint && customHint.includes('多選題')),
+                exp: getVal(['解析', 'Explanation']) || `【正確答案：${ansLettersStr}】出自《2026 職安健手冊》${chapter ? chapter + ' ' : ''}（題號 ${num}）。`,
                 hint: customHint || ""
             };
         }
 
         function switchView(viewName) {
             clearAllTimers();
-
             ['intro', 'cards', 'quiz', 'search', 'mistakes', 'dashboard'].forEach(v => {
                 const el = document.getElementById(`view-${v}`);
-                if (el) {
-                    el.classList.add('hidden');
-                    el.classList.remove('flex', 'block');
-                }
+                if (el) { el.classList.add('hidden'); el.classList.remove('flex', 'block'); }
             });
             
             const target = document.getElementById(`view-${viewName}`);
@@ -1266,146 +976,86 @@
                 target.classList.add(viewName === 'intro' ? 'block' : 'flex');
             }
 
-            if (viewName === 'dashboard') {
-                fetchDashboardDataFromCloud();
-            } else if (viewName === 'mistakes') {
-                renderMistakesList();
-            } else if (viewName === 'search') {
-                performQuestionSearch();
-            } else if (viewName === 'cards') {
-                renderCurriculumView();
-            }
+            if (viewName === 'dashboard') fetchDashboardDataFromCloud();
+            else if (viewName === 'mistakes') renderMistakesList();
+            else if (viewName === 'search') performQuestionSearch();
+            else if (viewName === 'cards') renderCurriculumView();
         }
 
         function clearAllTimers() {
-            if (countdownTimer) clearTimeout(countdownTimer);
             if (countdownInterval) clearInterval(countdownInterval);
             if (questionSpeedTimer) clearInterval(questionSpeedTimer);
             isCountdownPaused = false;
         }
 
+        function resetQuizState(userTagText) {
+            currentIndex = 0;
+            isSubmitting = false;
+            currentSessionLog = [];
+            categoryResults = { "法例與健康": { correct: 0, total: 0 }, "建造與機械": { correct: 0, total: 0 }, "化學與消防": { correct: 0, total: 0 } };
+            document.getElementById('quiz-user-tag').textContent = userTagText;
+        }
+
         function startQuiz() {
             const filteredPool = getFilteredQuestionPool();
-            if (filteredPool.length === 0) {
-                showToast("目前選擇的範疇沒有題目，請重新選擇！");
-                return;
-            }
+            if (filteredPool.length === 0) return showToast("目前選擇的範疇沒有題目！");
 
             isMistakeMode = false;
             const quizLen = parseInt(document.getElementById('quiz-length-select')?.value || "10", 10);
-
             const masteredMap = getMasteredMap(selectedMember);
             let eligiblePool = filteredPool.filter(q => !masteredMap[String(q.id)]);
 
             if (eligiblePool.length === 0) {
-                showToast(`🏆 ${selectedMember} 已掌握 2025 題庫所有題目！進入全題庫複習模式。`);
+                showToast(`🏆 ${selectedMember} 已掌握 2026 題庫所有題目！進入全題庫複習模式。`);
                 eligiblePool = [...filteredPool];
             }
 
-            const shuffled = [...eligiblePool];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-
-            currentQuiz = shuffled.slice(0, Math.min(quizLen, shuffled.length));
-            currentIndex = 0;
-            isSubmitting = false;
-            currentSessionLog = [];
-            categoryResults = {
-                "法例與健康": { correct: 0, total: 0 },
-                "建造與機械": { correct: 0, total: 0 },
-                "化學與消防": { correct: 0, total: 0 }
-            };
-
-            const userTag = document.getElementById('quiz-user-tag');
-            if (userTag) userTag.textContent = `成員: ${selectedMember}`;
-
+            currentQuiz = [...eligiblePool].sort(() => 0.5 - Math.random()).slice(0, Math.min(quizLen, eligiblePool.length));
+            resetQuizState(`成員: ${selectedMember}`);
             switchView('quiz');
             renderQuestion();
         }
 
         function startMistakeQuiz() {
-            const allMistakes = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
+            const allMistakes = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2026')) || [];
             const list = (currentMistakeFilter === 'ALL') ? allMistakes : allMistakes.filter(m => m.user === currentMistakeFilter);
-            if (list.length === 0) {
-                showToast("目前沒有需要重練的錯題！");
-                return;
-            }
+            if (list.length === 0) return showToast("目前沒有需要重練的錯題！");
 
             isMistakeMode = true;
-            const shuffled = [...list].sort(() => 0.5 - Math.random());
-            currentQuiz = shuffled.slice(0, 10).map(m => normalizeLegacyQuestion(m.questionData));
-            currentIndex = 0;
-            isSubmitting = false;
-            currentSessionLog = [];
-            categoryResults = {
-                "法例與健康": { correct: 0, total: 0 },
-                "建造與機械": { correct: 0, total: 0 },
-                "化學與消防": { correct: 0, total: 0 }
-            };
-
-            const userTag = document.getElementById('quiz-user-tag');
-            if (userTag) userTag.textContent = `錯題: ${currentMistakeFilter}`;
-
+            currentQuiz = [...list].sort(() => 0.5 - Math.random()).slice(0, 10).map(m => m.questionData);
+            resetQuizState(`錯題: ${currentMistakeFilter}`);
             switchView('quiz');
             renderQuestion();
         }
 
-        function normalizeLegacyQuestion(q) {
-            if (!q) return seedQuestions[0];
-            const ansArr = Array.isArray(q.ans) ? q.ans : [Number(q.ans) || 0];
-            return {
-                ...q,
-                year: "2025",
-                ans: ansArr,
-                isMulti: Boolean(q.isMulti || ansArr.length > 1)
-            };
-        }
-
         function toggleAiHint() {
             const chk = document.getElementById('chk-ai-hint');
-            const box = document.getElementById('ai-hint-box');
-            if (chk && box) {
-                box.classList.toggle('hidden', !chk.checked);
-            }
+            document.getElementById('ai-hint-box').classList.toggle('hidden', !chk.checked);
         }
 
         function renderQuestion() {
             clearAllTimers();
             selectedMultiIndices.clear();
 
-            const feedbackBox = document.getElementById('feedback-box');
-            if (feedbackBox) feedbackBox.classList.add('hidden');
-
+            document.getElementById('feedback-box').classList.add('hidden');
             const chkGuessed = document.getElementById('chk-guessed');
-            if (chkGuessed) {
-                chkGuessed.checked = false;
-                chkGuessed.disabled = false;
-            }
+            chkGuessed.checked = false;
+            chkGuessed.disabled = false;
 
-            const qData = normalizeLegacyQuestion(currentQuiz[currentIndex]);
-            currentQuiz[currentIndex] = qData;
-
+            const qData = currentQuiz[currentIndex];
             const chkAi = document.getElementById('chk-ai-hint');
-            const hintBox = document.getElementById('ai-hint-box');
-            const hintText = document.getElementById('ai-hint-text');
-
-            if (chkAi) chkAi.checked = false;
-            if (hintBox) hintBox.classList.add('hidden');
-            if (hintText) {
-                hintText.textContent = qData.hint ? qData.hint : `（此為 2025 年官方考題，請根據章節「${qData.chapter || qData.cat}」審題作答）`;
-            }
+            chkAi.checked = false;
+            document.getElementById('ai-hint-box').classList.add('hidden');
+            document.getElementById('ai-hint-text').textContent = qData.hint || `（此為 2026 年官方考題，請根據章節「${qData.chapter || qData.cat}」審題作答）`;
 
             document.getElementById('quiz-progress').textContent = `第 ${currentIndex + 1} / ${currentQuiz.length} 題`;
             document.getElementById('quiz-category').textContent = qData.cat;
             document.getElementById('quiz-chapter-tag').textContent = qData.chapter ? `章節：${qData.chapter}` : `題號：${qData.num}`;
-            document.getElementById('quiz-year-badge').textContent = `2025年`;
 
             const typeBadge = document.getElementById('quiz-type-badge');
             const submitMultiBtn = document.getElementById('btn-submit-multi');
             if (qData.isMulti) {
-                typeBadge.textContent = "多選題 (可選多項)";
+                typeBadge.textContent = "多選題";
                 typeBadge.className = "text-[10px] text-purple-800 bg-purple-100 border border-purple-300 px-1.5 py-0.5 rounded font-black";
                 submitMultiBtn.classList.remove('hidden');
                 submitMultiBtn.disabled = false;
@@ -1416,37 +1066,15 @@
             }
 
             document.getElementById('question-text').textContent = `${qData.num ? qData.num + ' ' : ''}${qData.q}`;
-
             const optionsBox = document.getElementById('options-container');
-            optionsBox.innerHTML = '';
             const letters = ['A', 'B', 'C', 'D', 'E'];
 
-            qData.options.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.dataset.idx = idx;
-                btn.className = 'w-full text-left p-3.5 border border-slate-200 rounded-xl active:bg-blue-50 font-medium text-xs sm:text-sm text-slate-800 bg-white flex items-center gap-2.5 transition shadow-xs';
-
-                const badgeSpan = document.createElement('span');
-                badgeSpan.className = 'opt-badge w-6 h-6 rounded-md bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-xs flex-shrink-0';
-                badgeSpan.textContent = letters[idx] || String(idx + 1);
-
-                const textSpan = document.createElement('span');
-                textSpan.className = 'leading-relaxed';
-                textSpan.textContent = opt;
-
-                btn.appendChild(badgeSpan);
-                btn.appendChild(textSpan);
-
-                btn.onclick = () => {
-                    if (qData.isMulti) {
-                        toggleMultiOption(idx, btn);
-                    } else {
-                        evaluateAnswer([idx]);
-                    }
-                };
-                optionsBox.appendChild(btn);
-            });
+            optionsBox.innerHTML = qData.options.map((opt, idx) => `
+                <button type="button" data-idx="${idx}" onclick="handleOptionClick(${idx}, this)" class="w-full text-left p-3.5 border border-slate-200 rounded-xl active:bg-blue-50 font-medium text-xs sm:text-sm text-slate-800 bg-white flex items-center gap-2.5 transition shadow-xs">
+                    <span class="opt-badge w-6 h-6 rounded-md bg-slate-100 text-slate-600 font-bold flex items-center justify-center text-xs flex-shrink-0">${letters[idx] || idx + 1}</span>
+                    <span class="leading-relaxed">${escapeHTML(opt)}</span>
+                </button>
+            `).join('');
 
             const speedChk = document.getElementById('chk-speed-timer');
             const timerBadge = document.getElementById('quiz-timer-badge');
@@ -1462,39 +1090,34 @@
                         evaluateAnswer([]);
                     }
                 }, 1000);
-            } else if (timerBadge) {
+            } else {
                 timerBadge.classList.add('hidden');
             }
         }
 
-        function toggleMultiOption(idx, btn) {
-            const badge = btn.querySelector('.opt-badge');
-            if (selectedMultiIndices.has(idx)) {
-                selectedMultiIndices.delete(idx);
-                btn.classList.remove('border-indigo-600', 'bg-indigo-50/70', 'ring-1', 'ring-indigo-600');
-                btn.classList.add('border-slate-200', 'bg-white');
-                if (badge) {
-                    badge.classList.remove('bg-indigo-600', 'text-white');
-                    badge.classList.add('bg-slate-100', 'text-slate-600');
+        function handleOptionClick(idx, btn) {
+            const qData = currentQuiz[currentIndex];
+            if (qData.isMulti) {
+                const badge = btn.querySelector('.opt-badge');
+                if (selectedMultiIndices.has(idx)) {
+                    selectedMultiIndices.delete(idx);
+                    btn.classList.remove('border-indigo-600', 'bg-indigo-50/70', 'ring-1', 'ring-indigo-600');
+                    badge?.classList.replace('bg-indigo-600', 'bg-slate-100');
+                    badge?.classList.replace('text-white', 'text-slate-600');
+                } else {
+                    selectedMultiIndices.add(idx);
+                    btn.classList.add('border-indigo-600', 'bg-indigo-50/70', 'ring-1', 'ring-indigo-600');
+                    badge?.classList.replace('bg-slate-100', 'bg-indigo-600');
+                    badge?.classList.replace('text-slate-600', 'text-white');
                 }
             } else {
-                selectedMultiIndices.add(idx);
-                btn.classList.remove('border-slate-200', 'bg-white');
-                btn.classList.add('border-indigo-600', 'bg-indigo-50/70', 'ring-1', 'ring-indigo-600');
-                if (badge) {
-                    badge.classList.remove('bg-slate-100', 'text-slate-600');
-                    badge.classList.add('bg-indigo-600', 'text-white');
-                }
+                evaluateAnswer([idx]);
             }
         }
 
         function submitMultiChoiceAnswer() {
-            if (selectedMultiIndices.size === 0) {
-                showToast("請至少選擇一個選項！");
-                return;
-            }
-            const chosenArr = [...selectedMultiIndices].sort((a, b) => a - b);
-            evaluateAnswer(chosenArr);
+            if (selectedMultiIndices.size === 0) return showToast("請至少選擇一個選項！");
+            evaluateAnswer([...selectedMultiIndices].sort((a, b) => a - b));
         }
 
         function evaluateAnswer(chosenIndices) {
@@ -1513,18 +1136,16 @@
             if (!categoryResults[qData.cat]) categoryResults[qData.cat] = { correct: 0, total: 0 };
             categoryResults[qData.cat].total++;
 
-            const ansArr = qData.ans;
-            const isCorrect = (chosenIndices.length === ansArr.length) &&
-                chosenIndices.every((val, i) => val === ansArr[i]);
+            const isCorrect = (chosenIndices.length === qData.ans.length) && chosenIndices.every((val, i) => val === qData.ans[i]);
 
             currentSessionLog.push({
-                year: "2025",
+                year: TARGET_YEAR,
                 num: qData.num,
                 cat: qData.cat,
                 q: qData.q,
                 options: qData.options,
                 chosen: chosenIndices,
-                ans: ansArr,
+                ans: qData.ans,
                 isCorrect: isCorrect,
                 isGuessed: isGuessed,
                 exp: qData.exp
@@ -1532,13 +1153,10 @@
 
             btns.forEach((b, idx) => {
                 b.classList.remove('border-indigo-600', 'bg-indigo-50/70', 'ring-1', 'ring-indigo-600');
-                const isAns = ansArr.includes(idx);
-                const isChosen = chosenIndices.includes(idx);
-
-                if (isAns) {
+                if (qData.ans.includes(idx)) {
                     b.classList.replace('border-slate-200', 'border-green-500');
                     b.classList.add('bg-green-50', 'text-green-900');
-                } else if (isChosen && !isAns) {
+                } else if (chosenIndices.includes(idx)) {
                     b.classList.replace('border-slate-200', 'border-red-500');
                     b.classList.add('bg-red-50', 'text-red-900');
                 }
@@ -1546,42 +1164,43 @@
 
             const feedbackBox = document.getElementById('feedback-box');
             const resultText = document.getElementById('feedback-result');
-            const expText = document.getElementById('feedback-explanation');
-
             feedbackBox.classList.remove('hidden');
 
             let durationMs = 2800;
             if (isCorrect && !isGuessed) {
                 feedbackBox.className = 'p-3.5 rounded-xl border border-green-200 bg-green-50 text-green-950 relative overflow-hidden';
-                resultText.textContent = '✅ 答對了！（已掌握 2025 考點）';
+                resultText.textContent = '✅ 答對了！（已掌握 2026 考點）';
                 categoryResults[qData.cat].correct++;
-                markQuestionMastered(selectedMember, qData.id);
+                markMasteryStatus(selectedMember, qData.id, true);
                 if (isMistakeMode) removeMistake(qData.id, selectedMember);
             } else if (isCorrect && isGuessed) {
                 feedbackBox.className = 'p-3.5 rounded-xl border border-amber-200 bg-amber-50 text-amber-950 relative overflow-hidden';
                 resultText.textContent = '💡 靠估答對！日後會繼續隨機抽考鞏固記憶。';
                 categoryResults[qData.cat].correct++;
-                markQuestionUnmastered(selectedMember, qData.id);
+                markMasteryStatus(selectedMember, qData.id, false);
                 durationMs = 4000;
             } else {
                 feedbackBox.className = 'p-3.5 rounded-xl border border-red-200 bg-red-50 text-red-950 relative overflow-hidden';
                 resultText.textContent = chosenIndices.length === 0 ? '⏰ 超時未作答！' : '❌ 答錯了！此題已加入錯題簿並保留重考。';
-                markQuestionUnmastered(selectedMember, qData.id);
+                markMasteryStatus(selectedMember, qData.id, false);
                 if (!isMistakeMode) recordMistake(qData, selectedMember, chosenIndices);
                 durationMs = 5000;
             }
 
-            const fullExp = qData.hint ? `📖 解析：${qData.exp}\n\n${qData.hint}` : `📖 解析：${qData.exp}`;
-            expText.textContent = fullExp;
-
+            document.getElementById('feedback-explanation').textContent = qData.hint ? `📖 解析：${qData.exp}\n\n${qData.hint}` : `📖 解析：${qData.exp}`;
             startFeedbackCountdown(durationMs);
+        }
+
+        function markMasteryStatus(user, qId, isMastered) {
+            const map = getMasteredMap(user);
+            if (isMastered) map[String(qId)] = true;
+            else delete map[String(qId)];
+            saveMasteredMap(user, map);
         }
 
         function startFeedbackCountdown(totalMs) {
             const progressBar = document.getElementById('countdown-progress');
-            const pauseBtn = document.getElementById('btn-pause-countdown');
-            if (pauseBtn) pauseBtn.textContent = "⏸️ 暫停詳讀";
-
+            document.getElementById('btn-pause-countdown').textContent = "⏸️ 暫停詳讀";
             isCountdownPaused = false;
             remainingCountdownMs = totalMs;
             const stepMs = 50;
@@ -1590,9 +1209,7 @@
             countdownInterval = setInterval(() => {
                 if (isCountdownPaused) return;
                 remainingCountdownMs -= stepMs;
-                const pct = Math.max(0, (remainingCountdownMs / totalMs) * 100);
-                if (progressBar) progressBar.style.width = `${pct}%`;
-
+                if (progressBar) progressBar.style.width = `${Math.max(0, (remainingCountdownMs / totalMs) * 100)}%`;
                 if (remainingCountdownMs <= 0) {
                     clearInterval(countdownInterval);
                     nextQuestion();
@@ -1603,10 +1220,7 @@
         function togglePauseCountdown(e) {
             if (e) e.stopPropagation();
             isCountdownPaused = !isCountdownPaused;
-            const pauseBtn = document.getElementById('btn-pause-countdown');
-            if (pauseBtn) {
-                pauseBtn.textContent = isCountdownPaused ? "▶️ 繼續倒數" : "⏸️ 暫停詳讀";
-            }
+            document.getElementById('btn-pause-countdown').textContent = isCountdownPaused ? "▶️ 繼續倒數" : "⏸️ 暫停詳讀";
         }
 
         function skipCountdown() {
@@ -1618,12 +1232,10 @@
             if (currentIndex < currentQuiz.length - 1) {
                 currentIndex++;
                 renderQuestion();
-            } else {
-                if (!isSubmitting) {
-                    isSubmitting = true;
-                    if (!isMistakeMode) await saveSessionToCloud();
-                    switchView('dashboard');
-                }
+            } else if (!isSubmitting) {
+                isSubmitting = true;
+                if (!isMistakeMode) await saveSessionToCloud();
+                switchView('dashboard');
             }
         }
 
@@ -1634,19 +1246,14 @@
             if (!kwInput || !container) return;
 
             const kw = kwInput.value.trim().toLowerCase();
-
             if (!kw) {
-                container.innerHTML = `<p class="text-center text-xs text-gray-400 py-8">請輸入關鍵字（例如：滅火筒、安全帶、罰款、突發事件）檢索 2025 題庫</p>`;
-                if (countBadge) countBadge.textContent = `共 ${questionPool.length} 題待查`;
+                container.innerHTML = `<p class="text-center text-xs text-gray-400 py-8">請輸入關鍵字（例如：搬運、滅火筒、安全帶、罰款）檢索 2026 題庫</p>`;
+                countBadge.textContent = `共 ${questionPool.length} 題待查`;
                 return;
             }
 
-            const matched = questionPool.filter(q => {
-                const haystack = `${q.num} ${q.q} ${q.chapter} ${q.options.join(' ')} ${q.hint} ${q.exp}`.toLowerCase();
-                return haystack.includes(kw);
-            });
-
-            if (countBadge) countBadge.textContent = `${matched.length} 筆結果`;
+            const matched = questionPool.filter(q => `${q.num} ${q.q} ${q.chapter} ${q.options.join(' ')} ${q.hint} ${q.exp}`.toLowerCase().includes(kw));
+            countBadge.textContent = `${matched.length} 筆結果`;
 
             if (matched.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-gray-400 py-8">找不到包含「${escapeHTML(kwInput.value)}」的題目</p>`;
@@ -1654,29 +1261,24 @@
             }
 
             const letters = ['A', 'B', 'C', 'D', 'E'];
-            container.innerHTML = matched.slice(0, 50).map(q => {
-                const ansStr = (Array.isArray(q.ans) ? q.ans : [q.ans])
-                    .map(i => `${letters[i]}. ${escapeHTML(q.options[i] || '')}`)
-                    .join(' ／ ');
-                return `
-                    <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs space-y-1.5">
-                        <div class="flex justify-between items-center">
-                            <span class="font-black text-blue-900 bg-blue-100 px-2 py-0.5 rounded text-[10px]">2025年 • 題號 ${escapeHTML(q.num)}</span>
-                            <span class="text-[10px] text-gray-500 font-bold">${escapeHTML(q.cat)} (${escapeHTML(q.chapter)})</span>
-                        </div>
-                        <p class="font-bold text-slate-900 leading-relaxed">${escapeHTML(q.q)}</p>
-                        <p class="text-green-800 font-bold bg-green-50 border border-green-200 p-2 rounded-lg">✅ 正解：${ansStr}</p>
-                        ${q.hint ? `<p class="text-[11px] text-indigo-900 bg-indigo-50/70 p-2 rounded-lg whitespace-pre-line">${escapeHTML(q.hint)}</p>` : ''}
+            container.innerHTML = matched.slice(0, 50).map(q => `
+                <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <span class="font-black text-blue-900 bg-blue-100 px-2 py-0.5 rounded text-[10px]">2026年 • 題號 ${escapeHTML(q.num)}</span>
+                        <span class="text-[10px] text-gray-500 font-bold">${escapeHTML(q.cat)} (${escapeHTML(q.chapter)})</span>
                     </div>
-                `;
-            }).join('');
+                    <p class="font-bold text-slate-900 leading-relaxed">${escapeHTML(q.q)}</p>
+                    <p class="text-green-800 font-bold bg-green-50 border border-green-200 p-2 rounded-lg">✅ 正解：${q.ans.map(i => `${letters[i]}. ${escapeHTML(q.options[i] || '')}`).join(' ／ ')}</p>
+                    ${q.hint ? `<p class="text-[11px] text-indigo-900 bg-indigo-50/70 p-2 rounded-lg whitespace-pre-line">${escapeHTML(q.hint)}</p>` : ''}
+                </div>
+            `).join('');
         }
 
         async function saveSessionToCloud() {
             const payload = {
                 "token": CLOUD_CONFIG.apiToken,
                 "User": selectedMember,
-                "YearMode": "2025",
+                "YearMode": TARGET_YEAR,
                 "Law_C": categoryResults["法例與健康"]?.correct || 0,
                 "Law_T": categoryResults["法例與健康"]?.total || 0,
                 "Mech_C": categoryResults["建造與機械"]?.correct || 0,
@@ -1687,25 +1289,15 @@
                 "SessionDetails": currentSessionLog
             };
 
-            let local = JSON.parse(localStorage.getItem('oshc_cloud_history_2025')) || [];
+            let local = JSON.parse(localStorage.getItem('oshc_cloud_history_2026')) || [];
             local.unshift(payload);
-            localStorage.setItem('oshc_cloud_history_2025', JSON.stringify(local.slice(0, 100)));
+            localStorage.setItem('oshc_cloud_history_2026', JSON.stringify(local.slice(0, 100)));
 
-            if (!CLOUD_CONFIG.apiURL) {
-                showToast("成績已保存在手機本地");
-                return;
-            }
-
+            if (!CLOUD_CONFIG.apiURL) return showToast("成績已保存在手機本地");
             try {
-                await fetch(CLOUD_CONFIG.apiURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payload)
-                });
+                await fetch(CLOUD_CONFIG.apiURL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) });
                 showToast("☁️ 成績已安全同步至 Google Sheet！");
             } catch (err) {
-                console.warn('雲端儲存失敗:', err);
                 showToast("⚠️ 雲端連線失敗，已存入手機本地。");
             }
         }
@@ -1713,16 +1305,16 @@
         async function fetchDashboardDataFromCloud() {
             if (CLOUD_CONFIG.apiURL) {
                 try {
-                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getHistory&year=2025`);
+                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getHistory&year=2026`);
                     if (res.ok) {
                         const data = await res.json();
                         cachedRecords = data.list || [];
                     }
                 } catch (e) {
-                    cachedRecords = JSON.parse(localStorage.getItem('oshc_cloud_history_2025')) || [];
+                    cachedRecords = JSON.parse(localStorage.getItem('oshc_cloud_history_2026')) || [];
                 }
             } else {
-                cachedRecords = JSON.parse(localStorage.getItem('oshc_cloud_history_2025')) || [];
+                cachedRecords = JSON.parse(localStorage.getItem('oshc_cloud_history_2026')) || [];
             }
             renderDashboard();
         }
@@ -1738,18 +1330,13 @@
             const list = isAll ? cachedRecords : cachedRecords.filter(r => String(r.User || r.user || "").toUpperCase() === currentDashFilter);
             displayedHistoryList = list.slice(0, 20);
 
-            document.getElementById('dash-games-title').textContent = isAll ? "2025 挑戰總次數" : `[${currentDashFilter}] 挑戰次數`;
-            document.getElementById('dash-accuracy-title').textContent = isAll ? "2025 答對率" : `[${currentDashFilter}] 答對率`;
+            document.getElementById('dash-games-title').textContent = isAll ? "2026 挑戰總次數" : `[${currentDashFilter}] 挑戰次數`;
+            document.getElementById('dash-accuracy-title').textContent = isAll ? "2026 答對率" : `[${currentDashFilter}] 答對率`;
             document.getElementById('dash-total-games').textContent = list.length;
             document.getElementById('history-records-count').textContent = `共 ${list.length} 筆`;
 
             let userCounts = { P: 0, T: 0, S: 0, J: 0, V: 0, F: 0 };
-            let agg = {
-                "法例與健康": { c: 0, t: 0 },
-                "建造與機械": { c: 0, t: 0 },
-                "化學與消防": { c: 0, t: 0 }
-            };
-
+            let agg = { "法例與健康": { c: 0, t: 0 }, "建造與機械": { c: 0, t: 0 }, "化學與消防": { c: 0, t: 0 } };
             let grandC = 0, grandT = 0;
 
             cachedRecords.forEach(r => {
@@ -1761,33 +1348,25 @@
                 const lC = Number(r.Law_C) || 0, lT = Number(r.Law_T) || 0;
                 const mC = Number(r.Mech_C) || 0, mT = Number(r.Mech_T) || 0;
                 const cC = Number(r.Chem_C) || 0, cT = Number(r.Chem_T) || 0;
-
                 agg["法例與健康"].c += lC; agg["法例與健康"].t += lT;
                 agg["建造與機械"].c += mC; agg["建造與機械"].t += mT;
                 agg["化學與消防"].c += cC; agg["化學與消防"].t += cT;
-
-                grandC += (lC + mC + cC);
-                grandT += (lT + mT + cT);
+                grandC += (lC + mC + cC); grandT += (lT + mT + cT);
             });
 
-            const overallPct = grandT === 0 ? 0 : Math.round((grandC / grandT) * 100);
-            document.getElementById('dash-total-accuracy').textContent = `${overallPct}%`;
-
-            const mBox = document.getElementById('member-stats-container');
-            mBox.innerHTML = MEMBERS.map(m => `
+            document.getElementById('dash-total-accuracy').textContent = `${grandT === 0 ? 0 : Math.round((grandC / grandT) * 100)}%`;
+            document.getElementById('member-stats-container').innerHTML = MEMBERS.map(m => `
                 <div onclick="filterDashboard('${m}')" class="border ${currentDashFilter === m ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'border-slate-200 bg-slate-50'} p-2 rounded-xl text-center cursor-pointer transition">
                     <span class="block text-[11px] font-black ${currentDashFilter === m ? 'text-blue-700' : 'text-slate-700'}">${escapeHTML(m)}</span>
                     <span class="block text-base font-black text-blue-900">${userCounts[m]}</span>
                 </div>
             `).join('');
 
-            const cBox = document.getElementById('category-stats-container');
-            cBox.innerHTML = '';
-            for (let cat in agg) {
+            document.getElementById('category-stats-container').innerHTML = Object.keys(agg).map(cat => {
                 const c = agg[cat].c, t = agg[cat].t;
                 const pct = t === 0 ? 0 : Math.round((c / t) * 100);
                 const color = pct >= 75 ? 'bg-green-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
-                cBox.innerHTML += `
+                return `
                     <div class="p-3 border border-slate-100 rounded-xl bg-slate-50 text-xs">
                         <div class="flex justify-between font-bold mb-1.5">
                             <span>${escapeHTML(cat)}</span>
@@ -1798,11 +1377,11 @@
                         </div>
                     </div>
                 `;
-            }
+            }).join('');
 
             const hBox = document.getElementById('history-list-container');
             if (displayedHistoryList.length === 0) {
-                hBox.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">尚無 2025 挑戰紀錄</p>`;
+                hBox.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">尚無 2026 挑戰紀錄</p>`;
                 return;
             }
 
@@ -1812,9 +1391,6 @@
                 const totalT = (Number(r.Law_T) || 0) + (Number(r.Mech_T) || 0) + (Number(r.Chem_T) || 0);
                 const pct = totalT === 0 ? 0 : Math.round((totalC / totalT) * 100);
                 const d = r.Date ? new Date(r.Date).toLocaleString('zh-HK', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '剛剛';
-                const details = r.SessionDetails || [];
-                const hasDetails = (Array.isArray(details) && details.length > 0) || (typeof details === 'string' && details.length > 10);
-
                 return `
                     <div class="p-2 border border-slate-100 rounded-lg bg-slate-50 text-[11px] flex justify-between items-center">
                         <div class="flex items-center gap-2">
@@ -1823,7 +1399,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="font-bold ${pct >= 70 ? 'text-green-600' : pct >= 50 ? 'text-amber-600' : 'text-red-600'}">${pct}%</span>
-                            ${hasDetails ? `<button onclick="openHistoryDetailByIndex(${idx})" class="text-[10px] text-blue-600 font-bold underline">明細</button>` : ''}
+                            <button onclick="openHistoryDetailByIndex(${idx})" class="text-[10px] text-blue-600 font-bold underline">明細</button>
                         </div>
                     </div>
                 `;
@@ -1831,32 +1407,28 @@
         }
 
         function recordMistake(qData, user, chosenIndices) {
-            let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
+            let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2026')) || [];
             nb = nb.filter(m => !(String(m.questionId) === String(qData.id) && m.user === user));
             nb.unshift({ questionId: qData.id, user, chosen: chosenIndices, questionData: qData });
-            localStorage.setItem('oshc_mistake_notebook_2025', JSON.stringify(nb.slice(0, 200)));
+            localStorage.setItem('oshc_mistake_notebook_2026', JSON.stringify(nb.slice(0, 200)));
             updateMistakeBadge();
         }
 
         function removeMistake(questionId, user) {
-            let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
+            let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2026')) || [];
             nb = nb.filter(m => !(String(m.questionId) === String(questionId) && (user === 'ALL' || m.user === user)));
-            localStorage.setItem('oshc_mistake_notebook_2025', JSON.stringify(nb));
+            localStorage.setItem('oshc_mistake_notebook_2026', JSON.stringify(nb));
             updateMistakeBadge();
             renderMistakesList();
             showToast("已標記掌握並移出錯題簿");
         }
 
         function updateMistakeBadge() {
-            const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
+            const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2026')) || [];
             const badge = document.getElementById('nav-mistake-badge');
             if (badge) {
-                if (nb.length > 0) {
-                    badge.textContent = nb.length;
-                    badge.classList.remove('hidden');
-                } else {
-                    badge.classList.add('hidden');
-                }
+                badge.textContent = nb.length;
+                badge.classList.toggle('hidden', nb.length === 0);
             }
         }
 
@@ -1868,53 +1440,43 @@
 
         function renderMistakesList() {
             const container = document.getElementById('mistakes-list-container');
-            const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
+            const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2026')) || [];
             const list = (currentMistakeFilter === 'ALL') ? nb : nb.filter(m => m.user === currentMistakeFilter);
-            const countEl = document.getElementById('mistake-practice-count');
-            if (countEl) countEl.textContent = list.length;
+            document.getElementById('mistake-practice-count').textContent = list.length;
 
             if (list.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">🎉 目前 2025 題庫沒有錯題！</div>`;
+                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">🎉 目前 2026 題庫沒有錯題！</div>`;
                 return;
             }
 
             const letters = ['A', 'B', 'C', 'D', 'E'];
-            container.innerHTML = '';
-
-            list.forEach(m => {
-                const q = normalizeLegacyQuestion(m.questionData);
-                const chosenArr = Array.isArray(m.chosen) ? m.chosen : [m.chosen];
-                const chosenText = chosenArr.length > 0
-                    ? chosenArr.map(i => `${letters[i] || ''}. ${q.options[i] || '未作答'}`).join('、')
-                    : '超時未作答';
-                const ansText = q.ans.map(i => `${letters[i]}. ${q.options[i] || ''}`).join('、');
-
-                const card = document.createElement('div');
-                card.className = 'p-3 rounded-xl border border-red-100 bg-red-50/50 text-xs space-y-1.5';
-                card.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center gap-1.5">
-                            <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${escapeHTML(m.user)}</span>
-                            <span class="text-[10px] font-bold text-gray-500">2025年 • 題號 ${escapeHTML(q.num)}</span>
+            container.innerHTML = list.map(m => {
+                const q = m.questionData;
+                const chosenStr = (Array.isArray(m.chosen) ? m.chosen : [m.chosen]).map(i => `${letters[i] || ''}. ${q.options[i] || '未作答'}`).join('、') || '超時未作答';
+                const ansStr = q.ans.map(i => `${letters[i]}. ${q.options[i] || ''}`).join('、');
+                return `
+                    <div class="p-3 rounded-xl border border-red-100 bg-red-50/50 text-xs space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-1.5">
+                                <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${escapeHTML(m.user)}</span>
+                                <span class="text-[10px] font-bold text-gray-500">2026年 • 題號 ${escapeHTML(q.num)}</span>
+                            </div>
+                            <button onclick="removeMistake('${q.id}', '${m.user}')" class="text-[10px] text-gray-500 hover:text-red-600 font-bold">✓ 標記掌握</button>
                         </div>
-                        <button type="button" class="btn-rm-mistake text-[10px] text-gray-500 hover:text-red-600 font-bold">✓ 標記掌握</button>
+                        <p class="font-bold text-slate-800 leading-relaxed">${escapeHTML(q.q)}</p>
+                        <div class="bg-white/80 p-2 rounded-lg text-[11px] border border-red-100 space-y-0.5">
+                            <p class="text-red-700 font-medium">❌ 當時選擇：${escapeHTML(chosenStr)}</p>
+                            <p class="text-green-700 font-bold">✅ 正確答案：${escapeHTML(ansStr)}</p>
+                        </div>
+                        <p class="text-[10px] text-gray-600 bg-white/90 p-2 rounded-lg leading-relaxed whitespace-pre-line">${escapeHTML(q.exp)}</p>
                     </div>
-                    <p class="font-bold text-slate-800 leading-relaxed">${escapeHTML(q.q)}</p>
-                    <div class="bg-white/80 p-2 rounded-lg text-[11px] border border-red-100 space-y-0.5">
-                        <p class="text-red-700 font-medium">❌ 當時選擇：${escapeHTML(chosenText)}</p>
-                        <p class="text-green-700 font-bold">✅ 正確答案：${escapeHTML(ansText)}</p>
-                    </div>
-                    <p class="text-[10px] text-gray-600 bg-white/90 p-2 rounded-lg leading-relaxed whitespace-pre-line">${escapeHTML(q.exp)}</p>
                 `;
-                card.querySelector('.btn-rm-mistake').onclick = () => removeMistake(q.id, m.user);
-                container.appendChild(card);
-            });
+            }).join('');
         }
 
         function openHistoryDetailByIndex(idx) {
             const r = displayedHistoryList[idx];
             if (!r) return;
-
             const u = String(r.User || r.user || "P").toUpperCase();
             const totalC = (Number(r.Law_C) || 0) + (Number(r.Mech_C) || 0) + (Number(r.Chem_C) || 0);
             const totalT = (Number(r.Law_T) || 0) + (Number(r.Mech_T) || 0) + (Number(r.Chem_T) || 0);
@@ -1922,47 +1484,33 @@
 
             let details = r.SessionDetails || [];
             if (typeof details === 'string') {
-                const cleanJson = details.startsWith("'") ? details.slice(1) : details;
-                try { details = JSON.parse(cleanJson); } catch (e) { details = []; }
+                try { details = JSON.parse(details.startsWith("'") ? details.slice(1) : details); } catch (e) { details = []; }
             }
 
-            const modal = document.getElementById('modal-session-detail');
-            document.getElementById('modal-detail-title').textContent = `出戰成員 [${u}] 2025 挑戰明細`;
+            document.getElementById('modal-detail-title').textContent = `出戰成員 [${u}] 2026 挑戰明細`;
             document.getElementById('modal-detail-subtitle').textContent = `時間：${d} | 得分：${totalC}/${totalT}`;
             
             const content = document.getElementById('modal-detail-content');
-            content.innerHTML = '';
-
             if (!Array.isArray(details) || details.length === 0) {
                 content.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">無詳細作答日誌</p>`;
             } else {
                 const letters = ['A', 'B', 'C', 'D', 'E'];
-                details.forEach((item, i) => {
-                    const chosenArr = Array.isArray(item.chosen) ? item.chosen : [item.chosen];
-                    const ansArr = Array.isArray(item.ans) ? item.ans : [item.ans];
-                    const opts = Array.isArray(item.options) ? item.options : [];
-
-                    const chosenStr = chosenArr.map(c => `${letters[c] || ''}. ${escapeHTML(opts[c] || '')}`).join('、') || '未作答';
-                    const ansStr = ansArr.map(a => `${letters[a] || ''}. ${escapeHTML(opts[a] || '')}`).join('、');
-
-                    content.innerHTML += `
-                        <div class="p-2.5 rounded-xl border ${item.isCorrect ? (item.isGuessed ? 'border-amber-200 bg-amber-50/40' : 'border-green-100 bg-green-50/40') : 'border-red-100 bg-red-50/40'} text-xs space-y-1">
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold text-slate-700">第 ${i + 1} 題 (2025 • ${escapeHTML(item.cat)})</span>
-                                <div class="flex items-center gap-1">
-                                    ${item.isGuessed ? '<span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1 rounded">靠估</span>' : ''}
-                                    <span class="font-bold ${item.isCorrect ? 'text-green-700' : 'text-red-700'}">${item.isCorrect ? '✅ 答對' : '❌ 答錯'}</span>
-                                </div>
+                content.innerHTML = details.map((item, i) => `
+                    <div class="p-2.5 rounded-xl border ${item.isCorrect ? (item.isGuessed ? 'border-amber-200 bg-amber-50/40' : 'border-green-100 bg-green-50/40') : 'border-red-100 bg-red-50/40'} text-xs space-y-1">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-slate-700">第 ${i + 1} 題 (2026 • ${escapeHTML(item.cat)})</span>
+                            <div class="flex items-center gap-1">
+                                ${item.isGuessed ? '<span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1 rounded">靠估</span>' : ''}
+                                <span class="font-bold ${item.isCorrect ? 'text-green-700' : 'text-red-700'}">${item.isCorrect ? '✅ 答對' : '❌ 答錯'}</span>
                             </div>
-                            <p class="font-bold text-slate-800">${escapeHTML(item.num ? item.num + ' ' : '')}${escapeHTML(item.q)}</p>
-                            <p class="${item.isCorrect ? 'text-green-700' : 'text-red-700'}">作答：${chosenStr}</p>
-                            ${!item.isCorrect ? `<p class="text-green-700 font-bold">正解：${ansStr}</p>` : ''}
                         </div>
-                    `;
-                });
+                        <p class="font-bold text-slate-800">${escapeHTML(item.num ? item.num + ' ' : '')}${escapeHTML(item.q)}</p>
+                        <p class="${item.isCorrect ? 'text-green-700' : 'text-red-700'}">作答：${(item.chosen || []).map(c => `${letters[c]}. ${escapeHTML(item.options[c] || '')}`).join('、') || '未作答'}</p>
+                        ${!item.isCorrect ? `<p class="text-green-700 font-bold">正解：${(item.ans || []).map(a => `${letters[a]}. ${escapeHTML(item.options[a] || '')}`).join('、')}</p>` : ''}
+                    </div>
+                `).join('');
             }
-
-            modal.classList.remove('hidden');
+            document.getElementById('modal-session-detail').classList.remove('hidden');
         }
 
         function closeSessionDetailModal() {
