@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- 資安加固：Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; img-src 'self' data:;">
-    <title>職安健常識問答挑戰系統 (四年全題庫旗艦版)</title>
+    <title>職安健常識問答挑戰系統 (2025 精準實戰版)</title>
     <!-- 支援手機全螢幕 PWA 特性 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,13 +22,13 @@
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800 font-sans pb-14 select-none">
 
-<!-- 頂部手機專用導覽列 (緊湊高質感版) -->
+<!-- 頂部手機專用導覽列 -->
     <header class="bg-slate-900 text-white px-3 py-2.5 shadow-md sticky top-0 z-40 flex justify-between items-center border-b border-slate-800">
         <div class="flex items-center gap-2">
             <span class="text-lg">👷</span>
             <div>
                 <h1 class="text-xs font-black tracking-wide leading-tight">職安健秘笈練靶</h1>
-                <p class="text-[9px] text-slate-400" id="current-user-banner">出戰: P • 雲端同步</p>
+                <p class="text-[9px] text-slate-400" id="current-user-banner">出戰: P • 2025 專項</p>
             </div>
         </div>
         <div class="flex items-center gap-1">
@@ -58,8 +58,8 @@
         <div id="view-intro" class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 block space-y-3.5">
             <div class="text-center pt-1">
                 <span class="inline-block p-2.5 bg-blue-50 rounded-2xl text-2xl mb-1">🎯</span>
-                <h2 class="text-lg font-black text-blue-950">2017 - 2026 四年官方題庫實戰</h2>
-                <p class="text-[11px] text-gray-500 mt-0.5">單選 / 多選題型 &bull; 課程大綱進度 &bull; 法例詳解</p>
+                <h2 class="text-lg font-black text-blue-950">2025 官方指定題庫實戰</h2>
+                <p class="text-[11px] text-gray-500 mt-0.5">單選 / 多選題型 &bull; 粵港澳競賽必備 &bull; 核心法例詳解</p>
             </div>
 
             <!-- 成員選擇卡片 (P, T, S, J, V, F) -->
@@ -71,18 +71,12 @@
                 <div class="grid grid-cols-6 gap-1.5" id="user-selector"></div>
             </div>
 
-            <!-- 題庫年份選擇器 -->
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2">
-                <div class="flex justify-between items-center">
-                    <label class="text-xs font-bold text-gray-700">2. 選擇比賽年份題庫</label>
-                    <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full" id="year-pool-count-tag">載入中...</span>
-                </div>
-                <div class="grid grid-cols-3 gap-1.5" id="year-selector"></div>
-            </div>
-
             <!-- 訓練範疇與比賽設定 -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
-                <label class="text-xs font-bold text-gray-700 block">3. 專項範疇與模擬設定</label>
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-bold text-gray-700">2. 專項範疇與模擬設定</label>
+                    <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full" id="year-pool-count-tag">2025 專屬題庫</span>
+                </div>
                 <div class="grid grid-cols-4 gap-1" id="category-selector"></div>
                 <div class="flex items-center justify-between pt-1 border-t border-slate-200/70 text-xs">
                     <div class="flex items-center gap-1.5">
@@ -125,7 +119,7 @@
             <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center text-xs">
                 <div class="space-y-0.5">
                     <div class="flex items-center gap-1.5">
-                        <span class="text-gray-800 font-bold" id="pool-source-label">四年官方題庫</span>
+                        <span class="text-gray-800 font-bold" id="pool-source-label">2025 官方題庫</span>
                         <span class="font-black text-blue-900 bg-blue-100 px-2 py-0.5 rounded-full text-[10px]" id="pool-count-badge">載入中...</span>
                     </div>
                     <span class="text-[10px] text-gray-500 block" id="pool-detail-label">支援離線快取與雲端同步</span>
@@ -137,7 +131,7 @@
 
             <!-- 開始測驗按鈕 -->
             <button onclick="startQuiz()" class="w-full bg-blue-600 active:bg-blue-700 text-white py-3.5 rounded-xl font-black text-base shadow-md hover:shadow-lg transition flex justify-center items-center gap-2">
-                <span id="btn-start-quiz-text">🚀 開始實戰挑戰</span>
+                <span id="btn-start-quiz-text">🚀 開始 2025 實戰挑戰</span>
                 <span class="text-lg">➔</span>
             </button>
         </div>
@@ -204,7 +198,7 @@
                 <div class="flex justify-between items-center gap-2">
                     <span class="text-[10px] text-gray-500 font-bold truncate" id="quiz-chapter-tag">章節載入中</span>
                     <div class="flex items-center gap-1 flex-shrink-0">
-                        <span id="quiz-year-badge" class="text-[10px] text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded font-bold">2026</span>
+                        <span id="quiz-year-badge" class="text-[10px] text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded font-bold">2025</span>
                         <span id="quiz-type-badge" class="text-[10px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded font-bold">單選題</span>
                     </div>
                 </div>
@@ -260,24 +254,17 @@
             </div>
         </div>
 
-        <!-- 4. 題庫全局查題畫面 -->
+        <!-- 4. 題庫查題畫面 -->
         <div id="view-search" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-3.5">
             <div class="flex justify-between items-center border-b pb-2.5">
                 <div>
-                    <h2 class="text-base font-black text-blue-950">🔍 四年題庫百科查題</h2>
-                    <p class="text-[10px] text-gray-500">輸入關鍵字、法例名稱或罰款金額即時檢索</p>
+                    <h2 class="text-base font-black text-blue-950">🔍 2025 題庫查題</h2>
+                    <p class="text-[10px] text-gray-500">輸入關鍵字、法例名稱或罰款金額即時檢索 2025 考題</p>
                 </div>
                 <span id="search-result-count" class="text-[10px] font-bold bg-blue-50 text-blue-800 px-2 py-1 rounded-full">0 筆結果</span>
             </div>
             <div class="flex gap-1.5">
                 <input type="text" id="search-keyword-input" oninput="performQuestionSearch()" placeholder="例如：滅火筒、40萬、2米、吊船、安全帶..." class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <select id="search-year-filter" onchange="performQuestionSearch()" class="border border-slate-300 rounded-xl px-2 py-2 text-xs font-bold bg-slate-50">
-                    <option value="ALL">全部年份</option>
-                    <option value="2026">2026</option>
-                    <option value="2025">2025</option>
-                    <option value="2022">2022</option>
-                    <option value="2017">2017</option>
-                </select>
             </div>
             <div id="search-results-container" class="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
                 <p class="text-center text-xs text-gray-400 py-8">請在上方輸入關鍵字開始搜尋</p>
@@ -289,7 +276,7 @@
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
                     <h2 class="text-lg font-black text-red-900 flex items-center gap-1.5">
-                        <span>📕</span> 錯題重溫簿
+                        <span>📕</span> 錯題重溫簿 (2025)
                     </h2>
                     <p class="text-[11px] text-gray-500">專項攻克個人薄弱考點</p>
                 </div>
@@ -310,7 +297,7 @@
         <div id="view-dashboard" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
-                    <h2 class="text-lg font-black text-blue-900">隊伍能力分析</h2>
+                    <h2 class="text-lg font-black text-blue-900">隊伍能力分析 (2025)</h2>
                     <p class="text-[10px] text-gray-500">Google Sheet 雲端實時統計</p>
                 </div>
                 <button onclick="fetchDashboardDataFromCloud()" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-blue-200 active:bg-blue-100">
@@ -390,13 +377,7 @@
         };
 
         const MEMBERS = ["P", "T", "S", "J", "V", "F"];
-        const YEAR_OPTIONS = [
-            { id: "ALL", label: "全部四年聯考" },
-            { id: "2026", label: "2026 題庫" },
-            { id: "2025", label: "2025 粵港澳" },
-            { id: "2022", label: "2022 粵港澳" },
-            { id: "2017", label: "2017 題庫" }
-        ];
+        const TARGET_YEAR = "2025"; // 鎖定 2025 年官方試題
         const CATEGORY_OPTIONS = [
             { id: "ALL", label: "全部範疇" },
             { id: "法例與健康", label: "法例與健康" },
@@ -407,7 +388,6 @@
         let selectedMember = localStorage.getItem('oshc_selected_user') || "P";
         if (!MEMBERS.includes(selectedMember)) selectedMember = "P";
 
-        let selectedYear = localStorage.getItem('oshc_selected_year') || "ALL";
         let selectedCategory = "ALL";
 
         // ============================================================
@@ -451,7 +431,7 @@
             { cat: "化學與消防", ch: "化學品安全", planned: 3, title: "化學品儲存隔絕與洩漏應變 (待製作)" }
         ];
 
-        // 保底示範卡（離線或 Google Sheet 尚未填寫時使用）
+        // 保底示範卡
         const FALLBACK_STUDY_CARDS = [
             {
                 id: "card_5s",
@@ -546,7 +526,7 @@
             }
         ];
 
-        // 動態學習卡儲存庫（優先讀取本地快取，再由雲端同步）
+        // 動態學習卡儲存庫
         let studyCardsPool = [];
         try {
             const cachedCards = localStorage.getItem('oshc_cached_study_cards');
@@ -582,16 +562,38 @@
             "化學與消防": { correct: 0, total: 0 }
         };
 
+        // 僅保留 2025 種子試題作為保底
         const seedQuestions = [
-            { id: "2026_1.1", year: "2026", num: "1.1", cat: "法例與健康", chapter: "體力處理操作", q: "工友搬運重物時，應依從下列哪一項做法才正確？", options: ["採用搬運姿勢應盡量保持背部挺直", "盡量搬多一些，快點完成工作減少意外機會", "盡量將物件遠離身體"], ans: [0], isMulti: false, exp: "【正確答案：A】出自《職安健手冊2026》體力處理操作（題號 1.1）。", hint: "【答題技巧與思考邏輯】：\n1. 核心人體工學口訣：「背挺直、屈膝、物件貼身」。\n2. 參考法例：Cap. 509A《職業安全及健康規例》附表 3。" },
-            { id: "2025_6", year: "2025", num: "6", cat: "法例與健康", chapter: "國家及廣東省安全法規", q: "根據《中華人民共和國突發事件應對法》，下列屬於突發事件的有（ ）。（多選題）", options: ["甲鎮發生的火災", "乙縣發生的火車站恐怖襲擊", "丙市發生的不知名傳染病", "丁省發生的蝗災"], ans: [0, 1, 2, 3], isMulti: true, exp: "【正確答案：A, B, C, D】出自《2025 第十一屆粵港澳安全知識競賽》國家及廣東省安全法規（題號 6）。", hint: "突發事件涵蓋自然災害、事故災難、公共衛生事件及社會安全事件四大類。" },
-            { id: "2022_1", year: "2022", num: "1", cat: "法例與健康", chapter: "體力處理操作", q: "下列哪一項不是正確人力提舉的要點？", options: ["利用雙腳來改變方向", "貨物提舉時，使用腰部力量", "用手掌緊握貨物，手臂要緊貼身體"], ans: [1], isMulti: false, exp: "【正確答案：B】出自《2022 第十屆粵港澳職安健手冊》體力處理操作（題號 1）。", hint: "注意反向詞「不是」，提舉時應使用大腿肌肉力量而非腰部力量。" },
-            { id: "2017_4.1", year: "2017", num: "4.1", cat: "建造與機械", chapter: "建造業安全", q: "若需在 2 米或以上高處工作，首選的安全設備是？", options: ["防墮網", "合規格的工作台", "安全帶"], ans: [1], isMulti: false, exp: "【正確答案：B】高處工作首選為具備雙重護欄與踢腳板之安全工作台。", hint: "工程控制（工作台）優先於個人防護裝備（安全帶）。" }
+            { 
+                id: "2025_6", 
+                year: "2025", 
+                num: "6", 
+                cat: "法例與健康", 
+                chapter: "國家及廣東省安全法規", 
+                q: "根據《中華人民共和國突發事件應對法》，下列屬於突發事件的有（ ）。（多選題）", 
+                options: ["甲鎮發生的火災", "乙縣發生的火車站恐怖襲擊", "丙市發生的不知名傳染病", "丁省發生的蝗災"], 
+                ans: [0, 1, 2, 3], 
+                isMulti: true, 
+                exp: "【正確答案：A, B, C, D】出自《2025 第十一屆粵港澳安全知識競賽》國家及廣東省安全法規（題號 6）。", 
+                hint: "突發事件涵蓋自然災害、事故災難、公共衛生事件及社會安全事件四大類。" 
+            },
+            {
+                id: "2025_12",
+                year: "2025",
+                num: "12",
+                cat: "建造與機械",
+                chapter: "建造業安全",
+                q: "進行高處作業時，所使用的雙重護欄標準，頂部護欄高度應維持在多少範圍內？",
+                options: ["600 至 800 毫米", "900 至 1150 毫米", "1200 至 1400 毫米"],
+                ans: [1],
+                isMulti: false,
+                exp: "【正確答案：B】工作平台頂部護欄高度法定為 900 至 1150 毫米，中間護欄為 450 至 600 毫米。",
+                hint: "考點關鍵數字：頂部 900-1150mm，底護板（踢腳板）不少於 200mm。"
+            }
         ];
 
         window.addEventListener('DOMContentLoaded', () => {
             renderUserSelector();
-            renderYearSelector();
             renderCategorySelector();
             renderFilterTabs();
             renderCurriculumView();
@@ -600,7 +602,7 @@
         });
 
         // ============================================================
-        // 雲端學習卡同步與解析函式 (修復補齊)
+        // 雲端學習卡同步與解析函式
         // ============================================================
         async function syncStudyCardsFromCloud(forceRefresh = false) {
             if (!CLOUD_CONFIG.apiURL) return;
@@ -684,7 +686,7 @@
             renderCurriculumView();
         }
 
-function renderCurriculumView() {
+        function renderCurriculumView() {
             const majorContainer = document.getElementById('major-capsule-container');
             const chapterContainer = document.getElementById('chapter-capsule-container');
             const cardsContainer = document.getElementById('cards-list-container');
@@ -701,7 +703,7 @@ function renderCurriculumView() {
             const totalMasteredAll = Object.keys(masteredMap).length;
             if (overallBadge) overallBadge.innerText = `掌握: ${totalMasteredAll}/${totalPlannedAll}`;
 
-            // 1. 三大範疇大膠囊 (微調內距與字體，讓點選更舒適)
+            // 三大範疇大膠囊
             const categories = ["法例與健康", "建造與機械", "化學與消防"];
             majorContainer.innerHTML = categories.map(cat => {
                 const isSelected = (cat === selectedCurriculumCat);
@@ -726,7 +728,7 @@ function renderCurriculumView() {
                 `;
             }).join('');
 
-            // 2. 統計目前大範疇下各章節進度
+            // 統計目前大範疇下各章節進度
             const itemsInSelectedCat = CURRICULUM_PLAN.filter(c => c.cat === selectedCurriculumCat);
             const chaptersMap = {};
             itemsInSelectedCat.forEach(item => {
@@ -747,7 +749,6 @@ function renderCurriculumView() {
             const madeInCat = studyCardsPool.filter(c => c.category === selectedCurriculumCat).length;
             if (catSummary) catSummary.innerText = `${madeInCat}/${itemsInSelectedCat.length} 張已就緒`;
 
-            // 3. 改用「單欄清爽型列表」：不再壓縮文字，完整呈現章節全名，右側直覺顯示進度
             let chapterHtml = `
                 <div class="col-span-2 flex items-center justify-between p-2 rounded-lg border text-xs cursor-pointer transition ${
                     selectedCurriculumChapter === 'ALL'
@@ -797,7 +798,6 @@ function renderCurriculumView() {
             }
             chapterContainer.innerHTML = chapterHtml;
 
-            // 4. 卡片列表區域
             if (cardsViewTitle) {
                 cardsViewTitle.innerText = selectedCurriculumChapter === 'ALL' 
                     ? `${selectedCurriculumCat}` 
@@ -910,7 +910,7 @@ function renderCurriculumView() {
             });
 
             if (matched.length === 0) {
-                showToast("目前題庫暫未找到此卡對應的真題，請先同步雲端題庫！");
+                showToast("目前 2025 題庫暫未找到此卡對應的真題，請先同步雲端題庫！");
                 return;
             }
 
@@ -935,7 +935,7 @@ function renderCurriculumView() {
         }
 
         // ============================================================
-        // 基礎功能 (成員、年份、測驗、儀表板)
+        // 基礎功能 (成員、測驗、儀表板)
         // ============================================================
         function renderUserSelector() {
             const container = document.getElementById('user-selector');
@@ -959,33 +959,10 @@ function renderCurriculumView() {
                 container.appendChild(btn);
             });
             const b = document.getElementById('current-user-banner');
-            if (b) b.textContent = `出戰成員: ${selectedMember} • 雲端同步`;
+            if (b) b.textContent = `出戰成員: ${selectedMember} • 2025 專項`;
             const l = document.getElementById('selected-member-label');
             if (l) l.textContent = `已選擇: ${selectedMember}`;
             updateMasteryUI();
-        }
-
-        function renderYearSelector() {
-            const container = document.getElementById('year-selector');
-            if (!container) return;
-            container.innerHTML = '';
-            YEAR_OPTIONS.forEach((yr, idx) => {
-                const isSelected = (yr.id === selectedYear);
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                const colSpan = idx === 0 ? 'col-span-2' : '';
-                btn.className = `${colSpan} py-2 px-2 rounded-lg font-bold text-xs border transition ${
-                    isSelected ? 'bg-indigo-600 text-white border-indigo-600 shadow-xs' : 'bg-white text-slate-700 border-slate-200 active:bg-slate-100'
-                }`;
-                btn.textContent = yr.label;
-                btn.onclick = () => {
-                    selectedYear = yr.id;
-                    localStorage.setItem('oshc_selected_year', yr.id);
-                    renderYearSelector();
-                    updateMasteryUI();
-                };
-                container.appendChild(btn);
-            });
         }
 
         function renderCategorySelector() {
@@ -1011,7 +988,7 @@ function renderCurriculumView() {
 
         function getFilteredQuestionPool() {
             return questionPool.filter(q => {
-                const yearMatch = (selectedYear === "ALL" || String(q.year) === selectedYear);
+                const yearMatch = (String(q.year) === TARGET_YEAR);
                 const catMatch = (selectedCategory === "ALL" || q.cat === selectedCategory);
                 return yearMatch && catMatch;
             });
@@ -1019,7 +996,7 @@ function renderCurriculumView() {
 
         function getMasteredMap(user) {
             try {
-                const raw = localStorage.getItem(`oshc_mastered_v2_${user}`);
+                const raw = localStorage.getItem(`oshc_mastered_2025_${user}`);
                 return raw ? JSON.parse(raw) : {};
             } catch (e) {
                 return {};
@@ -1027,7 +1004,7 @@ function renderCurriculumView() {
         }
 
         function saveMasteredMap(user, map) {
-            localStorage.setItem(`oshc_mastered_v2_${user}`, JSON.stringify(map));
+            localStorage.setItem(`oshc_mastered_2025_${user}`, JSON.stringify(map));
             updateMasteryUI();
         }
 
@@ -1056,11 +1033,11 @@ function renderCurriculumView() {
                 }
             });
             if (removedCount === 0) {
-                showToast(`成員 ${selectedMember} 在目前篩選範圍尚未有已掌握題目`);
+                showToast(`成員 ${selectedMember} 在 2025 題庫尚未有已掌握題目`);
                 return;
             }
             saveMasteredMap(selectedMember, map);
-            showToast(`已重設成員 ${selectedMember} 於此範圍的 ${removedCount} 題進度`);
+            showToast(`已重設成員 ${selectedMember} 於 2025 題庫的 ${removedCount} 題進度`);
         }
 
         function updateMasteryUI() {
@@ -1073,7 +1050,6 @@ function renderCurriculumView() {
             });
 
             const pct = totalCount === 0 ? 0 : Math.round((masteredCount / totalCount) * 100);
-            const yearLabel = YEAR_OPTIONS.find(y => y.id === selectedYear)?.label || "全部";
 
             const titleEl = document.getElementById('mastery-user-title');
             const textEl = document.getElementById('mastery-count-text');
@@ -1081,15 +1057,15 @@ function renderCurriculumView() {
             const infoEl = document.getElementById('mastery-pool-info');
             const yearTagEl = document.getElementById('year-pool-count-tag');
 
-            if (titleEl) titleEl.textContent = `${selectedMember} 通關進度 (${yearLabel})`;
+            if (titleEl) titleEl.textContent = `${selectedMember} 通關進度 (2025 專屬)`;
             if (textEl) textEl.textContent = `${masteredCount} / ${totalCount} 題 (${pct}%)`;
             if (barEl) barEl.style.width = `${pct}%`;
-            if (yearTagEl) yearTagEl.textContent = `此範圍共 ${totalCount} 題`;
+            if (yearTagEl) yearTagEl.textContent = `2025 題庫共 ${totalCount} 題`;
 
             if (infoEl) {
                 const remaining = Math.max(0, totalCount - masteredCount);
                 if (totalCount > 0 && remaining === 0) {
-                    infoEl.textContent = `🎉 恭喜！${selectedMember} 已完全通關此範圍全部題目！`;
+                    infoEl.textContent = `🎉 恭喜！${selectedMember} 已完全通關 2025 題庫全部題目！`;
                 } else {
                     infoEl.textContent = `未掌握剩餘：${remaining} 題（答錯／靠估自動重出）`;
                 }
@@ -1130,16 +1106,16 @@ function renderCurriculumView() {
             const detailLabel = document.getElementById('pool-detail-label');
             const countBadge = document.getElementById('pool-count-badge');
 
-            const CACHE_KEY = 'oshc_cached_questions_4years_v1';
+            const CACHE_KEY = 'oshc_cached_questions_2025_v1';
 
             if (!forceRefresh) {
                 const localCached = localStorage.getItem(CACHE_KEY);
                 if (localCached) {
                     try {
                         const parsed = JSON.parse(localCached);
-                        if (Array.isArray(parsed) && parsed.length > 50) {
-                            questionPool = parsed;
-                            if (sourceLabel) sourceLabel.textContent = "✅ 四年官方題庫";
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            questionPool = parsed.filter(q => String(q.year) === TARGET_YEAR);
+                            if (sourceLabel) sourceLabel.textContent = "✅ 2025 官方題庫";
                             if (detailLabel) detailLabel.textContent = "已就緒 (支援離線刷題 & 秘笈連動)";
                             if (countBadge) countBadge.textContent = `共 ${questionPool.length} 題`;
                             updateMasteryUI();
@@ -1151,14 +1127,15 @@ function renderCurriculumView() {
 
             if (CLOUD_CONFIG.apiURL) {
                 try {
-                    if (detailLabel) detailLabel.textContent = "正在從 Google Sheet 同步四年題庫...";
-                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getQuestions&year=ALL`);
+                    if (detailLabel) detailLabel.textContent = "正在從 Google Sheet 同步 2025 官方題庫...";
+                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getQuestions&year=2025`);
                     if (res.ok) {
                         const data = await res.json();
                         const rawList = data.list || [];
                         const validRows = rawList.filter(r => {
                             const qVal = r['題目內容'] || r['Question'] || r['題目'] || '';
-                            return String(qVal).trim().length > 0;
+                            const yrVal = String(r['年份'] || r['Year'] || r['year'] || '2025').trim();
+                            return String(qVal).trim().length > 0 && (yrVal === '2025' || yrVal === '');
                         });
 
                         if (validRows.length > 0) {
@@ -1168,22 +1145,22 @@ function renderCurriculumView() {
                             } catch (quotaErr) {
                                 console.warn("LocalStorage 容量已滿，僅保留於記憶體:", quotaErr);
                             }
-                            if (sourceLabel) sourceLabel.textContent = "✅ 四年官方題庫";
+                            if (sourceLabel) sourceLabel.textContent = "✅ 2025 官方題庫";
                             if (detailLabel) detailLabel.textContent = "已完成 Google Sheet 雲端同步";
                             if (countBadge) countBadge.textContent = `共 ${questionPool.length} 題`;
-                            showToast(`✅ 成功載入 ${questionPool.length} 題有效考題！`);
+                            showToast(`✅ 成功載入 2025 年共 ${questionPool.length} 題考題！`);
                             updateMasteryUI();
                             return;
                         }
                     }
                 } catch (err) {
-                    console.warn("自 Google Sheet 讀取失敗，使用內建種子題庫:", err);
+                    console.warn("自 Google Sheet 讀取失敗，使用內建示範題庫:", err);
                 }
             }
 
             questionPool = [...seedQuestions];
-            if (sourceLabel) sourceLabel.textContent = "⚠️ 離線示範題庫";
-            if (detailLabel) detailLabel.textContent = "無法連線至雲端，目前使用內建示範題";
+            if (sourceLabel) sourceLabel.textContent = "⚠️ 2025 示範題庫";
+            if (detailLabel) detailLabel.textContent = "無法連線至雲端，目前使用內建 2025 考題";
             if (countBadge) countBadge.textContent = `${questionPool.length} 題`;
             updateMasteryUI();
         }
@@ -1203,7 +1180,7 @@ function renderCurriculumView() {
                 return '';
             };
 
-            const year = getVal(['年份', 'Year', 'year']) || "2026";
+            const year = "2025";
             const qText = getVal(['題目內容', 'Question', 'question', '題目', 'q']);
             const optA = getVal(['選項A', 'OptionA', 'optionA', 'A', 'a']);
             const optB = getVal(['選項B', 'OptionB', 'optionB', 'B', 'b']);
@@ -1255,11 +1232,11 @@ function renderCurriculumView() {
             const ansLettersStr = ansIndices.map(i => ['A', 'B', 'C', 'D', 'E'][i]).join(', ');
 
             const exp = getVal(['解析', 'Explanation', '條例引用']) ||
-                `【正確答案：${ansLettersStr}】出自《${year} 職安健問答比賽手冊》${chapter ? chapter + ' ' : ''}（題號 ${num}）。`;
+                `【正確答案：${ansLettersStr}】出自《2025 職安健問答比賽手冊》${chapter ? chapter + ' ' : ''}（題號 ${num}）。`;
 
             return {
-                id: `${year}_${num}_${idx}`,
-                year: String(year),
+                id: `2025_${num}_${idx}`,
+                year: "2025",
                 num: String(num),
                 cat: cat,
                 chapter: chapter,
@@ -1310,7 +1287,7 @@ function renderCurriculumView() {
         function startQuiz() {
             const filteredPool = getFilteredQuestionPool();
             if (filteredPool.length === 0) {
-                showToast("目前選擇的年份或範疇沒有題目，請重新選擇！");
+                showToast("目前選擇的範疇沒有題目，請重新選擇！");
                 return;
             }
 
@@ -1321,7 +1298,7 @@ function renderCurriculumView() {
             let eligiblePool = filteredPool.filter(q => !masteredMap[String(q.id)]);
 
             if (eligiblePool.length === 0) {
-                showToast(`🏆 ${selectedMember} 已掌握此範圍所有題目！進入全範圍複習模式。`);
+                showToast(`🏆 ${selectedMember} 已掌握 2025 題庫所有題目！進入全題庫複習模式。`);
                 eligiblePool = [...filteredPool];
             }
 
@@ -1349,7 +1326,7 @@ function renderCurriculumView() {
         }
 
         function startMistakeQuiz() {
-            const allMistakes = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
+            const allMistakes = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
             const list = (currentMistakeFilter === 'ALL') ? allMistakes : allMistakes.filter(m => m.user === currentMistakeFilter);
             if (list.length === 0) {
                 showToast("目前沒有需要重練的錯題！");
@@ -1380,7 +1357,7 @@ function renderCurriculumView() {
             const ansArr = Array.isArray(q.ans) ? q.ans : [Number(q.ans) || 0];
             return {
                 ...q,
-                year: q.year || "2025",
+                year: "2025",
                 ans: ansArr,
                 isMulti: Boolean(q.isMulti || ansArr.length > 1)
             };
@@ -1417,13 +1394,13 @@ function renderCurriculumView() {
             if (chkAi) chkAi.checked = false;
             if (hintBox) hintBox.classList.add('hidden');
             if (hintText) {
-                hintText.textContent = qData.hint ? qData.hint : `（此為 ${qData.year} 年題庫考題，無額外提示文字，請根據章節「${qData.chapter || qData.cat}」作答）`;
+                hintText.textContent = qData.hint ? qData.hint : `（此為 2025 年官方考題，請根據章節「${qData.chapter || qData.cat}」審題作答）`;
             }
 
             document.getElementById('quiz-progress').textContent = `第 ${currentIndex + 1} / ${currentQuiz.length} 題`;
             document.getElementById('quiz-category').textContent = qData.cat;
             document.getElementById('quiz-chapter-tag').textContent = qData.chapter ? `章節：${qData.chapter}` : `題號：${qData.num}`;
-            document.getElementById('quiz-year-badge').textContent = `${qData.year}年`;
+            document.getElementById('quiz-year-badge').textContent = `2025年`;
 
             const typeBadge = document.getElementById('quiz-type-badge');
             const submitMultiBtn = document.getElementById('btn-submit-multi');
@@ -1541,7 +1518,7 @@ function renderCurriculumView() {
                 chosenIndices.every((val, i) => val === ansArr[i]);
 
             currentSessionLog.push({
-                year: qData.year,
+                year: "2025",
                 num: qData.num,
                 cat: qData.cat,
                 q: qData.q,
@@ -1576,7 +1553,7 @@ function renderCurriculumView() {
             let durationMs = 2800;
             if (isCorrect && !isGuessed) {
                 feedbackBox.className = 'p-3.5 rounded-xl border border-green-200 bg-green-50 text-green-950 relative overflow-hidden';
-                resultText.textContent = '✅ 答對了！（已標記掌握，日後不重複抽考）';
+                resultText.textContent = '✅ 答對了！（已掌握 2025 考點）';
                 categoryResults[qData.cat].correct++;
                 markQuestionMastered(selectedMember, qData.id);
                 if (isMistakeMode) removeMistake(qData.id, selectedMember);
@@ -1594,9 +1571,7 @@ function renderCurriculumView() {
                 durationMs = 5000;
             }
 
-            const fullExp = qData.hint && qData.year === "2026"
-                ? `📖 解析：${qData.exp}\n\n${qData.hint}`
-                : `📖 解析：${qData.exp}`;
+            const fullExp = qData.hint ? `📖 解析：${qData.exp}\n\n${qData.hint}` : `📖 解析：${qData.exp}`;
             expText.textContent = fullExp;
 
             startFeedbackCountdown(durationMs);
@@ -1654,22 +1629,19 @@ function renderCurriculumView() {
 
         function performQuestionSearch() {
             const kwInput = document.getElementById('search-keyword-input');
-            const yrSelect = document.getElementById('search-year-filter');
             const container = document.getElementById('search-results-container');
             const countBadge = document.getElementById('search-result-count');
             if (!kwInput || !container) return;
 
             const kw = kwInput.value.trim().toLowerCase();
-            const yr = yrSelect ? yrSelect.value : "ALL";
 
             if (!kw) {
-                container.innerHTML = `<p class="text-center text-xs text-gray-400 py-8">請輸入關鍵字（例如：滅火筒、安全帶、罰款、噪音）檢索四年題庫</p>`;
+                container.innerHTML = `<p class="text-center text-xs text-gray-400 py-8">請輸入關鍵字（例如：滅火筒、安全帶、罰款、突發事件）檢索 2025 題庫</p>`;
                 if (countBadge) countBadge.textContent = `共 ${questionPool.length} 題待查`;
                 return;
             }
 
             const matched = questionPool.filter(q => {
-                if (yr !== "ALL" && String(q.year) !== yr) return false;
                 const haystack = `${q.num} ${q.q} ${q.chapter} ${q.options.join(' ')} ${q.hint} ${q.exp}`.toLowerCase();
                 return haystack.includes(kw);
             });
@@ -1689,7 +1661,7 @@ function renderCurriculumView() {
                 return `
                     <div class="p-3 rounded-xl border border-slate-200 bg-slate-50 text-xs space-y-1.5">
                         <div class="flex justify-between items-center">
-                            <span class="font-black text-blue-900 bg-blue-100 px-2 py-0.5 rounded text-[10px]">${escapeHTML(q.year)}年 • 題號 ${escapeHTML(q.num)}</span>
+                            <span class="font-black text-blue-900 bg-blue-100 px-2 py-0.5 rounded text-[10px]">2025年 • 題號 ${escapeHTML(q.num)}</span>
                             <span class="text-[10px] text-gray-500 font-bold">${escapeHTML(q.cat)} (${escapeHTML(q.chapter)})</span>
                         </div>
                         <p class="font-bold text-slate-900 leading-relaxed">${escapeHTML(q.q)}</p>
@@ -1704,7 +1676,7 @@ function renderCurriculumView() {
             const payload = {
                 "token": CLOUD_CONFIG.apiToken,
                 "User": selectedMember,
-                "YearMode": selectedYear,
+                "YearMode": "2025",
                 "Law_C": categoryResults["法例與健康"]?.correct || 0,
                 "Law_T": categoryResults["法例與健康"]?.total || 0,
                 "Mech_C": categoryResults["建造與機械"]?.correct || 0,
@@ -1715,9 +1687,9 @@ function renderCurriculumView() {
                 "SessionDetails": currentSessionLog
             };
 
-            let local = JSON.parse(localStorage.getItem('oshc_cloud_history')) || [];
+            let local = JSON.parse(localStorage.getItem('oshc_cloud_history_2025')) || [];
             local.unshift(payload);
-            localStorage.setItem('oshc_cloud_history', JSON.stringify(local.slice(0, 100)));
+            localStorage.setItem('oshc_cloud_history_2025', JSON.stringify(local.slice(0, 100)));
 
             if (!CLOUD_CONFIG.apiURL) {
                 showToast("成績已保存在手機本地");
@@ -1741,16 +1713,16 @@ function renderCurriculumView() {
         async function fetchDashboardDataFromCloud() {
             if (CLOUD_CONFIG.apiURL) {
                 try {
-                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getHistory`);
+                    const res = await fetch(`${CLOUD_CONFIG.apiURL}?action=getHistory&year=2025`);
                     if (res.ok) {
                         const data = await res.json();
                         cachedRecords = data.list || [];
                     }
                 } catch (e) {
-                    cachedRecords = JSON.parse(localStorage.getItem('oshc_cloud_history')) || [];
+                    cachedRecords = JSON.parse(localStorage.getItem('oshc_cloud_history_2025')) || [];
                 }
             } else {
-                cachedRecords = JSON.parse(localStorage.getItem('oshc_cloud_history')) || [];
+                cachedRecords = JSON.parse(localStorage.getItem('oshc_cloud_history_2025')) || [];
             }
             renderDashboard();
         }
@@ -1766,8 +1738,8 @@ function renderCurriculumView() {
             const list = isAll ? cachedRecords : cachedRecords.filter(r => String(r.User || r.user || "").toUpperCase() === currentDashFilter);
             displayedHistoryList = list.slice(0, 20);
 
-            document.getElementById('dash-games-title').textContent = isAll ? "全體挑戰總次數" : `[${currentDashFilter}] 挑戰次數`;
-            document.getElementById('dash-accuracy-title').textContent = isAll ? "全體答對率" : `[${currentDashFilter}] 答對率`;
+            document.getElementById('dash-games-title').textContent = isAll ? "2025 挑戰總次數" : `[${currentDashFilter}] 挑戰次數`;
+            document.getElementById('dash-accuracy-title').textContent = isAll ? "2025 答對率" : `[${currentDashFilter}] 答對率`;
             document.getElementById('dash-total-games').textContent = list.length;
             document.getElementById('history-records-count').textContent = `共 ${list.length} 筆`;
 
@@ -1830,7 +1802,7 @@ function renderCurriculumView() {
 
             const hBox = document.getElementById('history-list-container');
             if (displayedHistoryList.length === 0) {
-                hBox.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">尚無挑戰紀錄</p>`;
+                hBox.innerHTML = `<p class="text-xs text-gray-400 py-2 text-center">尚無 2025 挑戰紀錄</p>`;
                 return;
             }
 
@@ -1859,24 +1831,24 @@ function renderCurriculumView() {
         }
 
         function recordMistake(qData, user, chosenIndices) {
-            let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
+            let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
             nb = nb.filter(m => !(String(m.questionId) === String(qData.id) && m.user === user));
             nb.unshift({ questionId: qData.id, user, chosen: chosenIndices, questionData: qData });
-            localStorage.setItem('oshc_mistake_notebook', JSON.stringify(nb.slice(0, 200)));
+            localStorage.setItem('oshc_mistake_notebook_2025', JSON.stringify(nb.slice(0, 200)));
             updateMistakeBadge();
         }
 
         function removeMistake(questionId, user) {
-            let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
+            let nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
             nb = nb.filter(m => !(String(m.questionId) === String(questionId) && (user === 'ALL' || m.user === user)));
-            localStorage.setItem('oshc_mistake_notebook', JSON.stringify(nb));
+            localStorage.setItem('oshc_mistake_notebook_2025', JSON.stringify(nb));
             updateMistakeBadge();
             renderMistakesList();
             showToast("已標記掌握並移出錯題簿");
         }
 
         function updateMistakeBadge() {
-            const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
+            const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
             const badge = document.getElementById('nav-mistake-badge');
             if (badge) {
                 if (nb.length > 0) {
@@ -1896,13 +1868,13 @@ function renderCurriculumView() {
 
         function renderMistakesList() {
             const container = document.getElementById('mistakes-list-container');
-            const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook')) || [];
+            const nb = JSON.parse(localStorage.getItem('oshc_mistake_notebook_2025')) || [];
             const list = (currentMistakeFilter === 'ALL') ? nb : nb.filter(m => m.user === currentMistakeFilter);
             const countEl = document.getElementById('mistake-practice-count');
             if (countEl) countEl.textContent = list.length;
 
             if (list.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">🎉 目前沒有錯題！</div>`;
+                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">🎉 目前 2025 題庫沒有錯題！</div>`;
                 return;
             }
 
@@ -1923,7 +1895,7 @@ function renderCurriculumView() {
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-1.5">
                             <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${escapeHTML(m.user)}</span>
-                            <span class="text-[10px] font-bold text-gray-500">${escapeHTML(q.year)}年 • 題號 ${escapeHTML(q.num)}</span>
+                            <span class="text-[10px] font-bold text-gray-500">2025年 • 題號 ${escapeHTML(q.num)}</span>
                         </div>
                         <button type="button" class="btn-rm-mistake text-[10px] text-gray-500 hover:text-red-600 font-bold">✓ 標記掌握</button>
                     </div>
@@ -1955,7 +1927,7 @@ function renderCurriculumView() {
             }
 
             const modal = document.getElementById('modal-session-detail');
-            document.getElementById('modal-detail-title').textContent = `出戰成員 [${u}] 挑戰明細`;
+            document.getElementById('modal-detail-title').textContent = `出戰成員 [${u}] 2025 挑戰明細`;
             document.getElementById('modal-detail-subtitle').textContent = `時間：${d} | 得分：${totalC}/${totalT}`;
             
             const content = document.getElementById('modal-detail-content');
@@ -1976,7 +1948,7 @@ function renderCurriculumView() {
                     content.innerHTML += `
                         <div class="p-2.5 rounded-xl border ${item.isCorrect ? (item.isGuessed ? 'border-amber-200 bg-amber-50/40' : 'border-green-100 bg-green-50/40') : 'border-red-100 bg-red-50/40'} text-xs space-y-1">
                             <div class="flex justify-between items-center">
-                                <span class="font-bold text-slate-700">第 ${i + 1} 題 (${escapeHTML(item.year ? item.year + ' • ' : '')}${escapeHTML(item.cat)})</span>
+                                <span class="font-bold text-slate-700">第 ${i + 1} 題 (2025 • ${escapeHTML(item.cat)})</span>
                                 <div class="flex items-center gap-1">
                                     ${item.isGuessed ? '<span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-1 rounded">靠估</span>' : ''}
                                     <span class="font-bold ${item.isCorrect ? 'text-green-700' : 'text-red-700'}">${item.isCorrect ? '✅ 答對' : '❌ 答錯'}</span>
