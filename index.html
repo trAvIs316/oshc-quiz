@@ -52,13 +52,13 @@
                 <p class="text-[11px] text-gray-500 mt-0.5">最新比賽大綱 &bull; 最新法例詳解 &bull; 核心高頻考點</p>
             </div>
 
-            <!-- 成員選擇 -->
+            <!-- 成員選擇 (改為 5 人格線) -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
                 <div class="flex justify-between items-center mb-2">
                     <label class="text-xs font-bold text-gray-700">1. 選擇出戰隊員</label>
                     <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold" id="selected-member-label">已選擇: P</span>
                 </div>
-                <div class="grid grid-cols-6 gap-1.5" id="user-selector"></div>
+                <div class="grid grid-cols-5 gap-1.5" id="user-selector"></div>
             </div>
 
             <!-- 專項範疇與模擬設定 -->
@@ -237,7 +237,7 @@
             </div>
         </div>
 
-        <!-- 5. 錯題重溫簿 -->
+        <!-- 5. 錯題重溫簿 (改為 6 欄 ALL + 5人) -->
         <div id="view-mistakes" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
@@ -246,12 +246,12 @@
                 </div>
                 <button onclick="startMistakeQuiz()" id="btn-practice-mistakes" class="bg-red-600 active:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-xs">🎯 錯題重練 (<span id="mistake-practice-count">0</span>)</button>
             </div>
-            <div class="grid grid-cols-7 gap-1" id="mistake-member-filters"></div>
+            <div class="grid grid-cols-6 gap-1" id="mistake-member-filters"></div>
             <div id="mistakes-list-container" class="space-y-2.5 max-h-[420px] overflow-y-auto pr-1"></div>
             <button onclick="switchView('intro')" class="w-full bg-slate-100 active:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs">返回首頁</button>
         </div>
 
-        <!-- 6. 數據分析儀表板 -->
+        <!-- 6. 數據分析儀表板 (改為 6 欄 ALL + 5人，統計改為 5 人卡片) -->
         <div id="view-dashboard" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
@@ -260,7 +260,7 @@
                 </div>
                 <button onclick="fetchDashboardDataFromCloud()" class="bg-blue-50 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-lg border border-blue-200 active:bg-blue-100">🔄 重新整理</button>
             </div>
-            <div class="grid grid-cols-7 gap-1" id="dash-member-filters"></div>
+            <div class="grid grid-cols-6 gap-1" id="dash-member-filters"></div>
             <div class="grid grid-cols-2 gap-2.5">
                 <div class="border border-slate-200 p-3 rounded-xl text-center bg-slate-50">
                     <p class="text-gray-500 text-[11px]" id="dash-games-title">挑戰總次數</p>
@@ -271,7 +271,7 @@
                     <p class="text-2xl font-black text-blue-600 mt-0.5" id="dash-total-accuracy">0%</p>
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-1.5" id="member-stats-container"></div>
+            <div class="grid grid-cols-5 gap-1.5" id="member-stats-container"></div>
             <div class="space-y-2.5" id="category-stats-container"></div>
             <div>
                 <div class="flex justify-between items-center mb-1.5">
@@ -311,13 +311,21 @@
             apiToken: "OSHC_TEAM_2026_SECURE_KEY"
         };
 
-        const MEMBERS = ["P", "T", "S", "J", "V", "F"];
+        const MEMBERS = [
+            { id: 'P', name: 'Paul' },
+            { id: 'S', name: 'Steven' },
+            { id: 'T', name: 'Travis' },
+            { id: 'J', name: 'Joseph' },
+            { id: 'M', name: 'Marcus' }
+        ];
+        const MEMBER_IDS = MEMBERS.map(m => m.id);
+
         const TARGET_YEAR = "2026";
         const CATEGORIES = ["法例與健康", "建造與機械", "化學與消防"];
         const CATEGORY_OPTIONS = [{ id: "ALL", label: "全部範疇" }, ...CATEGORIES.map(c => ({ id: c, label: c }))];
 
         let selectedMember = localStorage.getItem('oshc_selected_user') || "P";
-        if (!MEMBERS.includes(selectedMember)) selectedMember = "P";
+        if (!MEMBER_IDS.includes(selectedMember)) selectedMember = "P";
         let selectedCategory = "ALL";
         let selectedCurriculumCat = "法例與健康";
         let selectedCurriculumChapter = "ALL";
@@ -766,9 +774,9 @@
             const container = document.getElementById('user-selector');
             if (!container) return;
             container.innerHTML = MEMBERS.map(m => `
-                <button type="button" onclick="selectMember('${m}')" class="py-2 rounded-lg font-black text-xs border transition ${
-                    m === selectedMember ? 'bg-blue-600 text-white border-blue-600 shadow-sm ring-2 ring-blue-400/30' : 'bg-white text-slate-700 border-slate-200 active:bg-slate-100'
-                }">${m}</button>
+                <button type="button" onclick="selectMember('${m.id}')" class="py-2 rounded-lg font-black text-xs border transition ${
+                    m.id === selectedMember ? 'bg-blue-600 text-white border-blue-600 shadow-sm ring-2 ring-blue-400/30' : 'bg-white text-slate-700 border-slate-200 active:bg-slate-100'
+                }">${m.id}</button>
             `).join('');
 
             document.getElementById('current-user-banner').textContent = `出戰成員: ${selectedMember} • 2026 專項`;
@@ -776,9 +784,9 @@
             updateMasteryUI();
         }
 
-        function selectMember(m) {
-            selectedMember = m;
-            localStorage.setItem('oshc_selected_user', m);
+        function selectMember(mId) {
+            selectedMember = mId;
+            localStorage.setItem('oshc_selected_user', mId);
             renderUserSelector();
             renderCurriculumView();
         }
@@ -845,7 +853,7 @@
         }
 
         function renderFilterTabs() {
-            const tabs = ["ALL", ...MEMBERS];
+            const tabs = ["ALL", ...MEMBER_IDS];
             const mContainer = document.getElementById('mistake-member-filters');
             const dContainer = document.getElementById('dash-member-filters');
             if (mContainer) {
@@ -1335,7 +1343,7 @@
             document.getElementById('dash-total-games').textContent = list.length;
             document.getElementById('history-records-count').textContent = `共 ${list.length} 筆`;
 
-            let userCounts = { P: 0, T: 0, S: 0, J: 0, V: 0, F: 0 };
+            let userCounts = { P: 0, S: 0, T: 0, J: 0, M: 0 };
             let agg = { "法例與健康": { c: 0, t: 0 }, "建造與機械": { c: 0, t: 0 }, "化學與消防": { c: 0, t: 0 } };
             let grandC = 0, grandT = 0;
 
@@ -1356,9 +1364,9 @@
 
             document.getElementById('dash-total-accuracy').textContent = `${grandT === 0 ? 0 : Math.round((grandC / grandT) * 100)}%`;
             document.getElementById('member-stats-container').innerHTML = MEMBERS.map(m => `
-                <div onclick="filterDashboard('${m}')" class="border ${currentDashFilter === m ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'border-slate-200 bg-slate-50'} p-2 rounded-xl text-center cursor-pointer transition">
-                    <span class="block text-[11px] font-black ${currentDashFilter === m ? 'text-blue-700' : 'text-slate-700'}">${escapeHTML(m)}</span>
-                    <span class="block text-base font-black text-blue-900">${userCounts[m]}</span>
+                <div onclick="filterDashboard('${m.id}')" class="border ${currentDashFilter === m.id ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'border-slate-200 bg-slate-50'} p-2 rounded-xl text-center cursor-pointer transition">
+                    <span class="block text-[11px] font-black ${currentDashFilter === m.id ? 'text-blue-700' : 'text-slate-700'}">${escapeHTML(m.id)}</span>
+                    <span class="block text-base font-black text-blue-900">${userCounts[m.id] || 0}</span>
                 </div>
             `).join('');
 
