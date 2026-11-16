@@ -26,7 +26,7 @@
             <span class="text-lg">👷</span>
             <div>
                 <h1 class="text-xs font-black tracking-wide leading-tight">職安健秘笈練靶</h1>
-                <p class="text-[9px] text-slate-400" id="current-user-banner">出戰: P • 2026 專項</p>
+                <p class="text-[9px] text-slate-400" id="current-user-banner">出戰: Paul • 2026 專項</p>
             </div>
         </div>
         <div class="flex items-center gap-1">
@@ -52,11 +52,11 @@
                 <p class="text-[11px] text-gray-500 mt-0.5">最新比賽大綱 &bull; 最新法例詳解 &bull; 核心高頻考點</p>
             </div>
 
-            <!-- 成員選擇 (改為 5 人格線) -->
+            <!-- 成員選擇 (全名顯示) -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
                 <div class="flex justify-between items-center mb-2">
                     <label class="text-xs font-bold text-gray-700">1. 選擇出戰隊員</label>
-                    <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold" id="selected-member-label">已選擇: P</span>
+                    <span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold" id="selected-member-label">已選擇: Paul</span>
                 </div>
                 <div class="grid grid-cols-5 gap-1.5" id="user-selector"></div>
             </div>
@@ -88,7 +88,7 @@
             <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-xl border border-blue-200 space-y-1.5">
                 <div class="flex justify-between items-center">
                     <span class="text-xs font-black text-blue-950 flex items-center gap-1">
-                        <span>🏆</span> <span id="mastery-user-title">成員 P 通關進度</span>
+                        <span>🏆</span> <span id="mastery-user-title">成員 Paul 通關進度</span>
                     </span>
                     <span class="text-[11px] font-black text-blue-800 bg-white border border-blue-200 px-2 py-0.5 rounded-full" id="mastery-count-text">0 / 0 題 (0%)</span>
                 </div>
@@ -160,7 +160,7 @@
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-1.5">
                     <span class="text-xs font-bold text-gray-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-xs" id="quiz-progress">第 1 / 10 題</span>
-                    <span class="text-xs font-bold bg-blue-100 text-blue-900 px-2 py-1 rounded-lg" id="quiz-user-tag">成員: P</span>
+                    <span class="text-xs font-bold bg-blue-100 text-blue-900 px-2 py-1 rounded-lg" id="quiz-user-tag">成員: Paul</span>
                     <span class="text-[11px] font-black bg-amber-100 text-amber-900 px-2 py-1 rounded-lg hidden" id="quiz-timer-badge">⏱️ 15s</span>
                 </div>
                 <span class="text-xs font-bold text-blue-800 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full" id="quiz-category">法例與健康</span>
@@ -237,7 +237,7 @@
             </div>
         </div>
 
-        <!-- 5. 錯題重溫簿 (改為 6 欄 ALL + 5人) -->
+        <!-- 5. 錯題重溫簿 -->
         <div id="view-mistakes" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
@@ -251,7 +251,7 @@
             <button onclick="switchView('intro')" class="w-full bg-slate-100 active:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-xs">返回首頁</button>
         </div>
 
-        <!-- 6. 數據分析儀表板 (改為 6 欄 ALL + 5人，統計改為 5 人卡片) -->
+        <!-- 6. 數據分析儀表板 -->
         <div id="view-dashboard" class="hidden flex-col bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div>
@@ -320,6 +320,11 @@
         ];
         const MEMBER_IDS = MEMBERS.map(m => m.id);
 
+        function getMemberName(id) {
+            const found = MEMBERS.find(m => m.id === id);
+            return found ? found.name : id;
+        }
+
         const TARGET_YEAR = "2026";
         const CATEGORIES = ["法例與健康", "建造與機械", "化學與消防"];
         const CATEGORY_OPTIONS = [{ id: "ALL", label: "全部範疇" }, ...CATEGORIES.map(c => ({ id: c, label: c }))];
@@ -339,7 +344,7 @@
             { cat: "法例與健康", ch: "個人防護", planned: 1, title: "個人防護裝備規格 (PPE) (待製作)" },
             { cat: "法例與健康", ch: "職業健康", planned: 3, title: "法定補償職業病與通報天數 (待製作)" },
             { cat: "法例與健康", ch: "職業健康", planned: 3, title: "噪音管制與聽力保護 (85/90dB) (待製作)" },
-            { cat: "法例與健康", ch: "職業健康", planned: 3, title: "酷熱天氣、中暑與物理危害 (待製作)" },
+            { cat: "法例與健康", ch: "酷熱天氣、中暑與物理危害 (待製作)" },
             { cat: "法例與健康", ch: "辦公室安全", planned: 1, title: "顯示屏幕設備 (DSE) (待製作)" },
             { cat: "法例與健康", ch: "飲食業安全", planned: 1, title: "廚房排氣管道、切肉機與防滑 (待製作)" },
             { cat: "法例與健康", ch: "國家及澳門特別行政區的職安健法例", planned: 2, title: "內地《安全生產法》三同時 (待製作)" },
@@ -774,13 +779,14 @@
             const container = document.getElementById('user-selector');
             if (!container) return;
             container.innerHTML = MEMBERS.map(m => `
-                <button type="button" onclick="selectMember('${m.id}')" class="py-2 rounded-lg font-black text-xs border transition ${
-                    m.id === selectedMember ? 'bg-blue-600 text-white border-blue-600 shadow-sm ring-2 ring-blue-400/30' : 'bg-white text-slate-700 border-slate-200 active:bg-slate-100'
-                }">${m.id}</button>
+                <button type="button" onclick="selectMember('${m.id}')" class="py-2.5 px-1 rounded-xl font-black text-[11px] sm:text-xs border transition truncate ${
+                    m.id === selectedMember ? 'bg-blue-600 text-white border-blue-600 shadow-sm ring-2 ring-blue-400/30' : 'bg-white text-slate-700 border-slate-200 active:bg-slate-100 hover:bg-slate-50'
+                }">${escapeHTML(m.name)}</button>
             `).join('');
 
-            document.getElementById('current-user-banner').textContent = `出戰成員: ${selectedMember} • 2026 專項`;
-            document.getElementById('selected-member-label').textContent = `已選擇: ${selectedMember}`;
+            const fullName = getMemberName(selectedMember);
+            document.getElementById('current-user-banner').textContent = `出戰成員: ${fullName} • 2026 專項`;
+            document.getElementById('selected-member-label').textContent = `已選擇: ${fullName}`;
             updateMasteryUI();
         }
 
@@ -824,46 +830,48 @@
         function resetMemberMastery() {
             const filtered = getFilteredQuestionPool();
             const map = getMasteredMap(selectedMember);
+            const fullName = getMemberName(selectedMember);
             let removedCount = 0;
             filtered.forEach(q => {
                 if (map[String(q.id)]) { delete map[String(q.id)]; removedCount++; }
             });
-            if (removedCount === 0) return showToast(`成員 ${selectedMember} 在目前範圍尚未有掌握題數`);
+            if (removedCount === 0) return showToast(`成員 ${fullName} 在目前範圍尚未有掌握題數`);
             saveMasteredMap(selectedMember, map);
-            showToast(`已重設成員 ${selectedMember} 於此範圍的 ${removedCount} 題進度`);
+            showToast(`已重設成員 ${fullName} 於此範圍的 ${removedCount} 題進度`);
         }
 
         function updateMasteryUI() {
             const filteredPool = getFilteredQuestionPool();
             const map = getMasteredMap(selectedMember);
             const totalCount = filteredPool.length;
+            const fullName = getMemberName(selectedMember);
             let masteredCount = 0;
             filteredPool.forEach(q => { if (map[String(q.id)]) masteredCount++; });
 
             const pct = totalCount === 0 ? 0 : Math.round((masteredCount / totalCount) * 100);
-            document.getElementById('mastery-user-title').textContent = `${selectedMember} 通關進度 (2026 專屬)`;
+            document.getElementById('mastery-user-title').textContent = `${fullName} 通關進度 (2026 專屬)`;
             document.getElementById('mastery-count-text').textContent = `${masteredCount} / ${totalCount} 題 (${pct}%)`;
             document.getElementById('mastery-progress-bar').style.width = `${pct}%`;
             document.getElementById('year-pool-count-tag').textContent = `2026 題庫共 ${totalCount} 題`;
 
             const remaining = Math.max(0, totalCount - masteredCount);
             document.getElementById('mastery-pool-info').textContent = (totalCount > 0 && remaining === 0)
-                ? `🎉 恭喜！${selectedMember} 已完全通關 2026 題庫全部題目！`
+                ? `🎉 恭喜！${fullName} 已完全通關 2026 題庫全部題目！`
                 : `未掌握剩餘：${remaining} 題（答錯／靠估自動重出）`;
         }
 
         function renderFilterTabs() {
-            const tabs = ["ALL", ...MEMBER_IDS];
+            const tabs = [{ id: "ALL", label: "全部" }, ...MEMBERS.map(m => ({ id: m.id, label: m.name }))];
             const mContainer = document.getElementById('mistake-member-filters');
             const dContainer = document.getElementById('dash-member-filters');
             if (mContainer) {
                 mContainer.innerHTML = tabs.map(t => `
-                    <button onclick="filterMistakes('${t}')" class="text-[10px] font-bold py-1 rounded border ${t === currentMistakeFilter ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
+                    <button onclick="filterMistakes('${t.id}')" class="text-[10px] font-bold py-1 px-0.5 rounded border truncate ${t.id === currentMistakeFilter ? 'bg-slate-800 text-white border-slate-800' : 'bg-white text-slate-600 border-slate-200'}">${escapeHTML(t.label)}</button>
                 `).join('');
             }
             if (dContainer) {
                 dContainer.innerHTML = tabs.map(t => `
-                    <button onclick="filterDashboard('${t}')" class="text-[10px] font-bold py-1 rounded border ${t === currentDashFilter ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-slate-600 border-slate-200'}">${t === 'ALL' ? '全部' : t}</button>
+                    <button onclick="filterDashboard('${t.id}')" class="text-[10px] font-bold py-1 px-0.5 rounded border truncate ${t.id === currentDashFilter ? 'bg-blue-900 text-white border-blue-900' : 'bg-white text-slate-600 border-slate-200'}">${escapeHTML(t.label)}</button>
                 `).join('');
             }
         }
@@ -1011,15 +1019,16 @@
             isMistakeMode = false;
             const quizLen = parseInt(document.getElementById('quiz-length-select')?.value || "10", 10);
             const masteredMap = getMasteredMap(selectedMember);
+            const fullName = getMemberName(selectedMember);
             let eligiblePool = filteredPool.filter(q => !masteredMap[String(q.id)]);
 
             if (eligiblePool.length === 0) {
-                showToast(`🏆 ${selectedMember} 已掌握 2026 題庫所有題目！進入全題庫複習模式。`);
+                showToast(`🏆 ${fullName} 已掌握 2026 題庫所有題目！進入全題庫複習模式。`);
                 eligiblePool = [...filteredPool];
             }
 
             currentQuiz = [...eligiblePool].sort(() => 0.5 - Math.random()).slice(0, Math.min(quizLen, eligiblePool.length));
-            resetQuizState(`成員: ${selectedMember}`);
+            resetQuizState(`成員: ${fullName}`);
             switchView('quiz');
             renderQuestion();
         }
@@ -1031,7 +1040,8 @@
 
             isMistakeMode = true;
             currentQuiz = [...list].sort(() => 0.5 - Math.random()).slice(0, 10).map(m => m.questionData);
-            resetQuizState(`錯題: ${currentMistakeFilter}`);
+            const filterLabel = currentMistakeFilter === 'ALL' ? '全部' : getMemberName(currentMistakeFilter);
+            resetQuizState(`錯題: ${filterLabel}`);
             switchView('quiz');
             renderQuestion();
         }
@@ -1338,8 +1348,9 @@
             const list = isAll ? cachedRecords : cachedRecords.filter(r => String(r.User || r.user || "").toUpperCase() === currentDashFilter);
             displayedHistoryList = list.slice(0, 20);
 
-            document.getElementById('dash-games-title').textContent = isAll ? "2026 挑戰總次數" : `[${currentDashFilter}] 挑戰次數`;
-            document.getElementById('dash-accuracy-title').textContent = isAll ? "2026 答對率" : `[${currentDashFilter}] 答對率`;
+            const filterLabel = isAll ? "2026" : getMemberName(currentDashFilter);
+            document.getElementById('dash-games-title').textContent = isAll ? "2026 挑戰總次數" : `[${filterLabel}] 挑戰次數`;
+            document.getElementById('dash-accuracy-title').textContent = isAll ? "2026 答對率" : `[${filterLabel}] 答對率`;
             document.getElementById('dash-total-games').textContent = list.length;
             document.getElementById('history-records-count').textContent = `共 ${list.length} 筆`;
 
@@ -1365,8 +1376,8 @@
             document.getElementById('dash-total-accuracy').textContent = `${grandT === 0 ? 0 : Math.round((grandC / grandT) * 100)}%`;
             document.getElementById('member-stats-container').innerHTML = MEMBERS.map(m => `
                 <div onclick="filterDashboard('${m.id}')" class="border ${currentDashFilter === m.id ? 'border-blue-600 bg-blue-50 ring-1 ring-blue-600' : 'border-slate-200 bg-slate-50'} p-2 rounded-xl text-center cursor-pointer transition">
-                    <span class="block text-[11px] font-black ${currentDashFilter === m.id ? 'text-blue-700' : 'text-slate-700'}">${escapeHTML(m.id)}</span>
-                    <span class="block text-base font-black text-blue-900">${userCounts[m.id] || 0}</span>
+                    <span class="block text-[11px] font-black truncate ${currentDashFilter === m.id ? 'text-blue-700' : 'text-slate-700'}">${escapeHTML(m.name)}</span>
+                    <span class="block text-base font-black text-blue-900 mt-0.5">${userCounts[m.id] || 0}</span>
                 </div>
             `).join('');
 
@@ -1394,7 +1405,8 @@
             }
 
             hBox.innerHTML = displayedHistoryList.map((r, idx) => {
-                const u = escapeHTML(String(r.User || r.user || "P").toUpperCase());
+                const u = String(r.User || r.user || "P").toUpperCase();
+                const uName = escapeHTML(getMemberName(u));
                 const totalC = (Number(r.Law_C) || 0) + (Number(r.Mech_C) || 0) + (Number(r.Chem_C) || 0);
                 const totalT = (Number(r.Law_T) || 0) + (Number(r.Mech_T) || 0) + (Number(r.Chem_T) || 0);
                 const pct = totalT === 0 ? 0 : Math.round((totalC / totalT) * 100);
@@ -1402,7 +1414,7 @@
                 return `
                     <div class="p-2 border border-slate-100 rounded-lg bg-slate-50 text-[11px] flex justify-between items-center">
                         <div class="flex items-center gap-2">
-                            <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-900 font-bold flex items-center justify-center text-[10px]">${u}</span>
+                            <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-900 font-bold text-[10px]">${uName}</span>
                             <span class="text-slate-600">${escapeHTML(d)} (${totalC}/${totalT}題)</span>
                         </div>
                         <div class="flex items-center gap-2">
@@ -1462,11 +1474,12 @@
                 const q = m.questionData;
                 const chosenStr = (Array.isArray(m.chosen) ? m.chosen : [m.chosen]).map(i => `${letters[i] || ''}. ${q.options[i] || '未作答'}`).join('、') || '超時未作答';
                 const ansStr = q.ans.map(i => `${letters[i]}. ${q.options[i] || ''}`).join('、');
+                const memberName = getMemberName(m.user);
                 return `
                     <div class="p-3 rounded-xl border border-red-100 bg-red-50/50 text-xs space-y-1.5">
                         <div class="flex justify-between items-center">
                             <div class="flex items-center gap-1.5">
-                                <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${escapeHTML(m.user)}</span>
+                                <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">${escapeHTML(memberName)}</span>
                                 <span class="text-[10px] font-bold text-gray-500">2026年 • 題號 ${escapeHTML(q.num)}</span>
                             </div>
                             <button onclick="removeMistake('${q.id}', '${m.user}')" class="text-[10px] text-gray-500 hover:text-red-600 font-bold">✓ 標記掌握</button>
@@ -1486,6 +1499,7 @@
             const r = displayedHistoryList[idx];
             if (!r) return;
             const u = String(r.User || r.user || "P").toUpperCase();
+            const uName = getMemberName(u);
             const totalC = (Number(r.Law_C) || 0) + (Number(r.Mech_C) || 0) + (Number(r.Chem_C) || 0);
             const totalT = (Number(r.Law_T) || 0) + (Number(r.Mech_T) || 0) + (Number(r.Chem_T) || 0);
             const d = r.Date ? new Date(r.Date).toLocaleString('zh-HK', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '剛剛';
@@ -1495,7 +1509,7 @@
                 try { details = JSON.parse(details.startsWith("'") ? details.slice(1) : details); } catch (e) { details = []; }
             }
 
-            document.getElementById('modal-detail-title').textContent = `出戰成員 [${u}] 2026 挑戰明細`;
+            document.getElementById('modal-detail-title').textContent = `出戰成員 [${escapeHTML(uName)}] 2026 挑戰明細`;
             document.getElementById('modal-detail-subtitle').textContent = `時間：${d} | 得分：${totalC}/${totalT}`;
             
             const content = document.getElementById('modal-detail-content');
